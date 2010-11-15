@@ -13,7 +13,7 @@ namespace googlemaps\overlay;
  * <a href="#" onclick="<?php echo $map->getDirections()->getRendererJsVar() ?>.setPanel(document.getElementById('panel'))">Set Panel</a>
  */
 
-abstract class DirectionsDecorator extends \googlemaps\core\MapObjectDecorator {
+class DirectionsDecorator extends \googlemaps\core\MapObjectDecorator {
 
 	/**
 	 * Map id the fusion table is attached to

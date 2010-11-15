@@ -9,7 +9,7 @@ namespace googlemaps\overlay;
  * Maps wrap markers in this decorator to give markers access to the map_id and marker id
  */
 
-abstract class MarkerDecorator extends \googlemaps\core\MapObjectDecorator {
+class MarkerDecorator extends \googlemaps\core\MapObjectDecorator {
 
 	/**
 	 * ID of the marker in the map

@@ -11,7 +11,7 @@ namespace googlemaps\overlay;
  */
  
 
-abstract class MarkerGroupDecorator extends \googlemaps\core\MapObjectDecorator {
+class MarkerGroupDecorator extends \googlemaps\core\MapObjectDecorator {
 
 	/**
 	 * Id of the marker group in the map

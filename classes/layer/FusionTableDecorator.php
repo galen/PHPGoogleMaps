@@ -8,7 +8,7 @@ namespace googlemaps\layer;
  */
  
 
-abstract class FusionTableDecorator extends \googlemaps\core\MapObjectDecorator {
+class FusionTableDecorator extends \googlemaps\core\MapObjectDecorator {
 
 	/**
 	 * Id of the fusion table in the map

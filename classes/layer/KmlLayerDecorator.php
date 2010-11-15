@@ -8,7 +8,7 @@ namespace googlemaps\layer;
  */
  
 
-abstract class KmlLayerDecorator extends \googlemaps\core\MapObjectDecorator {
+class KmlLayerDecorator extends \googlemaps\core\MapObjectDecorator {
 
 	/**
 	 * Id of the KML layer in the map
