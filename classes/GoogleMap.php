@@ -1,14 +1,22 @@
 <?php
-/*
 
-normalize indexes when looping objects
-
-allow passing of options to the map constructor
-
+/**
+ * Google Maps
+ * PHP Wrapper for Google Maps v3
+ * @author Galen Grover <galenjr@gmail.com>
+ * @package GoogleMaps
 */
 
 
 namespace googlemaps;
+
+/**
+ * Google Map
+ *
+ * The main class that controls the output of a map
+ * All map objects must be added to an instance of GoogleMap via addObject() or addObjects()
+ *
+ */
 
 class GoogleMap {
 
@@ -78,31 +86,134 @@ class GoogleMap {
 	private $zoom = 7;
 
 	/**
+	 * Auto encompass flag
+	 * If enabled the map will automatically encompass all markers on the map
+	 * If disabled a zoom level and center must be set
 	 *
-	 *
-	 *
+	 * @var boolean
 	 */
 	private $auto_encompass = true;
-	private $units_options = array( 'imperial', 'metric' );
+
+	/**
+	 * Units
+	 * If unset map will use default units of the users location
+	 *
+	 * @var string
+	 */
 	private $units;
 
-	private $height = '500px', $width = '500px';
+	/**
+	 * Map height
+	 * Example: 500px, 100%
+	 * 
+	 * @var string
+	 */
+	private $height = '500px';
+	
+	/**
+	 * Map width
+	 * Example: 500px, 100%
+	 *
+	 * @var string
+	 */
+	private $width = '500px';
 
+	/**
+	 * Map center
+	 *
+	 * @var LatLng
+	 */
 	private $center;
+
+	/**
+	 * Center on user flag
+	 * If set the map will attempt to set the center on the user's location
+	 *
+	 * @var boolean
+	 */
 	private $center_on_user = false;
 
+	/**
+	 * Navigation control flag
+	 * Show/hide the navigation control
+	 *
+	 * @var boolean
+	 */
 	private $navigation_control = true;
+	
+	/**
+	 * Navigation control position
+	 *
+	 * @var string
+	 */
 	private $navigation_control_position;
+
+	/**
+	 * Navigation control style
+	 *
+	 * @var string
+	 */
 	private $navigation_control_style;
 
+	/**
+	 * Map type control flag
+	 * Show/hide the map type control
+	 *
+	 * @var boolean
+	 */
 	private $map_type_control = true;
+
+	/**
+	 * Map type control position
+	 *
+	 * @var string
+	 */
 	private $map_type_control_position;
+
+	/**
+	 * Map type control style
+	 *
+	 * @var string
+	 */
 	private $map_type_control_style;
-	private $map_types = null;
+
+	/**
+	 * Available map types
+	 * Array of map types that will be available for the user to choose
+	 *
+	 * @var array
+	 */
+	private $map_types = array();
+	
+	/**
+	 * Map styles
+	 * Custom map styles
+	 *
+	 * @var array
+	 */
 	private $map_styles = array();
 
+	/**
+	 * Scale control flag
+	 *
+	 * @var boolean
+	 */
 	private $scale_control = false;
+	
+	/**
+	 * Scale control position
+	 *
+	 * @var string
+	 */
 	private $scale_control_position;
+
+	/**
+	 * Map shapes
+	 * Array of shapes added to the map
+	 *
+	 * @var array
+	 */
+	private $shapes = array();
 
 	/**
 	 * Scrollable flag
@@ -203,7 +314,7 @@ class GoogleMap {
 	 * 
 	 * @var boolean
 	 */
-	private $traffic = false;
+	private $traffic_layer = false;
 
 	/**
 	 * Streetview
@@ -223,14 +334,6 @@ class GoogleMap {
 	 */
 	private $bicycle_layer = false;
 
-	/**
-	 * DOM listeners
-	 * Holds the array of DOM listeners
-	 *
-	 * @var array
-	 */
-	private $dom_listeners = array();
-	
 	/**
 	 * Event listeners
 	 * Holds the array of event listeners
@@ -291,23 +394,14 @@ class GoogleMap {
 	private $geolocation_fail_function;
 
 	/**
-	 * Backup geolocation latitude
+	 * Backup geolocation location
 	 * If the map was centered via geolocation and geolocation fails
-	 * this will set as the center latitude
+	 * this will set as the map center
 	 *
-	 * @var float
+	 * @var LatLng
 	 */
-	private $geolocation_backup_lat;
+	private $geolocation_backup;
 	
-	/**
-	 * Backup geolocation longitude
-	 * If the map was centered via geolocation and geolocation fails
-	 * this will set as the center longitude
-	 *
-	 * @var float
-	 */
-	private $geolocation_backup_lng;
-
 	/**
 	 * Mobile flag
 	 * This will output a special meta tag for mobile devices
@@ -317,64 +411,217 @@ class GoogleMap {
 	 */
 	private $mobile = false;
 
+	/**
+	 * Map Directions
+	 *
+	 * @var Directions
+	 */
 	private $directions;
+	
+	/**
+	 * Directions fail callback
+	 * Function to call if directions fail to load
+	 *
+	 * @var string
+	 */
 	private $directions_fail_callback;
+
+	/**
+	 * Directions success callback
+	 * Function to call if directions succeed to load
+	 *
+	 * @var string
+	 */
 	private $directions_success_callback;
 
-
-	public function addDirections( \googlemaps\overlay\Directions $dir ) {
-		$this->directions = new \googlemaps\overlay\DirectionsDecorator( $dir, $this->map_id );
+	/**
+	 * Constructor
+	 *
+	 * @var string $map_id ID to give the map
+	 * @return GoogleMap
+	 */
+	public function __construct( $map_id = null ) {
+		if ( $map_id ) {
+			$this->map_id  = preg_match( '\W', '', $map_id );
+		}
 	}
 
+/*************************
+ *
+ * Directions
+ *
+ *************************/
+
+	/**
+	 * Add directions to the map
+	 *
+	 * @param Directions $dir Directions object
+	 * @return DirectionsDecorator
+	 */
+	public function addDirections( \googlemaps\overlay\Directions $dir ) {
+		return $this->directions = new \googlemaps\overlay\DirectionsDecorator( $dir, $this->map_id );
+	}
+
+	/**
+	 * Get the map directions
+	 *
+	 * @return DirectionsDecorator
+	 */
 	public function getDirections() {
 		return $this->directions;
 	}
 
 
+/************************************************
+ * 
+ * Layers
+ *
+ *************************************************/
 
-
-
-	/************************************************
-	 * 
-	 * Layers
+	/**
+	 * Enable traffic layer
 	 *
-	*************************************************/
-
-	public function enableTraffic() {
-		$this->traffic = true;
-	}
-	public function disableTraffic() {
-		$this->traffic = false;
+	 * @return void
+	 */
+	public function enableTrafficLayer() {
+		$this->traffic_layer = true;
 	}
 
+	/**
+	 * disable traffic layer
+	 *
+	 * @return void
+	 */
+	public function disableTrafficLayer() {
+		$this->traffic_layer = false;
+	}
+
+	/**
+	 * Enable bicycle layer
+	 *
+	 * @return void
+	 */
 	public function enableBicycleLayer() {
 		$this->bicycle_layer = true;
 	}
+
+	/**
+	 * Disable bicycle layer
+	 *
+	 * @return void
+	 */
 	public function disableBicycleLayer() {
 		$this->bicycle_layer = false;
 	}
 
+	/**
+	 * Enable info windows
+	 *
+	 * @return void
+	 */
 	public function enableInfoWindows() {
 		$this->info_windows = true;
 	}
+
+	/**
+	 * Disable info windows
+	 *
+	 * @return void
+	 */
 	public function disableInfoWindows() {
 		$this->info_windows = false;
 	}
 
-	public function addFusionTable( \googlemaps\layer\FusionTable $ft ) {
+	/**
+	 * Add a fusion table to the map
+	 * @link http://code.google.com/apis/maps/documentation/javascript/reference.html#FusionTablesLayer
+	 * @link http://tables.googlelabs.com/
+	 *
+	 * @param FusionTable $ft Fusion table to add to the map
+	 * @return FusionTableDecorator
+	 * @access protected
+	 */
+	protected function addFusionTable( \googlemaps\layer\FusionTable $ft ) {
 		$ft = new \googlemaps\layer\FusionTableDecorator( $ft, count( $this->fusion_tables ), $this->map_id );
-		$this->fusion_tables[] = $ft;
+		return $this->fusion_tables[] = $ft;
 	}
+
+	/**
+	 * Get the array of the map's fusion tables
+	 *
+	 * @return array
+	 */
 	public function getFusionTables() {
 		return $this->fusion_tables;
 	}
 
-	/************************************************
-	 * 
-	 * Map Options
+	/**
+	 * Add a KML layer to the map
+	 * @link http://code.google.com/apis/maps/documentation/javascript/reference.html#KmlLayer
+	 * @link http://code.google.com/apis/maps/documentation/javascript/overlays.html#KMLLayers
 	 *
-	*************************************************/
+	 * @param KmlLayer $kml KML layer to add to the map
+	 * @return KmlLayerDecorator
+	 * @access protected
+	 */
+	protected function addKmlLayer( \googlemaps\layer\KmlLayer $kml ) {
+		$this->kml_layers[] = $kml;
+	}
 
+	/**
+	 * Get the array of the map's KML layers
+	 *
+	 * @return array
+	 */
+	public function getKmlLayers() {
+		return $this->kml_layers;
+	}
+
+	/**
+	 * Add a shape to the map
+	 *
+	 * @param Shape $shape Shape to add to the map
+	 * @return ShapeDecorator
+	 * @access protected
+	 */
+	protected function addShape( \googlemaps\overlay\Shape $shape ) {
+		$this->shapes[] = new \googlemaps\overlay\ShapeDecorator( $shape, count( $this->shapes ), $this->map_id );
+	}
+
+	/**
+	 * Get the array of the map's shapes
+	 *
+	 * @return array
+	 */
+	public function getShapes() {
+		return $this->shapes;
+	}
+
+/************************************************
+ * 
+ * Map Options
+ *
+ ************************************************/
+
+	public function setCenter( \googlemaps\core\LatLng $latlng ) {
+		$this->center = $latlng;
+	}
+	
+	public function setCenterByLocation( $location ) {
+		$result = \googlemaps\service\Geocoder::getLatLng( $location );
+		if ( $result instanceof \googlemaps\core\LatLng ) {
+			$this->setCenter( $result );
+		}
+		return $result;
+	}
+
+	public function setCenterByUserLocation( \googlemaps\core\LatLng $backup_location=null ) {
+		$this->enableGeolocation();
+		$this->center_on_user = true;
+		if ( $backup_location !== null ) {
+			$this->geolocation_backup = $backup_location;
+		}
+	}
 
 	function addMapStyle( \googlemaps\overlay\MapStyle $style ) {
 		$this->map_styles[$style->var_name] = $style;
@@ -511,99 +758,55 @@ class GoogleMap {
 	}
 
 
-
-/** Event Listener **/
-
-	public function addEventListener( $event_listener ) {
+	/**
+	 * Add an event listener to the map
+	 *
+	 * @param DomEventListener $event_listener
+	 * @return EventListenerDecorator
+	 * @access protected
+	 */
+	protected function addEventListener( DomEventListener $event_listener ) {
 		return $this->event_listeners[] = new \googlemaps\event\EventListenerDecorator( $event_listener, count( $this->event_listeners ), $this->map_id );
 	}
 
+/*************************************
+ *
+ * Markers
+ *
+ **************************************/
 
-
-
-/************/
-
-	public function __construct( $map_id = null ) {
-		if ( $map_id ) {
-			$this->map_id  = preg_match( '\W', '', $map_id );
-		}
-		// Streetview is enabled by default in the API
-		//$this->initStreetView();
-	}
-
-	public function setCenter( \googlemaps\core\LatLng $latlng ) {
-		$this->center = $latlng;
-	}
-	
-	public function setCenterByLocation( $location ) {
-		$result = \googlemaps\service\Geocoder::geocode( $location );
-		if ( $result instanceof \googlemaps\service\GeocodeResult ) {
-			$this->setCenter( new \googlemaps\core\LatLng( $result->lat, $result->lng ) );
-		}
-		return $result;
-	}
-
-	/*
-	 * Add an object to the map
-	*/
-	public function addObject( $object ) {
-		if ( !is_object( $object ) ) {
-			return false;
-		}
-		switch( get_class( $object ) ) {
-			case 'googlemaps\overlay\Marker':
-				$this->addMarker( $object );
-				break;
-			case 'googlemaps\overlay\MapStyle':
-				$this->addMapStyle( $object );
-				break;
-			case 'googlemaps\layer\FusionTable':
-				$this->addFusionTable( $object );
-				break;
-			case 'googlemaps\layer\KmlLayer':
-				$this->addKmlLayer( $object );
-				break;
-			case 'googlemaps\event\EventListener':
-			case 'googlemaps\event\DomEventListener':
-				return $this->addEventListener( $object );
-				break;
-			case 'googlemaps\overlay\WalkingDirections':
-			case 'googlemaps\overlay\BicyclingDirections':
-			case 'googlemaps\overlay\DrivingDirections':
-				$this->addDirections( $object );
-				break;
-			default:
-				trigger_error( 'Invalid object passed to addObject()' , E_USER_ERROR );
-		}
-	}
-
-	public function addKmlLayer( \googlemaps\layer\KmlLayer $kml ) {
-		$this->kml_layers[] = $kml;
-	}
-
-	public function addObjects( $objects=null ) {
-		foreach( $objects as $object ) {
-			$this->addObject( $object );
-		}
-	}
-
-	/*
-	* Add a marker to the map
-	*/
+	/**
+	 * Add a marker to the map
+	 *
+	 * @param Marker $marker Marker to add
+	 * @return MarkerDecorator
+	 * @access protected
+	 */
 	protected function addMarker( \googlemaps\overlay\Marker $marker ) {
-		if ( $marker->validate() ) {
-			if ( !$marker->icon && $this->default_marker_icon ) {
-				$marker->setIcon( $this->default_marker_icon, $this->default_marker_shadow ?: null );
-			}
-			return $this->markers[] = new \googlemaps\overlay\MarkerDecorator( $marker, count( $this->markers ), $this->map_id );
+		if ( !$marker->icon && $this->default_marker_icon ) {
+			$marker->setIcon( $this->default_marker_icon, $this->default_marker_shadow ?: null );
 		}
-		return false;
+		return $this->markers[] = new \googlemaps\overlay\MarkerDecorator( $marker, count( $this->markers ), $this->map_id );
 	}
 
+	/**
+	 * Get map markers
+	 * Returns an array of the map's markers
+	 *
+	 * @return array
+	 */
 	public function getMarkers() {
 		return $this->markers;
 	}
 
+	/**
+	 * Set default marker icon
+	 * Sets the default icon to be used by the map
+	 *
+	 * @param MarkerIcon $icon Default marker icon
+	 * @param MarkerIcon $shadow Shadow of the default marker icon
+	 * @return void
+	 */
 	public function setDefaultMarkerIcon( \googlemaps\overlay\MarkerIcon $icon, \googlemaps\overlay\MarkerIcon $shadow = null ) {
 		$this->default_marker_icon = $icon;
 		if ( $shadow ) {
@@ -611,76 +814,99 @@ class GoogleMap {
 		}
 	}
 
+	/**
+	 * Get marker groups
+	 * Returns the map's marker groups
+	 *
+	 * @return array
+	 */
 	public function getMarkerGroups() {
 		$this->extractMarkerData();
 		return $this->marker_groups;
 	}
 
-	private function extractMarkerData() {
 
-		$hash = md5( serialize( $this->getMarkers() ) );
-
-		if ( $hash == $this->marker_data_hash ) {
-			return true;
+/**************************************
+ *
+ * Objects
+ *
+ **************************************/
+ 
+ 	/**
+ 	 * Add object
+ 	 * Add an object to the map
+ 	 * This method calls the various protected add* methods() 
+ 	 *
+ 	 * @param object $object Object to add to the map
+ 	 * @return object Returns a decorated object
+ 	 */
+	public function addObject( $object ) {
+		if ( !is_object( $object ) ) {
+			return false;
 		}
+		switch( get_class( $object ) ) {
+			case 'googlemaps\overlay\Marker':
+				return $this->addMarker( $object );
+				break;
+			case 'googlemaps\overlay\MapStyle':
+				return $this->addMapStyle( $object );
+				break;
+			case 'googlemaps\layer\FusionTable':
+				return $this->addFusionTable( $object );
+				break;
+			case 'googlemaps\layer\KmlLayer':
+				return $this->addKmlLayer( $object );
+				break;
+			case 'googlemaps\event\EventListener':
+			case 'googlemaps\event\DomEventListener':
+				return $this->addEventListener( $object );
+			case 'googlemaps\overlay\Circle':
+			case 'googlemaps\overlay\Rectangle':
+				return $this->addShape( $object );
+				break;
+			case 'googlemaps\overlay\WalkingDirections':
+			case 'googlemaps\overlay\BicyclingDirections':
+			case 'googlemaps\overlay\DrivingDirections':
+				return $this->addDirections( $object );
+				break;
+			default:
+				trigger_error( 'Invalid object passed to addObject()' , E_USER_ERROR );
+		}
+	}
 
-	  	foreach( $this->getMarkers() as $marker_id => $marker ) {
-			if ( $marker->icon instanceof \googlemaps\overlay\MarkerIcon ) {
-				if ( ( $icon_id = array_search( $marker->icon, $this->marker_icons ) ) !== false ) {
-		  			$marker->icon_id = $icon_id;
-	  			}
-	  			else {
-		  			$this->marker_icons[] = $marker->icon;
-		  			$marker->icon_id = count( $this->marker_icons ) - 1;
-	  			}
-				if ( $marker->shadow instanceof \googlemaps\overlay\MarkerIcon ) {
-					if ( ( $shadow_id = array_search( $marker->shadow, $this->marker_icons ) ) !== false ) {
-		  				$marker->shadow_id = count( $this->marker_icons ) - 1;
-		  			}
-		  			else {
-			  			$this->marker_icons[] = $marker->shadow;
-						$marker->shadow_id = count( $this->marker_icons ) - 1;
-		  			}
-				}
-			}
-  			if ( $marker->shape instanceof \googlemaps\overlay\MarkerShape ) {
-				if ( ( $shape_id = array_search( $marker->shape, $this->marker_shapes ) ) !== false ) {
-					$marker->shape_id = $shape_id;
-	  			}
-	  			else {
-		  			$this->marker_shapes[] = $marker->shape;
-					$marker->shape_id = count( $this->marker_shapes ) - 1;
-	  			}
-  			}
-  			foreach ( $marker->groups as $marker_group ) {
-  				if ( isset( $this->marker_groups[ $marker_group->var_name ] ) ) {
-  					$this->marker_groups[ $marker_group->var_name ]->addMarker( $marker_id );
-  				}
-  				else {
-  					$this->marker_groups[ $marker_group->var_name ] = new \googlemaps\overlay\MarkerGroupDecorator( $marker_group, count( $this->marker_groups ), $this->map_id );
-  					$this->marker_groups[ $marker_group->var_name ]->addMarker( $marker_id );
-  				}
-			}
+	/**
+	 * Add an array objects to the map
+	 * 
+	 * @return array Returns an array of decorated map objects
+	 */
+	public function addObjects( array $objects=null ) {
+		foreach( $objects as $object ) {
+			$r[] = $this->addObject( $object );
+		}
+		return $r;
+	}
 
-	  	}
-	  	$this->marker_data_hash = md5( serialize( $this->getMarkers() ) );
 
+/******************************************
+ *
+ * Javascript output
+ *
+ ******************************************/
+
+	function printMap() {
+		echo $this->getMap();
 	}
 
 	function getMap() {
 		return sprintf( '<div id="%s" style="%s%s"></div>', $this->map_id, ( $this->width ? 'width: ' . $this->width . ';' : '' ), ( $this->height ? 'height: ' . $this->height . ';' : '' ) );
 	}
 
-	function printMap() {
-		echo $this->getMap();
+	function printHeaderJS() {
+		echo $this->getHeaderJS();
 	}
 
 	function getHeaderJS() {
 		return sprintf( "%s<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=%s&v=%s&language=%s&region=%s\"></script>\n\n", ( $this->mobile ? "<meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n" : '' ), json_encode( $this->sensor ), $this->api_version, $this->language, $this->region );
-	}
-
-	function printHeaderJS() {
-		echo $this->getHeaderJS();
 	}
 
 	function printMapJS() {
@@ -724,7 +950,7 @@ class GoogleMap {
 		if ( $this->map_type_control_position ) {
   			$output .= sprintf( "\t\t\tposition: google.maps.ControlPosition.%s,\n", strtoupper( $this->map_type_control_position ) );
 		}
-		if ( $this->map_types ) {
+		if ( count( $this->map_types ) ) {
 			$map_types_string = '';
 			foreach( $this->map_types as $map_type ) {
 				if ( isset( $this->map_styles[$map_type] ) ) {
@@ -754,6 +980,29 @@ class GoogleMap {
 			$output .= sprintf( "\tthis.map.mapTypes.set('%s', %sMapType);\n", $map_style->var_name, $map_style->var_name );
 		}
 
+		if ( count( $this->shapes ) ) {
+			$output .= sprintf( "\n\tthis.shapes = [];\n", $this->map_id );
+			foreach( $this->shapes as $n => $shape ) {
+				if ( $shape->decoratee instanceof \googlemaps\overlay\Circle ) {
+		  			$output .= sprintf( "\tthis.shapes[%s] = new google.maps.Circle( {\n", $n );
+					$output .= sprintf( "\t\tcenter: new google.maps.LatLng(%s,%s),\n", $shape->center->lat, $shape->center->lng );
+					$output .= sprintf( "\t\tradius: %s,\n", $shape->radius );
+					$output .= sprintf( "\t\tmap: this.map\n" );
+					$output .= "\t} );\n";
+				}
+				elseif ( $shape->decoratee instanceof \googlemaps\overlay\Rectangle ) {
+		  			$output .= sprintf( "\tthis.shapes[%s] = new google.maps.Rectangle( {\n", $n );
+					$output .= sprintf( "\t\tbounds: new google.maps.LatLngBounds(new google.maps.LatLng(%s,%s),new google.maps.LatLng(%s,%s)),\n",
+										$shape->southwest->lat,
+										$shape->southwest->lng,
+										$shape->northeast->lat,
+										$shape->northeast->lng
+									);
+					$output .= sprintf( "\t\tmap: this.map\n" );
+					$output .= "\t} );\n";
+				}
+			}
+		}
 
 	  	if ( $this->directions ) {
 			$output .= "\tthis.directions = {};\n";
@@ -780,7 +1029,7 @@ class GoogleMap {
 		  	foreach ( $this->directions->request_options as $request_option => $request_value ) {
 		  		switch ( $request_option ) {
 		  			case 'waypoints':
-		  				$request_options .= sprintf("\t\twaypoints: %s,\n", preg_replace( '~\{"lat":(.*?),"lng":(.*?)\}~i', 'new google.maps.LatLng($1,$2)', json_encode( $request_value ) ) );
+		  				$request_options .= sprintf("\t\twaypoints: %s,\n", $this->parseLatLngs( $request_value ) );
 		  			case 'origin':
 				  		$request_options .= sprintf( "\t\torigin: new google.maps.LatLng(%s,%s),\n", $this->directions->request_options['origin']->lat, $this->directions->request_options['origin']->lng );
 					  	break;
@@ -815,11 +1064,8 @@ class GoogleMap {
 		  	}
 	  	}
 
-		// Loop through markers and extract unique marker icons, shapes and groups
-		// This prevents a lot of repeated code
 		$this->extractMarkerData();
-	  	//print_r($this);
-	  	// Print marker icons
+
 		if ( count( $this->marker_icons ) ) {
 			$output .= sprintf( "\n\tthis.marker_icons = [];\n", $this->map_id );
 		  	foreach ( $this->marker_icons as $marker_icon_id => $marker_icon ) {
@@ -940,7 +1186,7 @@ class GoogleMap {
 		}
 
 	  	
-	  	if ( $this->traffic ) {
+	  	if ( $this->traffic_layer ) {
 	  		$output .= "\tthis.traffic_layer = new google.maps.TrafficLayer();\n\tthis.traffic_layer.setMap(this.map);\n\n";
 	  	}
 
@@ -949,12 +1195,12 @@ class GoogleMap {
 	  	}
 
 		if ( $this->center_on_user ) {
-			if ( $this->geolocation_backup_lat && $this->geolocation_backup_lng ) {
+			if ( $this->geolocation_backup ) {
 				$output .= "\tif ( typeof geolocation != 'undefined' ) {\n";
 			}
 			$output .= "\t\tthis.map.setCenter( geolocation );\n";
-			if ( $this->geolocation_backup_lat && $this->geolocation_backup_lng ) {
-				$output .= sprintf( "\t}\n\telse {\n\t\tthis.map.setCenter( new google.maps.LatLng(%s,%s) );\n\t}\n\n", $this->geolocation_backup_lat, $this->geolocation_backup_lng );
+			if ( $this->geolocation ) {
+				$output .= sprintf( "\t}\n\telse {\n\t\tthis.map.setCenter( new google.maps.LatLng(%s,%s) );\n\t}\n\n", $this->geolocation_backup->lat, $this->geolocation_backup->lng );
 			}
 		}
 	  	if ( $this->center ) {
@@ -1058,12 +1304,67 @@ class GoogleMap {
 		return json_encode( $php );
 	}
 
-	function normalizeVariable( $var ) {
+	private function parseLatLngs( $str ) {
+		return preg_replace( '~\{"lat":(.*?),"lng":(.*?)\}~i', 'new google.maps.LatLng($1,$2)', json_encode( $str ) );
+	}
+
+	private function normalizeVariable( $var ) {
 		return preg_replace( '~\W~', '', $var );
 	} 
 
-	function getMapJsVar() {
+	public function getMapJsVar() {
 		return sprintf( '%s.map', $this->map_id );
+	}
+
+	private function extractMarkerData() {
+
+		$hash = md5( serialize( $this->getMarkers() ) );
+
+		if ( $hash == $this->marker_data_hash ) {
+			return true;
+		}
+
+	  	foreach( $this->getMarkers() as $marker_id => $marker ) {
+			if ( $marker->icon instanceof \googlemaps\overlay\MarkerIcon ) {
+				if ( ( $icon_id = array_search( $marker->icon, $this->marker_icons ) ) !== false ) {
+		  			$marker->icon_id = $icon_id;
+	  			}
+	  			else {
+		  			$this->marker_icons[] = $marker->icon;
+		  			$marker->icon_id = count( $this->marker_icons ) - 1;
+	  			}
+				if ( $marker->shadow instanceof \googlemaps\overlay\MarkerIcon ) {
+					if ( ( $shadow_id = array_search( $marker->shadow, $this->marker_icons ) ) !== false ) {
+		  				$marker->shadow_id = count( $this->marker_icons ) - 1;
+		  			}
+		  			else {
+			  			$this->marker_icons[] = $marker->shadow;
+						$marker->shadow_id = count( $this->marker_icons ) - 1;
+		  			}
+				}
+			}
+  			if ( $marker->shape instanceof \googlemaps\overlay\MarkerShape ) {
+				if ( ( $shape_id = array_search( $marker->shape, $this->marker_shapes ) ) !== false ) {
+					$marker->shape_id = $shape_id;
+	  			}
+	  			else {
+		  			$this->marker_shapes[] = $marker->shape;
+					$marker->shape_id = count( $this->marker_shapes ) - 1;
+	  			}
+  			}
+  			foreach ( $marker->groups as $marker_group ) {
+  				if ( isset( $this->marker_groups[ $marker_group->var_name ] ) ) {
+  					$this->marker_groups[ $marker_group->var_name ]->addMarker( $marker_id );
+  				}
+  				else {
+  					$this->marker_groups[ $marker_group->var_name ] = new \googlemaps\overlay\MarkerGroupDecorator( $marker_group, count( $this->marker_groups ), $this->map_id );
+  					$this->marker_groups[ $marker_group->var_name ]->addMarker( $marker_id );
+  				}
+			}
+
+	  	}
+	  	$this->marker_data_hash = md5( serialize( $this->getMarkers() ) );
+
 	}
 
 }

@@ -27,25 +27,31 @@ class Geocoder {
 	 * @param string $location
 	 * @param boolean $return_viewport {@link http://code.google.com/apis/maps/documentation/geocoding/#Results}
 	 * @param boolean $return_bounds {@link http://code.google.com/apis/maps/documentation/geocoding/#Results}
-	 * @return GeocodeResult|GeocodeError
+	 * @return LatLng|GeocodeError
 	 */
-	public static function geocode( $location, $return_viewport=false, $return_bounds=false ) {
+	public function getLatLng( $location, $return_viewport=false, $return_bounds=false ) {
 
+		$response = self::scrapeAPI( $location );
+		if ( $response instanceof GeocodeError ) {
+			return $response;
+		}
+		return new \googlemaps\core\LatLng( $response->results[0]->geometry->location->lat, $response->results[0]->geometry->location->lng );
+		
+	}
+
+	private function scrapeAPI( $location ) {
 		$url = sprintf( "http://maps.google.com/maps/api/geocode/json?address=%s&sensor=false", urlencode( $location ) );
-
-		$gc = json_decode( Scraper::scrape( $url ) );
-
-		if ( $gc->status != 'OK' ) {
+		$response = json_decode( Scraper::scrape( $url ) );
+		if ( $response->status != 'OK' ) {
 			$e = new GeocodeError;
 			$e->error = $gc->status;
 			return $e;
 		}
+		return $response;
+	}
 
-		$geocoded_location = new GeocodeResult;
-		$geocoded_location->lat = $gc->results[0]->geometry->location->lat;
-		$geocoded_location->lng = $gc->results[0]->geometry->location->lng;
-
-		if ( $return_viewport ) {
+	/*
+			if ( $return_viewport ) {
 			$geocoded_location->viewport = new stdClass;
 			$geocoded_location->viewport->southwest = new stdClass;
 			$geocoded_location->viewport->southwest->lat = $gc->results[0]->geometry->viewport->southwest->lat;
@@ -63,11 +69,7 @@ class Geocoder {
 			$geocoded_location->bounds->northeast = new stdClass;
 			$geocoded_location->bounds->northeast->lat = $gc->results[0]->geometry->bounds->northeast->lat;
 			$geocoded_location->bounds->northeast->lng = $gc->results[0]->geometry->bounds->northeast->lng;
-		}
-
-		return $geocoded_location;
-		
-	}
+		}*/
 
 }
 

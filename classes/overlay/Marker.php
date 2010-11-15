@@ -211,8 +211,8 @@ class Marker extends \googlemaps\core\MapObject {
 	 * @param string $content The infowindow content of the marker.
 	 * @return Marker
 	 */
-	public static function createFromCoords( $lat, $lng, array $options=null ) {
-		return new Marker( $lat, $lng, $options );
+	public static function createFromLatLng( \googlemaps\core\LatLng $position, array $options=null ) {
+		return new Marker( $position->lat, $position->lng, $options );
 	}
 
 	/**
@@ -224,9 +224,9 @@ class Marker extends \googlemaps\core\MapObject {
 	 * @return Marker
 	 */
 	public static function createFromLocation( $location, array $options=null ) {
-		$geocode_result = \googlemaps\service\Geocoder::geocode( $location );
-		if ( $geocode_result instanceof \googlemaps\service\GeocodeResult ) {
-			return self::createFromCoords( $geocode_result->lat, $geocode_result->lng, $options );
+		$geocode_result = \googlemaps\service\Geocoder::getLatLng( $location );
+		if ( $geocode_result instanceof \googlemaps\core\LatLng ) {
+			return self::createFromLatLng( $geocode_result, $options );
 		}
 		return false;
 	}
@@ -241,20 +241,6 @@ class Marker extends \googlemaps\core\MapObject {
 	 */
 	public static function createFromUserLocation( $options ){
 		return self::createFromCoords( null, null, $options )->enableGeolocation();
-	}
-
-	/**
-	 * Validate the marker
-	 * This function makes sure the marker has a location
-	 *
-	 * @return boolean Returns true if the marker has a location associated with it
-	 *                 otherwise false
-	 */
-	public function validate() {
-		if ( is_numeric( $this->lat ) && is_numeric( $this->lng ) || $this->geolocation ) {
-			return true;
-		}
-		return false;
 	}
 
 }

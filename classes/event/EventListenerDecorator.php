@@ -14,14 +14,14 @@ namespace googlemaps\event;
 class EventListenerDecorator extends \googlemaps\core\MapObjectDecorator {
 
 	/**
-	 * ID of the marker in the map
+	 * ID of the event listener in the map
 	 *
 	 * @var integer
 	 */
 	protected $id;
 
 	/**
-	 * Map ID of the map the marker is attached to
+	 * Map ID of the map the event listener is attached to
 	 *
 	 * @var string
 	 */
@@ -31,7 +31,7 @@ class EventListenerDecorator extends \googlemaps\core\MapObjectDecorator {
 	 * Constructor
 	 *
 	 * @param DOMEventListener $listener The event listener to decorate
-	 * @param int integer $id ID of the marker in the map
+	 * @param int integer $id ID of the event listener in the map
 	 * @param string $map Map ID of the map the event listener is attached to
 	 */	
 	public function __construct( DOMEventListener $listener, $id, $map ) {

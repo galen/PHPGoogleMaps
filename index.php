@@ -19,7 +19,7 @@ $g = new \googlemaps\overlay\MarkerGroup( 'group 1' );
 $ea = new \googlemaps\overlay\MarkerGroup( 'elizabeth arden' );
 
 //$map->enableGeolocation( null, true );
-$m1 = \googlemaps\overlay\Marker::createFromCoords( 41.3081527, -72.9281577 );
+$m1 = \googlemaps\overlay\Marker::createFromLatLng( new \googlemaps\core\LatLng( 41.3081527, -72.9281577 ) );
 $m2 = \googlemaps\overlay\Marker::createFromLocation( 'West Haven, CT' );
 $m3 = \googlemaps\overlay\Marker::createFromLocation( 'Milford, CT', array( 'title' => 'Milford, CT', 'content' => 'Milford, CT marker content' ) );
 //$m4 = new \googlemaps\overlay\Marker( 47,74, 'Milford marker', 'Milford content' );
@@ -28,7 +28,6 @@ $m3 = \googlemaps\overlay\Marker::createFromLocation( 'Milford, CT', array( 'tit
 //$m1->setIcon($icon1);
 
 $map = new \googlemaps\GoogleMap;
-
 $map->setDefaultMarkerIcon( $icon1, $shadow1 );
 
 //$map2 = new \googlemaps\GoogleMap('map2');
@@ -36,13 +35,17 @@ $map->setDefaultMarkerIcon( $icon1, $shadow1 );
 //$del = new \googlemaps\event\DomEventListener( 'click', 'click', 'function(){alert("weeee"); return false;}', true );
 
 //$ft = new \googlemaps\layer\FusionTable( 232192, array( 'query' => 'SELECT location FROM 232192 WHERE state_province_abbrev="CT"' ) );
-$kml = new \googlemaps\layer\KmlLayer( 'http://maps.google.com/maps/ms?msa=0&msid=114680467578999980893.00049426282c85822d40e&output=kml' );
+//$kml = new \googlemaps\layer\KmlLayer( 'http://maps.google.com/maps/ms?msa=0&msid=114680467578999980893.00049426282c85822d40e&output=kml' );
 //$request = array( 'waypoints' => array( array( 'location' => \googlemaps\service\Geocoder::geocode( 'Phoenix, AZ' ) ) ) );
 //$renderer = array( 'draggable' => true );
 //$dir = new \googlemaps\overlay\DrivingDirections( 'New York, NY', 'San Jose, CA', $renderer, $request );
-$map->addObjects( array( $kml ) );
 
-$r = $map->setCenterByLocation( 'New Haven, CT' );
+$rect = new \googlemaps\overlay\Rectangle( new \googlemaps\core\LatLng( 41.22623,-73.06263 ), new \googlemaps\core\LatLng( 41.3081527,-72.9281577 ) );
+
+$map->addObjects( array( $m1, $m2, $m3, $rect ) );
+
+
+
 $map->setZoom( 12 );
 //print_r($map->getMarkers());
 //print_r($map);
@@ -85,8 +88,6 @@ $map->setScaleControlPosition( 'top_right' );
 
 <?php $map->printMap() ?>
 
-<a href="#" onclick="<?php echo $map->getDirections()->getRendererJsVar() ?>.setPanel(document.getElementById('panel'))">test</a>
-<div id="panel" style="width:500px;height:500px;"></div>
 </body>
 
 </html>
