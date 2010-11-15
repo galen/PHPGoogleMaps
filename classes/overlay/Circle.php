@@ -41,4 +41,16 @@ class Circle extends \googlemaps\overlay\Shape {
 		$this->options = $options;
 	}
 
+	public static function createFromLatLng( \googlemaps\core\LatLng $center, $radius, array $options=null ) {
+		return new Circle( $center, $radius, $options );
+	}
+
+	public static function createFromLocation( $location, $radius, array $options=null ) {
+		$geocode_result = \googlemaps\service\Geocoder::getLatLng( $location );
+		if ( $geocode_result instanceof \googlemaps\core\LatLng ) {
+			return new Circle( $geocode_result, $radius, $options );
+		}
+		return false;
+	}
+
 }

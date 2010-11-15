@@ -987,8 +987,6 @@ class GoogleMap {
 		  			$output .= sprintf( "\tthis.shapes[%s] = new google.maps.Circle( {\n", $n );
 					$output .= sprintf( "\t\tcenter: new google.maps.LatLng(%s,%s),\n", $shape->center->lat, $shape->center->lng );
 					$output .= sprintf( "\t\tradius: %s,\n", $shape->radius );
-					$output .= sprintf( "\t\tmap: this.map\n" );
-					$output .= "\t} );\n";
 				}
 				elseif ( $shape->decoratee instanceof \googlemaps\overlay\Rectangle ) {
 		  			$output .= sprintf( "\tthis.shapes[%s] = new google.maps.Rectangle( {\n", $n );
@@ -998,9 +996,12 @@ class GoogleMap {
 										$shape->northeast->lat,
 										$shape->northeast->lng
 									);
+				}
+				foreach( $shape->getOptions() as $var => $val ) {
+					$output .= sprintf( "\t\t%s: %s,\n", $var, $this->phpToJs( $val ) );
+				} 
 					$output .= sprintf( "\t\tmap: this.map\n" );
 					$output .= "\t} );\n";
-				}
 			}
 		}
 
