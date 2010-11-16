@@ -10,10 +10,10 @@ use googlemaps\utility;
  * Markers can be created in 4 different ways
  *
  * Instantiate a new marker
- * $m = new \googlemaps\marker\Marker( $lat, $lng, $title, $content );
+ * $m = new \googlemaps\marker\Marker( $latlng, $title, $content );
  *
  * Use the static `createFromCoords()` method
- * $m = \googlemaps\overlay\Marker::createFromCoords( $lat, $lng, $title, $content );
+ * $m = \googlemaps\overlay\Marker::createFromLatLng( $latlng, $title, $content );
  *
  * Use the static `createFromLocation()` method which will geocode the location for you
  * using Google's geocode API
@@ -28,19 +28,12 @@ use googlemaps\utility;
 class Marker extends \googlemaps\core\MapObject {
 
 	/**
-	 * Latitude of the marker
+	 * Position of the marker
 	 *
-	 * @var float
+	 * @var LatLng
 	 */
-	protected $lat;
+	protected $position;
 
-	/**
-	 * Longitude of the marker
-	 *
-	 * @var float
-	 */
-	protected $lng;
-	
 	/**
 	 * Geolocation flag
 	 * If this is true the marker position will be geolocated
@@ -81,17 +74,13 @@ class Marker extends \googlemaps\core\MapObject {
 	 * Marker constructor
 	 * Initializes the marker options
 	 *
-	 * @param float|int $lat The latitude of the marker.
-	 * @param float|int $lng The longitude of the marker.
+	 * @param LatLng $latlng Position of the marker
 	 * @param string $title The title of the marker. This will be the markers tooltip.
 	 * @param string $content The infowindow content of the marker.
 	 * @return Marker
 	*/
-	public function __construct( $lat=null, $lng=null, array $options=null ) {
-		if ( isset( $lat, $lng ) ) {
-			$this->lat = $lat;
-			$this->lng = $lng;
-		}
+	public function __construct( \googlemaps\core\LatLng $latlng=null, array $options=null ) {
+		$this->position = $latlng;
 		if ( !$options ) {
 			return;
 		}
@@ -205,14 +194,13 @@ class Marker extends \googlemaps\core\MapObject {
 	/**
 	 * Factory method to create a marker from a lat/lng
 	 *
-	 * @param float|int $lat Latitude of the marker.
-	 * @param float|int $lng Longitude of the marker.
+	 * @param LatLng $latlng Position of the marker
 	 * @param string $title The title of the marker. This will be the markers tooltip.
 	 * @param string $content The infowindow content of the marker.
 	 * @return Marker
 	 */
 	public static function createFromLatLng( \googlemaps\core\LatLng $position, array $options=null ) {
-		return new Marker( $position->lat, $position->lng, $options );
+		return new Marker( $position, $options );
 	}
 
 	/**
@@ -240,7 +228,7 @@ class Marker extends \googlemaps\core\MapObject {
 	 * @return Marker
 	 */
 	public static function createFromUserLocation( $options ){
-		return self::createFromCoords( null, null, $options )->enableGeolocation();
+		return self::createFromLatLng( null, $options )->enableGeolocation();
 	}
 
 }

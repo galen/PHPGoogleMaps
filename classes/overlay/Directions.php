@@ -35,6 +35,7 @@ abstract class Directions extends \googlemaps\core\MapObject {
 	/**
 	 * Constructor
 	 *
+	 * @throws GeocodeException 
 	 * @param string|LatLng $origin Origin. Can be a LatLng object or a string location e.g. San Jose, CA
 	 * @param string|LatLng $destination Destination. Can be a LatLng object or a string location e.g. San Jose, CA
 	 * @param array $renderer_options Array of renderer options corresponding to one of these:
@@ -61,8 +62,16 @@ abstract class Directions extends \googlemaps\core\MapObject {
 			$this->request_options['origin'] = $origin;
 		}
 		else {
-			if ( ( $geo = \googlemaps\service\Geocoder::geocode( $origin ) ) instanceof \googlemaps\service\GeocodeResult ) {
-				$this->request_options['origin'] = new \googlemaps\core\LatLng( $geo->lat, $geo->lng );
+			if ( ( $geo = \googlemaps\service\Geocoder::getLatLng( $origin ) ) instanceof \googlemaps\core\LatLng ) {
+				$this->request_options['origin'] = $geo;
+			}
+			else {
+				$exc = new \googlemaps\core\GeocodeException( sprintf( 'Unable to geocode "%s"', $origin ) );
+				$exc->error = $geo->error;
+				if ( $geo->error == 'ZERO_RESULTS' ) {
+					$exc->invalid_location = $origin;
+				}
+				throw $exc;
 			}
 		}
 
@@ -70,8 +79,16 @@ abstract class Directions extends \googlemaps\core\MapObject {
 			$this->request_options['destination'] = $destination;
 		}
 		else {
-			if ( ( $geo = \googlemaps\service\Geocoder::geocode( $destination ) ) instanceof \googlemaps\service\GeocodeResult ) {
-				$this->request_options['destination'] = new \googlemaps\core\LatLng( $geo->lat, $geo->lng );
+			if ( ( $geo = \googlemaps\service\Geocoder::getLatLng( $destination ) ) instanceof \googlemaps\core\LatLng ) {
+				$this->request_options['destination'] = $geo;
+			}
+			else {
+				$exc = new \googlemaps\core\GeocodeException( sprintf( 'Unable to geocode "%s"', $destination ) );
+				$exc->error = $geo->error;
+				if ( $geo->error == 'ZERO_RESULTS' ) {
+					$exc->invalid_location = $destination;
+				}
+				throw $exc;
 			}
 		}
 

@@ -30,13 +30,11 @@ class Geocoder {
 	 * @return LatLng|GeocodeError
 	 */
 	public function getLatLng( $location, $return_viewport=false, $return_bounds=false ) {
-
 		$response = self::scrapeAPI( $location );
 		if ( $response instanceof GeocodeError ) {
 			return $response;
 		}
 		return new \googlemaps\core\LatLng( $response->results[0]->geometry->location->lat, $response->results[0]->geometry->location->lng );
-		
 	}
 
 	private function scrapeAPI( $location ) {
@@ -44,7 +42,7 @@ class Geocoder {
 		$response = json_decode( Scraper::scrape( $url ) );
 		if ( $response->status != 'OK' ) {
 			$e = new GeocodeError;
-			$e->error = $gc->status;
+			$e->error = $response->status;
 			return $e;
 		}
 		return $response;

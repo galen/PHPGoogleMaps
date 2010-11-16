@@ -1125,7 +1125,7 @@ class GoogleMap {
 				$output .= "\t\tposition: geolocation,\n";
 			}
 			else {
-				$output .= sprintf( "\t\tposition: new google.maps.LatLng(%s,%s),\n", $marker->lat, $marker->lng );			
+				$output .= sprintf( "\t\tposition: new google.maps.LatLng(%s,%s),\n", $marker->position->lat, $marker->position->lng );			
 			}
 			$output .= "\t\tmap: this.map,\n";
 
