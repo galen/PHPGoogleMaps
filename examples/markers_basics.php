@@ -5,8 +5,17 @@ require( '_system/config.php' );
 
 $map = new \googlemaps\GoogleMap();
 
-$marker1 = \googlemaps\overlay\Marker::createFromLocation( 'New York, NY', array( 'title' => 'New York, NY', 'content' => '<p><strong>New York, NY info window</strong></p>' ) );
-$marker2 = \googlemaps\overlay\Marker::createFromLatLng( new \googlemaps\core\LatLng( 32.7153292,-117.1572551 ), array( 'title' => 'San Diego, CA', 'content' => '<p><strong>San Diego, CA info window</strong></p>' ) );
+$marker1_options = array(
+	'title'	=> 'New York, NY',
+	'content'	=> '<p><strong>New York, NY info window</strong></p>'
+);
+$marker1 = \googlemaps\overlay\Marker::createFromLocation( 'New York, NY', $marker1_options );
+
+$marker2_options = array(
+	'title'	=> 'San Diego, CA',
+	'content'	=> '<p><strong>San Diego, CA info window</strong></p>'
+);
+$marker2 = \googlemaps\overlay\Marker::createFromLatLng( new \googlemaps\core\LatLng( 32.7153292,-117.1572551 ), $marker2_options );
 
 $map->addObjects( array( $marker1, $marker2 ) );
 
