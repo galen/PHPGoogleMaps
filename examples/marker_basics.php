@@ -15,14 +15,14 @@ $map->addObjects( array( $marker1, $marker2 ) );
 <!DOCTYPE html>
 <head>
 	<meta charset="utf-8">
-	<title>Custom Map Styles - <?php echo PAGE_TITLE ?></title>
+	<title>Marker Basics - <?php echo PAGE_TITLE ?></title>
 	<link rel="stylesheet" type="text/css" href="_css/style.css">
 	<?php $map->printHeaderJS() ?>
 	<?php $map->printMapJS() ?>
 </head>
 <body>
 
-<h1>Custom Map Styles</h1>
+<h1>Marker Basics</h1>
 <?php require( '_system/nav.php' ) ?>
 
 <?php $map->printMap() ?>
