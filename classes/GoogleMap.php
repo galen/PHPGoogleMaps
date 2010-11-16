@@ -533,6 +533,15 @@ class GoogleMap {
 	}
 
 	/**
+	 * Return info window status
+	 *
+	 * @return boolean
+	 */
+	public function infoWindows() {
+		return $this->info_windows;
+	}
+
+	/**
 	 * Add a fusion table to the map
 	 * @link http://code.google.com/apis/maps/documentation/javascript/reference.html#FusionTablesLayer
 	 * @link http://tables.googlelabs.com/
@@ -765,7 +774,7 @@ class GoogleMap {
 	 * @return EventListenerDecorator
 	 * @access protected
 	 */
-	protected function addEventListener( DomEventListener $event_listener ) {
+	protected function addEventListener( \googlemaps\event\DomEventListener $event_listener ) {
 		return $this->event_listeners[] = new \googlemaps\event\EventListenerDecorator( $event_listener, count( $this->event_listeners ), $this->map_id );
 	}
 
@@ -788,6 +797,8 @@ class GoogleMap {
 		}
 		return $this->markers[] = new \googlemaps\overlay\MarkerDecorator( $marker, count( $this->markers ), $this->map_id );
 	}
+
+	
 
 	/**
 	 * Get map markers
@@ -870,7 +881,7 @@ class GoogleMap {
 				return $this->addDirections( $object );
 				break;
 			default:
-				trigger_error( 'Invalid object passed to addObject()' , E_USER_ERROR );
+				trigger_error( sprintf( 'Invalid object passed to addObject(): %s', get_class( $object ) ) , E_USER_ERROR );
 		}
 	}
 
@@ -1082,7 +1093,7 @@ class GoogleMap {
 			$output .= "\n\tthis.bounds = new google.maps.LatLngBounds();\n";
 	  	}
 
-		if ( count( $this->markers ) && $this->info_windows ) {
+		if ( $this->info_windows ) {
 			$output .= "\tthis.info_window = new google.maps.InfoWindow();\n";
 	  	}
 
@@ -1213,9 +1224,9 @@ class GoogleMap {
 	  		foreach( $this->event_listeners as $n => $event_listener ) {
 		  		$output .= sprintf( "\tthis.event_listeners[%s] = google.maps.event.add%sListener%s(%s, '%s', %s);\n",
 		  						$n,
-		  						get_class( $event_listener->decoratee ) == 'googlemaps\event\DOMEventListener' ? 'Dom' : '',
+		  						get_class( $event_listener->decoratee ) == 'googlemaps\event\DomEventListener' ? 'Dom' : '',
 		  						$event_listener->once ? 'Once' : '',
-		  						isset( $event_listener->object ) ? sprintf( 'document.getElementById("%s")', $event_listener->object ) : $this->getMapJsVar(),
+		  						isset( $event_listener->object ) ? sprintf( 'document.getElementById("%s")', $event_listener->object ) : $this->getJsVar(),
 		  						$event_listener->event,
 		  						$event_listener->function
 		  					);
@@ -1313,8 +1324,12 @@ class GoogleMap {
 		return preg_replace( '~\W~', '', $var );
 	} 
 
-	public function getMapJsVar() {
+	public function getJsVar() {
 		return sprintf( '%s.map', $this->map_id );
+	}
+
+	public function getInfoWindowJsVar() {
+		return $this->info_windows ? sprintf( '%s.info_window', $this->map_id ) : 'null';
 	}
 
 	private function extractMarkerData() {

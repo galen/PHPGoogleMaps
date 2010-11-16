@@ -28,11 +28,11 @@ $group_mi = \googlemaps\overlay\MarkerGroup::create( 'Michigan' )->addMarkers( a
 
 $map->addObjects(
 	array(
-		$ny1, $ny2, $group_ny,
-		$ca1, $ca2, $group_ca,
-		$tx1, $tx2, $group_tx,
-		$fl1, $fl2, $group_fl,
-		$mi1, $mi2, $group_mi
+		$ny1, $ny2,
+		$ca1, $ca2,
+		$tx1, $tx2,
+		$fl1, $fl2,
+		$mi1, $mi2
 	)
 );
 

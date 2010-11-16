@@ -90,14 +90,17 @@ class MarkerIcon  extends \googlemaps\core\MapObject {
 		if ( !isset( $options['width'] ) || !isset( $options['height'] ) ) {
 			list( $this->width, $this->height ) = $size;
 		}
-		else {
+		
+		if ( isset( $options['width'] ) ) {
 			$this->width = (int) $options['width'];
+		}
+		if ( isset( $options['height'] ) ) {
 			$this->height = (int) $options['height']; 
 		}
 		
 		$this->anchor_x = isset( $options['anchor_x'] ) ? $options['anchor_x'] : floor( $this->width / 2 );
 		$this->anchor_y = isset( $options['anchor_y'] ) ? $options['anchor_y'] : $this->height;
-		$this->origin_x = isset( $options['origin_y'] ) ? $options['origin_x'] : 0;
+		$this->origin_x = isset( $options['origin_x'] ) ? $options['origin_x'] : 0;
 		$this->origin_y = isset( $options['origin_y'] ) ? $options['origin_y'] : 0;
 
 		return $this;

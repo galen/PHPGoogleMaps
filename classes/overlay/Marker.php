@@ -165,7 +165,7 @@ class Marker extends \googlemaps\core\MapObject {
 	 * @param MarkerIcon $icon The marker's shadow.
 	 * @return Marker
 	 */
-	public function setShadow( MarkerIcon $icon ) {
+	public function setShadow( MarkerIcon $shadow ) {
 		$this->shadow = $shadow;
 	}
 

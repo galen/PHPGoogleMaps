@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * This is the only file you need to include
+ * This autoloads all classes, no need to include any files
+ */
+
 function autoloader( $class ) {
 	$class_parts = explode( '\\', $class );
 	if ( count( $class_parts ) > 1 ) {
@@ -11,12 +16,7 @@ function autoloader( $class ) {
 		$class_file = 'Directions';
 	}
 	$class_final = $class_path . '/' . $class_file;
-	include_once( __DIR__ . '/classes/' . $class_final . '.php' );
+	require( __DIR__ . '/classes/' . $class_final . '.php' );
 }
 
 spl_autoload_register( 'autoloader' );
-
-
-
-?>
-
