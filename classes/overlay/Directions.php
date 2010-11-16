@@ -66,12 +66,7 @@ abstract class Directions extends \googlemaps\core\MapObject {
 				$this->request_options['origin'] = $geo;
 			}
 			else {
-				$exc = new \googlemaps\core\GeocodeException( sprintf( 'Unable to geocode "%s"', $origin ) );
-				$exc->error = $geo->error;
-				if ( $geo->error == 'ZERO_RESULTS' ) {
-					$exc->invalid_location = $origin;
-				}
-				throw $exc;
+				throw new \googlemaps\core\GeocodeException( $geo );
 			}
 		}
 

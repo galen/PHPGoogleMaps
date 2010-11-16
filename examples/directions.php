@@ -38,7 +38,7 @@ if ( isset( $_GET['origin'], $_GET['destination'] ) && strlen( $_GET['origin'] )
 	<input type="submit" value=" Get Directions ">
 </form>
 
-<?php if( isset( $error ) ): ?><p class="error">Unable to geocode "<?php echo $error->invalid_location ?>": <?php echo $error->error ?></p><?php endif; ?>
+<?php if( isset( $error ) ): ?><p class="error">Unable to geocode "<?php echo $error->location ?>": <?php echo $error->error ?></p><?php endif; ?>
 
 <?php $map->printMap() ?>
 

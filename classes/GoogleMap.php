@@ -612,16 +612,31 @@ class GoogleMap {
  *
  ************************************************/
 
+	/**
+	 * Set map center
+	 *
+	 * @param LatLng $latlng
+	 * @return void
+	 */
 	public function setCenter( \googlemaps\core\LatLng $latlng ) {
 		$this->center = $latlng;
 	}
-	
+
+	/**
+	 * Set map center by location
+	 *
+	 * @throws GeocodeException
+	 * @param string $location Location of the center of the map
+	 * @return void
+	 */
 	public function setCenterByLocation( $location ) {
 		$result = \googlemaps\service\Geocoder::getLatLng( $location );
 		if ( $result instanceof \googlemaps\core\LatLng ) {
 			$this->setCenter( $result );
 		}
-		return $result;
+		else {
+			throw new \googlemaps\core\GeocodeException( $result );
+		}
 	}
 
 	public function setCenterByUserLocation( \googlemaps\core\LatLng $backup_location=null ) {

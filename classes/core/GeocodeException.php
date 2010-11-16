@@ -20,6 +20,12 @@ class GeocodeException extends \Exception {
 	 *
 	 * @var string
 	 */
-	public $invalid_location;
+	public $location;
+
+	public function __construct( \googlemaps\service\GeocodeError $geocode_error ) {
+		$this->error = $geocode_error->error;
+		$this->location = $geocode_error->location;
+		parent::__construct();
+	}
 
 }

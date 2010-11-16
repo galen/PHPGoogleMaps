@@ -43,6 +43,7 @@ class Geocoder {
 		if ( $response->status != 'OK' ) {
 			$e = new GeocodeError;
 			$e->error = $response->status;
+			$e->location = $location;
 			return $e;
 		}
 		return $response;
