@@ -3,7 +3,7 @@ PHP Wrapper for Google Maps API v3
 
 ##Features
 
- - Event Listeners [[google](http://code.google.com/apis/maps/documentation/javascript/reference.html#MapsEventListener)] [[api](https://github.com/galen/PHP-Google-Maps-API/blob/master/classes/event/EventListener.php)] [[example](https://github.com/galen/PHP-Google-Maps-API/blob/master/examples/event_listeners.php)]
+ - Event Listeners [google](http://code.google.com/apis/maps/documentation/javascript/reference.html#MapsEventListener) [api](https://github.com/galen/PHP-Google-Maps-API/blob/master/classes/event/EventListener.php) [example](https://github.com/galen/PHP-Google-Maps-API/blob/master/examples/event_listeners.php)
  - DOM Event Listeners [[google](http://code.google.com/apis/maps/documentation/javascript/reference.html#MapsEventListener)][[api](https://github.com/galen/PHP-Google-Maps-API/blob/master/classes/event/DomEventListener.php)][[example](https://github.com/galen/PHP-Google-Maps-API/blob/master/examples/event_listeners.php)]
  - Fusion Tables [[google](http://code.google.com/apis/maps/documentation/javascript/reference.html#FusionTablesLayer)][[api](https://github.com/galen/PHP-Google-Maps-API/blob/master/classes/layer/FusionTable.php)][[example](http://www.galengrover.com/projects/google-maps/examples/fusion_tables.php)]
  - KML Layers[[google](http://code.google.com/apis/maps/documentation/javascript/reference.html#KmlLayer)][[api](https://github.com/galen/PHP-Google-Maps-API/blob/master/classes/layer/KmlLayer.php)][[example](http://www.galengrover.com/projects/google-maps/examples/fusion_tables.php)]
