@@ -18,21 +18,21 @@ class MarkerGroupDecorator extends \googlemaps\core\MapObjectDecorator {
 	 *
 	 * @var integer
 	 */
-	protected $id;
+	protected $_id;
 
 	/**
 	 * Map id the marker group is attached to
 	 *
 	 * @var string
 	 */
-	protected $map;
+	protected $_map;
 
 	/**
 	 * Array of markers in the group
 	 *
 	 * @var array
 	 */
-	protected $markers = array();
+	protected $_markers = array();
 
 	/**
 	 * Constructor
@@ -43,16 +43,16 @@ class MarkerGroupDecorator extends \googlemaps\core\MapObjectDecorator {
 	 * @return MarkerDecorator
 	 */
 	public function __construct( MarkerGroup $group, $id, $map ) {
-		parent::__construct( $group, array( 'id' => $id, 'map' => $map ) );
+		parent::__construct( $group, array( '_id' => $id, '_map' => $map ) );
 	}
 
 	/**
-	 * Returns the javascript variable of the marker
+	 * Returns the javascript variable of the marker group
 	 * 
 	 * @return string
 	 */
 	public function getJsVar() {
-		return sprintf( '%s.marker_groups[%s]', $this->map, $this->id );
+		return sprintf( '%s.marker_groups[%s]', $this->_map, $this->_id );
 	}
 
 	/**
@@ -63,7 +63,7 @@ class MarkerGroupDecorator extends \googlemaps\core\MapObjectDecorator {
 	 * @return string
 	 */
 	public function getToggleFunction() {
-		return sprintf( "%s.marker_group_toggle('%s')", $this->map, $this->var_name );
+		return sprintf( "%s.marker_group_toggle('%s')", $this->_map, $this->var_name );
 	}
 
 	/**
@@ -76,7 +76,7 @@ class MarkerGroupDecorator extends \googlemaps\core\MapObjectDecorator {
 	 * @return void
 	 */
 	public function addMarker( $marker ) {
-		$this->markers[] = (int) $marker;
+		$this->_markers[] = (int) $marker;
 	}
 
 }

@@ -16,35 +16,35 @@ class MarkerDecorator extends \googlemaps\core\MapObjectDecorator {
 	 *
 	 * @var integer
 	 */
-	protected $id;
+	protected $_id;
 
 	/**
 	 * Map ID of the map the marker is attached to
 	 *
 	 * @var string
 	 */
-	protected $map;
+	protected $_map;
 
 	/**
 	 * Holds the ID of the icon in the map
 	 *
 	 * @var int
 	 */
-	protected $icon_id;
+	protected $_icon_id;
 
 	/**
 	 * Holds the ID of the shadow in the map
 	 *
 	 * @var int
 	 */
-	protected $shadow_id;
+	protected $_shadow_id;
 
 	/**
 	 * Holds the ID of the shape in the map
 	 *
 	 * @var int
 	 */
-	protected $shape_id;
+	protected $_shape_id;
 
 	/**
 	 * Constructor
@@ -55,7 +55,7 @@ class MarkerDecorator extends \googlemaps\core\MapObjectDecorator {
 	 * @return MarkerDecorator
 	 */
 	public function __construct( Marker $marker, $id, $map ) {
-		parent::__construct( $marker, array( 'id' => $id, 'map' => $map ) );
+		parent::__construct( $marker, array( '_id' => $id, '_map' => $map ) );
 	}
 
 	/**
@@ -64,7 +64,7 @@ class MarkerDecorator extends \googlemaps\core\MapObjectDecorator {
 	 * @return string
 	 */
 	public function getJsVar() {
-		return sprintf( '%s.markers[%s]', $this->map, $this->id );
+		return sprintf( '%s.markers[%s]', $this->_map, $this->_id );
 	}
 	
 }

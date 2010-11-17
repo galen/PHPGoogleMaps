@@ -18,14 +18,14 @@ class EventListenerDecorator extends \googlemaps\core\MapObjectDecorator {
 	 *
 	 * @var integer
 	 */
-	protected $id;
+	protected $_id;
 
 	/**
 	 * Map ID of the map the event listener is attached to
 	 *
 	 * @var string
 	 */
-	protected $map;
+	protected $_map;
 	 
 	/**
 	 * Constructor
@@ -35,7 +35,7 @@ class EventListenerDecorator extends \googlemaps\core\MapObjectDecorator {
 	 * @param string $map Map ID of the map the event listener is attached to
 	 */	
 	public function __construct( DOMEventListener $listener, $id, $map ) {
-		parent::__construct( $listener, array( 'id' => $id, 'map' => $map ) );
+		parent::__construct( $listener, array( '_id' => $id, '_map' => $map ) );
 	}
 
 }

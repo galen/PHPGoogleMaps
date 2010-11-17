@@ -13,14 +13,14 @@ class ShapeDecorator extends \googlemaps\core\MapObjectDecorator {
 	 *
 	 * @var integer
 	 */
-	protected $id;
+	protected $_id;
 
 	/**
 	 * Map ID of the map the shape is attached to
 	 *
 	 * @var string
 	 */
-	protected $map;
+	protected $_map;
 	 
 	/**
 	 * Constructor
@@ -30,7 +30,16 @@ class ShapeDecorator extends \googlemaps\core\MapObjectDecorator {
 	 * @param string $map Map ID of the map the shape is attached to
 	 */	
 	public function __construct( Shape $shape, $id, $map ) {
-		parent::__construct( $shape, array( 'id' => $id, 'map' => $map ) );
+		parent::__construct( $shape, array( '_id' => $id, '_map' => $map ) );
+	}
+
+	/**
+	 * Returns the javascript variable of the shape
+	 * 
+	 * @return string
+	 */
+	public function getJsVar() {
+		return sprintf( '%s.shapes[%s]', $this->_map, $this->_id );
 	}
 
 }

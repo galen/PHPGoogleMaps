@@ -15,14 +15,14 @@ class FusionTableDecorator extends \googlemaps\core\MapObjectDecorator {
 	 *
 	 * @var integer
 	 */
-	protected $id;
+	protected $_id;
 
 	/**
 	 * Map id the fusion table is attached to
 	 *
 	 * @var string
 	 */
-	protected $map;
+	protected $_map;
 
 	/**
 	 * Constructor
@@ -33,7 +33,7 @@ class FusionTableDecorator extends \googlemaps\core\MapObjectDecorator {
 	 * @return FusionTableDecorator
 	 */
 	public function __construct( FusionTable $ft, $id, $map ) {
-		parent::__construct( $ft, array( 'id' => $id, 'map' => $map ) );
+		parent::__construct( $ft, array( '_id' => $id, '_map' => $map ) );
 	}
 
 	/**
@@ -42,7 +42,7 @@ class FusionTableDecorator extends \googlemaps\core\MapObjectDecorator {
 	 * @return string
 	 */
 	public function getJsVar() {
-		return sprintf( '%s.fusion_tables[%s]', $this->map, $this->id );
+		return sprintf( '%s.fusion_tables[%s]', $this->_map, $this->_id );
 	}
 
 }

@@ -15,14 +15,14 @@ class KmlLayerDecorator extends \googlemaps\core\MapObjectDecorator {
 	 *
 	 * @var integer
 	 */
-	protected $id;
+	protected $_id;
 
 	/**
 	 * Map id the KML layer is attached to
 	 *
 	 * @var string
 	 */
-	protected $map;
+	protected $_map;
 
 	/**
 	 * Constructor
@@ -33,7 +33,7 @@ class KmlLayerDecorator extends \googlemaps\core\MapObjectDecorator {
 	 * @return KmlLayerDecorator
 	 */
 	public function __construct( KmlLayer $kml, $id, $map ) {
-		parent::__construct( $kml, array( 'id' => $id, 'map' => $map ) );
+		parent::__construct( $kml, array( '_id' => $id, '_map' => $map ) );
 	}
 
 	/**
@@ -42,7 +42,7 @@ class KmlLayerDecorator extends \googlemaps\core\MapObjectDecorator {
 	 * @return string
 	 */
 	public function getJsVar() {
-		return sprintf( '%s.kml_layers[%s]', $this->map, $this->id );
+		return sprintf( '%s.kml_layers[%s]', $this->_map, $this->_id );
 	}
 
 }

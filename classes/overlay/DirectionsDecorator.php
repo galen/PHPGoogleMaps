@@ -20,7 +20,7 @@ class DirectionsDecorator extends \googlemaps\core\MapObjectDecorator {
 	 *
 	 * @var string
 	 */
-	protected $map;
+	protected $_map;
 
 	/**
 	 * Constructor
@@ -30,7 +30,7 @@ class DirectionsDecorator extends \googlemaps\core\MapObjectDecorator {
 	 * @return DirectionsDecorator
 	 */
 	public function __construct( Directions $dir, $map ) {
-		parent::__construct( $dir, array( 'map' => $map ) );
+		parent::__construct( $dir, array( '_map' => $map ) );
 	}
 
 	/**
@@ -40,7 +40,7 @@ class DirectionsDecorator extends \googlemaps\core\MapObjectDecorator {
 	 * @return string
 	 */
 	public function getRendererJsVar() {
-		return sprintf( '%s.directions.renderer', $this->map );
+		return sprintf( '%s.directions.renderer', $this->_map );
 	}
 
 	/**
@@ -50,7 +50,7 @@ class DirectionsDecorator extends \googlemaps\core\MapObjectDecorator {
 	 * @return string
 	 */
 	public function getServiceJsVar() {
-		return sprintf( '%s.directions.service', $this->map );
+		return sprintf( '%s.directions.service', $this->_map );
 	}
 
 

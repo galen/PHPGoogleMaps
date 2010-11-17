@@ -22,9 +22,8 @@ abstract class MapObjectDecorator {
 	/**
 	 * Constructor
 	 * 
-	 * @param Marker $marker Marker to decorate
-	 * @param int $id ID of the marker in the map
-	 * @param string $map Map Id of the map the marker is attached to
+	 * @param object $decoratee object to decorate
+	 * @param array $properties Array of properties to set on the decorator
 	 * @return MarkerDecorator
 	 */
 	public function __construct( $decoratee, array $properties ) {

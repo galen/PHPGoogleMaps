@@ -17,7 +17,6 @@ $rectangle_options = array(
 	'fillColor'	=> '#ff0000',
 	'strokeWeight'	=> 3,
 	'fillOpacity'	=> 0.05,
-	'clickable'	=> false
 );
 $rectangle = new \googlemaps\overlay\Rectangle(
 	\googlemaps\service\Geocoder::getLatLng( 'San Diego, CA' ),
