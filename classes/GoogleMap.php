@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Google Maps
+ * Google Maps API
  * PHP Wrapper for Google Maps v3
  * @author Galen Grover <galenjr@gmail.com>
  * @package GoogleMaps
