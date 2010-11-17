@@ -581,7 +581,7 @@ class GoogleMap {
 	 * @access protected
 	 */
 	protected function addKmlLayer( \googlemaps\layer\KmlLayer $kml ) {
-		return $this->kml_layers[] = $kml;
+		return $this->kml_layers[] = new \googlemaps\layer\KmlLayerDecorator( $kml, count( $this->kml_layers ), $this->map_id );
 	}
 
 	/**
