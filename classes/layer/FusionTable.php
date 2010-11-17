@@ -27,8 +27,10 @@ class FusionTable extends \googlemaps\core\MapObject  {
 	 */
 	public function __construct( $table_id, array $options=null ) {
 		$this->table_id = $table_id;
-		unset( $optoins['map'] );
-		$this->options = $options;
+		if ( $options ) {
+			unset( $options['map'] );
+			$this->options = $options;
+		}
 	}
 
 }

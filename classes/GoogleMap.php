@@ -1203,12 +1203,15 @@ class GoogleMap {
 
 		if ( count( $this->fusion_tables ) ) {
 			$output .= "\tthis.fusion_tables = [];\n";
-		  	foreach ( $this->fusion_tables as $k => $fusion_table ) {
+		  	foreach ( $this->fusion_tables as $n => $fusion_table ) {
 				$ft_options = '';
 				foreach( $fusion_table->getOptions() as $var => $val ) {
+					if ( $var == 'query' ) {
+						$val = $this->switchQuotes( $val );
+					}
 					$ft_options .= sprintf( "\t\t%s: %s,\n", $this->phpToJs( $var ), $this->phpToJs( $val ) );
 				}
-		  		$output .= sprintf( "\tthis.fusion_tables[%s] = new google.maps.FusionTablesLayer(%s, {\n%s\t});\n\tthis.fusion_tables[%s].setMap(this.map);\n\n", $k, $fusion_table->table_id, $ft_options, $k );
+		  		$output .= sprintf( "\tthis.fusion_tables[%s] = new google.maps.FusionTablesLayer(%s, {\n%s\t});\n\tthis.fusion_tables[%s].setMap(this.map);\n\n", $n, $fusion_table->table_id, $ft_options, $n );
 		  	}
 		}
 
@@ -1329,6 +1332,10 @@ class GoogleMap {
 			return '{}';
 		}
 		return json_encode( $php );
+	}
+
+	private function switchquotes( $str ) {
+		return str_replace( '"', "'", $str );
 	}
 
 	private function parseLatLngs( $str ) {
