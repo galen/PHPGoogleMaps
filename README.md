@@ -1,5 +1,6 @@
-PHP Wrapper for Google Maps API v3
----
+#PHP Wrapper for Google Maps API v3
+
+[Examples](http://www.galengrover.com/projects/php-google-maps/examples/)
 
 PHP 5.3+
 
