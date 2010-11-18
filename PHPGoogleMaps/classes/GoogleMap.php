@@ -447,13 +447,24 @@ class GoogleMap {
 	 * @var string $map_id ID to give the map
 	 * @return GoogleMap
 	 */
-	public function __construct( $map_id=null, array $options=null ) {
-		if ( $map_id ) {
-			$this->map_id  = $this->normalizeVariable( $map_id );
-		}
+	public function __construct( array $options=null ) {
 		if ( $options ) {
 			foreach( $options as $option_var => $option_val ) {
 				switch ( $option_var ) {
+					case 'zoom':
+						$this->setZoom( $option_val );
+						break;
+					case 'map_id':
+						$this->map_id = $this->normalizeVariable( $option_val );
+						break;
+					case 'center':
+						if ( $option_val instanceof \googlemaps\core\LatLng ) {
+							$this->setCenter( $option_val );
+						}
+						else {
+							$this->setCenterByLocation( $option_val );
+						}
+						break;
 					case 'language':
 						$this->setLanguage( $option_val );
 						break;
@@ -469,7 +480,7 @@ class GoogleMap {
 					case 'auto_encompass':
 						$option_val ? $this->enableAutoEncompass() : $this->disableAutoEncompass();
 						break;
-					case 'unites':
+					case 'units':
 						$this->setUnits($option_val);
 						break;
 					case 'height':
