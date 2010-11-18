@@ -30,7 +30,7 @@ class GoogleMap {
 	private $map_id = 'map';
 
 	/**
-	 * Map ID
+	 * Map language
 	 *
 	 * Language of the map.
 	 * @link http://code.google.com/apis/maps/documentation/javascript/basics.html#Localization
@@ -447,9 +447,89 @@ class GoogleMap {
 	 * @var string $map_id ID to give the map
 	 * @return GoogleMap
 	 */
-	public function __construct( $map_id = null ) {
+	public function __construct( $map_id=null, array $options=null ) {
 		if ( $map_id ) {
 			$this->map_id  = $this->normalizeVariable( $map_id );
+		}
+		if ( $options ) {
+			foreach( $options as $option_var => $option_val ) {
+				switch ( $option_var ) {
+					case 'language':
+						$this->setLanguage( $option_val );
+						break;
+					case 'region':
+						$this->setRegion($option_val);
+						break;
+					case 'sensor':
+						$option_val ? $this->enableSensor() : $this->disableSensor();
+						break;
+					case 'api_version':
+						$this->setApiVersion($option_val);
+						break;
+					case 'auto_encompass':
+						$option_val ? $this->enableAutoEncompass() : $this->disableAutoEncompass();
+						break;
+					case 'unites':
+						$this->setUnits($option_val);
+						break;
+					case 'height':
+						$this->setHeight($option_val);
+						break;
+					case 'width':
+						$this->setWidth($option_val);
+						break;
+					case 'center_on_user':
+						$this->setCenterByUserLocation( isset( $options['center_on_user_backup'] ) ? $options['center_on_user_backup'] : null );
+						break;
+					case 'navigation_control':
+						$option_val ? $this->enableNavigationControl() : $this->disableNavigationControl();
+						break;
+					case 'navigation_control_position':
+						$this->setNavigationControlPosition($option_val);
+						break;
+					case 'navigation_control_style':
+						$this->setNavigationControlStyle($option_val);
+						break;
+					case 'map_type_control':
+						$option_val ? $this->enableMapTypeControl() : $this->disableMapTypeControl();
+						break;
+					case 'map_type_control_position':
+						$this->setMapTypeControlPosition($option_val);
+						break;
+					case 'map_type_control_style':
+						$this->setMapTypeControlStyle($option_val);
+						break;
+					case 'scale_control':
+						$option_val ? $this->enableScaleControl() : $this->disableScaleControl();
+						break;
+					case 'scale_control_position':
+						$this->setScaleControlPosition($option_val);
+						break;
+					case 'scrollable':
+						$option_val ? $this->enableScrolling() : $this->disableScrolling();
+						break;
+					case 'draggable':
+						$option_val ? $this->enableDragging() : $this->disableDragging();
+						break;
+					case 'bicycle_layer':
+						$option_val ? $this->enableBicycleLayer() : $this->disableBicycleLayer();
+						break;
+					case 'traffic_layer':
+						$option_val ? $this->enableTrafficLayer() : $this->disableTrafficLayer();
+						break;
+					case 'geolocation':
+						$timeout = isset( $options['geolocation_timeout'] ) ? (int) $options['geolocation_timeout'] : null;
+						$high_accuracy = isset( $options['geolocation_high_accuracy'] ) ? (bool) $options['geolocation_high_accuracy'] : null;
+						$this->enableGeolocation( $timeout, $high_accuracy );
+						break;
+					case 'info_windows':
+						$option_val ? $this->enableInfoWindows() : $this->disableInfoWindows();
+						break;
+					case 'compress_output':
+						$option_val ? $this->enableCompressedOutput() : $this->disableCompressedOutput();
+						break;
+				}
+			}
 		}
 	}
 
@@ -484,6 +564,24 @@ class GoogleMap {
  * Layers
  *
  *************************************************/
+
+	/**
+	 * Enable sensor
+	 *
+	 * @return void
+	 */
+	public function enableSensor() {
+		$this->sensor = true;
+	}
+
+	/**
+	 * Disable sensor
+	 *
+	 * @return void
+	 */
+	public function disableSensor() {
+		$this->sensor = false;
+	}
 
 	/**
 	 * Enable traffic layer
@@ -983,7 +1081,6 @@ class GoogleMap {
 		$this->map_type_control = false;
 	}
 
-
 	/**
 	 * Add an event listener to the map
 	 *
@@ -993,6 +1090,49 @@ class GoogleMap {
 	 */
 	protected function addEventListener( \googlemaps\event\DomEventListener $event_listener ) {
 		return $this->event_listeners[] = new \googlemaps\event\EventListenerDecorator( $event_listener, count( $this->event_listeners ), $this->map_id );
+	}
+
+	/**
+	 * Set the map language
+	 * @link http://code.google.com/apis/maps/documentation/javascript/basics.html#Localization
+	 * 
+	 * @param string $language Language of the map
+	 * @return void
+	 */
+	protected function setLanguage( $language ) {
+		$this->language = $language;
+	}
+
+	/**
+	 * Set the API version
+	 * @link http://code.google.com/apis/maps/documentation/javascript/basics.html#Versioning
+	 *
+	 * @param string $api_version API version
+	 * @return void
+	 */
+	public function setApiVersion( $api_version ) {
+		$this->api_version = (float) $api_version;
+	}
+
+	/**
+	 * Set the map region
+	 * @link http://code.google.com/apis/maps/documentation/javascript/basics.html#Localization
+	 *
+	 * @param string $region Map region
+	 * @return void
+	 */
+	public function setRegion( $region ) {
+		$this->region = $region;
+	}
+
+	/**
+	 * Enable mobile display
+	 * @link http://code.google.com/apis/maps/documentation/javascript/basics.html#Mobile
+	 *
+	 * @return void
+	 */
+	public function enableMobile() {
+		$this->mobile = true;
 	}
 
 /*************************************
