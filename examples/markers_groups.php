@@ -1,6 +1,6 @@
 <?php
 
-require( '../google_maps.php' );
+require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
 require( '_system/config.php' );
 
 $map = new \googlemaps\GoogleMap();
