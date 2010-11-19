@@ -12,7 +12,7 @@ $map_options = array(
 	'zoom'			=> 10,
 	'bicycle_layer'	=> true
 );
-$map = new \googlemaps\GoogleMap( $map_options );
+$map = new \GoogleMaps\Map( $map_options );
 
 ?>
 

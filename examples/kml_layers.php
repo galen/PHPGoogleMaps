@@ -3,9 +3,9 @@
 require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
 require( '_system/config.php' );
 
-$map = new \googlemaps\GoogleMap();
+$map = new \GoogleMaps\Map;
 
-$kml = new \googlemaps\layer\KmlLayer( 'http://maps.google.com/maps/ms?msa=0&msid=114680467578999980893.00049426282c85822d40e&output=kml' );
+$kml = new \GoogleMaps\Layer\KmlLayer( 'http://maps.google.com/maps/ms?msa=0&msid=114680467578999980893.00049426282c85822d40e&output=kml' );
 
 $map->addObject( $kml );
 

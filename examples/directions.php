@@ -3,16 +3,16 @@
 require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
 require( '_system/config.php' );
 
-$map = new \googlemaps\GoogleMap();
+$map = new \GoogleMaps\Map;
 $map->setCenterByLocation( 'USA' );
 $map->setZoom( 3 );
 
 if ( isset( $_GET['origin'], $_GET['destination'] ) && strlen( $_GET['origin'] ) && strlen( $_GET['destination'] ) ) {
 	try {
-		$directions = new \googlemaps\service\DrivingDirections( $_GET['origin'], $_GET['destination'] );
+		$directions = new \GoogleMaps\Service\DrivingDirections( $_GET['origin'], $_GET['destination'] );
 		$map->addObject( $directions );
 	}
-	catch ( \googlemaps\core\GeocodeException $e ) {
+	catch ( \GoogleMaps\Core\GeocodeException $e ) {
 		$error = $e;
 	}
 }
