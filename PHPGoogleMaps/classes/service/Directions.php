@@ -1,6 +1,6 @@
 <?php
 
-namespace googlemaps\overlay;
+namespace googlemaps\service;
 
 /**
  * Directions class
@@ -9,7 +9,7 @@ namespace googlemaps\overlay;
  * This enabled a draggable route and adds a waypoint
  * $request = array( 'waypoints' => array( array( 'location' => \googlemaps\service\Geocoder::geocode( 'Phoenix, AZ' ) ) ) );
  * $renderer = array( 'draggable' => true );
- * $dir = new \googlemaps\overlay\DrivingDirections( 'New York, NY', 'San Jose, CA', $renderer, $request );
+ * $dir = new \googlemaps\service\DrivingDirections( 'New York, NY', 'San Jose, CA', $renderer, $request );
  */
 
 abstract class Directions extends \googlemaps\core\MapObject {

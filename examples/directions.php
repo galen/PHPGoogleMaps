@@ -9,7 +9,7 @@ $map->setZoom( 3 );
 
 if ( isset( $_GET['origin'], $_GET['destination'] ) && strlen( $_GET['origin'] ) && strlen( $_GET['destination'] ) ) {
 	try {
-		$directions = new \googlemaps\overlay\DrivingDirections( $_GET['origin'], $_GET['destination'] );
+		$directions = new \googlemaps\service\DrivingDirections( $_GET['origin'], $_GET['destination'] );
 		$map->addObject( $directions );
 	}
 	catch ( \googlemaps\core\GeocodeException $e ) {

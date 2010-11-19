@@ -1,6 +1,6 @@
 <?php
 
-namespace googlemaps\overlay;
+namespace googlemaps\service;
 
 /**
  * Directions Decorator
@@ -8,7 +8,7 @@ namespace googlemaps\overlay;
  * Example:
  * This example will set the directions panel to the div with ID 'panel'
  *
- * $dir = new \googlemaps\overlay\DrivingDirections( 'New York, NY', 'San Jose, CA' );
+ * $dir = new \googlemaps\service\DrivingDirections( 'New York, NY', 'San Jose, CA' );
  * $map->addObjects( array( $dir ) );
  * <a href="#" onclick="<?php echo $map->getDirections()->getRendererJsVar() ?>.setPanel(document.getElementById('panel'))">Set Panel</a>
  */
