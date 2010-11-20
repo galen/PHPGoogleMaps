@@ -1643,7 +1643,7 @@ class Map {
 				$output .= "\tif ( typeof geolocation != 'undefined' ) {\n";
 			}
 			$output .= "\t\tthis.map.setCenter( geolocation );\n";
-			if ( $this->geolocation ) {
+			if ( $this->geolocation_backup ) {
 				$output .= sprintf( "\t}\n\telse {\n\t\tthis.map.setCenter( new google.maps.LatLng(%s,%s) );\n\t}\n\n", $this->geolocation_backup->lat, $this->geolocation_backup->lng );
 			}
 		}
