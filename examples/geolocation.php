@@ -4,7 +4,12 @@ require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
 require( '_system/config.php' );
 
 $map = new \GoogleMaps\Map;
-$map->setCenterByUserLocation();
+$map->enableMobile();
+$marker = \GoogleMaps\Overlay\Marker::createFromUserLocation( array( 'geolocation_high_accuracy' => true, 'geolocation_timeout' => 10000 ) );
+$map->addObject( $marker );
+
+$map->setWidth('500px');
+$map->setHeight('500px');
 
 ?>
 

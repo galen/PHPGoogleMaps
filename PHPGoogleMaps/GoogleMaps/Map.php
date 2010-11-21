@@ -1317,7 +1317,7 @@ class Map {
 	 * @return string
 	 */
 	function getMap() {
-		return sprintf( '<div id="%s" style="%s%s"></div>', $this->map_id, ( $this->width ? 'width: ' . $this->width . ';' : '' ), ( $this->height ? 'height: ' . $this->height . ';' : '' ) );
+		return sprintf( '<div id="%s" style="%s%s"></div>', $this->map_id, ( $this->width ? 'width:' . $this->width . ';' : '' ), ( $this->height ? 'height:' . $this->height . ';' : '' ) );
 	}
 
 	/**
@@ -1548,9 +1548,9 @@ class Map {
 	  	}
 
 	  	foreach ( $this->getMarkers() as $marker_id => $marker ) {
-	  		if ( $marker->geolocation ) {
+	  		if ( $marker->isGeolocated() ) {
 	  			if ( !$this->geolocation ) {
-		  			$this->enableGeolocation();
+		  			$this->enableGeolocation( $marker->geolocation_timeout, $marker->geolocation_high_accuracy );
 	  			}
 	  			$output .= "\tif ( navigator.geolocation && typeof geolocation != 'undefined' ) {\n";
 	  		}

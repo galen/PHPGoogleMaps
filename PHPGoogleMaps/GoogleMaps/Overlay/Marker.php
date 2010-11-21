@@ -7,10 +7,7 @@ use GoogleMaps\Utility;
 /**
  * Marker class for addign markers to a map
  * 
- * Markers can be created in 4 different ways
- *
- * Instantiate a new marker
- * $m = new \GoogleMaps\Overlay\Marker( $latlng, $title, $content );
+ * Markers can be created in 3 different ways
  *
  * Use the static `createFromCoords()` method
  * $m = \GoogleMaps\Overlay\Marker::createFromLatLng( $latlng, $title, $content );
@@ -79,8 +76,8 @@ class Marker extends \GoogleMaps\Core\MapObject {
 	 * @param string $content The infowindow content of the marker.
 	 * @return Marker
 	*/
-	public function __construct( \GoogleMaps\Core\LatLng $latlng=null, array $options=null ) {
-		$this->position = $latlng;
+	private function __construct( $position=null, array $options=null ) {
+		$this->position = $position;
 		if ( !$options ) {
 			return;
 		}
@@ -104,7 +101,9 @@ class Marker extends \GoogleMaps\Core\MapObject {
 					$this->setShape( $option );
 				case 'geolocation':
 					if ( $option ) {
-						$this->enableGeolocation();
+						$timeout = isset( $options['geolocation_timeout'] ) ? $options['geolocation_timeout'] : null;
+						$high_accuracy = isset( $options['geolocation_high_accuracy'] ) ? $options['geolocation_high_accuracy'] : null;
+						$this->enableGeolocation( $timeout, $high_accuracy );
 					}
 					break;
 				default:
@@ -192,6 +191,15 @@ class Marker extends \GoogleMaps\Core\MapObject {
 	}
 
 	/**
+	 * Return the marker's geolocation flag
+	 *
+	 * @return boolean
+	 */
+	public function isGeolocated() {
+		return $this->geolocation;
+	}
+
+	/**
 	 * Factory method to create a marker from a lat/lng
 	 *
 	 * @param LatLng $latlng Position of the marker
@@ -228,7 +236,9 @@ class Marker extends \GoogleMaps\Core\MapObject {
 	 * @return Marker
 	 */
 	public static function createFromUserLocation( $options ){
-		return self::createFromLatLng( null, $options )->enableGeolocation();
+		$marker = new Marker( null, $options );
+		$marker->enableGeolocation();
+		return $marker;
 	}
 
 }
