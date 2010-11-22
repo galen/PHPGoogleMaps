@@ -71,9 +71,8 @@ class Marker extends \GoogleMaps\Core\MapObject {
 	 * Marker constructor
 	 * Initializes the marker options
 	 *
-	 * @param LatLng $latlng Position of the marker
-	 * @param string $title The title of the marker. This will be the markers tooltip.
-	 * @param string $content The infowindow content of the marker.
+	 * @param mixed $position Position of the marker. This will be null for geolocated markers.
+	 * @param array options Array of marker options
 	 * @return Marker
 	*/
 	private function __construct( $position=null, array $options=null ) {
@@ -215,8 +214,7 @@ class Marker extends \GoogleMaps\Core\MapObject {
 	 * Factory method to create a marker from a location
 	 *
 	 * @param string $location Location of the marker. This will be geocoded for you.
-	 * @param string $title Title of the marker. This will be the markers tooltip.
-	 * @param string $content The infowindow content of the marker.
+	 * @param array options Array of marker options
 	 * @return Marker
 	 */
 	public static function createFromLocation( $location, array $options=null ) {
@@ -231,8 +229,7 @@ class Marker extends \GoogleMaps\Core\MapObject {
 	 * Factory method to create a marker from the user's location
 	 * This uses HTML5's geolocation API
 	 *
-	 * @param string $title The title of the marker. This will be the markers tooltip.
-	 * @param string $content The infowindow content of the marker.
+	 * @param array options Array of marker options
 	 * @return Marker
 	 */
 	public static function createFromUserLocation( $options ){
