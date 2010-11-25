@@ -216,6 +216,15 @@ class Map {
 	private $shapes = array();
 
 	/**
+	 * Map polygons
+	 * Array of polygons added to the map
+	 *
+	 * @var array
+	 */
+	private $polygons = array();
+
+
+	/**
 	 * Scrollable flag
 	 *
 	 * Allows the map to be zoomed with the scrollbar
@@ -719,6 +728,17 @@ class Map {
 	 */
 	public function getShapes() {
 		return $this->shapes;
+	}
+
+	/**
+	 * Add a polygon to the map
+	 *
+	 * @param Shape $shape Shape to add to the map
+	 * @return ShapeDecorator
+	 * @access protected
+	 */
+	protected function addPolygon( \GoogleMaps\Overlay\Polygon $polygon ) {
+		return $this->polygons[] = new \GoogleMaps\Overlay\PolygonDecorator( $polygon, count( $this->polygons ), $this->map_id );
 	}
 
 /************************************************
@@ -1247,6 +1267,9 @@ class Map {
 			case 'GoogleMaps\Event\DomEventListener':
 				$object = $this->addEventListener( $object );
 				break;
+			case 'GoogleMaps\Overlay\Polygon':
+				$object = $this->addPolygon( $object );
+				break;
 			case 'GoogleMaps\Overlay\Circle':
 			case 'GoogleMaps\Overlay\Rectangle':
 				$object = $this->addShape( $object );
@@ -1441,6 +1464,19 @@ class Map {
 				} 
 					$output .= sprintf( "\t\tmap: this.map\n" );
 					$output .= "\t} );\n";
+			}
+		}
+
+		if ( count( $this->polygons ) ) {
+			$output .= sprintf( "\n\tthis.polygons = [];\n", $this->map_id );
+			foreach( $this->polygons as $n => $polygon ) {
+	  			$output .= sprintf( "\tthis.polygons[%s] = new google.maps.Polygon( {\n", $n );
+				foreach( $polygon->getOptions() as $var => $val ) {
+					$output .= sprintf( "\t\t%s: %s,\n", $var, $var == 'paths' ? $this->parseLatLngs( $val ) : $this->phpToJs( $val ) );
+				}
+				$output .= sprintf( "\t\tpaths: %s,\n", $this->parseLatLngs( $polygon->getPaths() ) );
+				$output .= sprintf( "\t\tmap: this.map\n" );
+				$output .= "\t} );\n";
 			}
 		}
 
