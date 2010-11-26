@@ -82,7 +82,7 @@ class MarkerIcon  extends \GoogleMaps\Core\MapObject {
 
 		$size = @getimagesize( $icon );
 		if ( !$size ) {
-			throw new Exception( 'unable to load MarkerIcon: ' . $icon );
+			throw new MarkerIconNotFoundException( $icon );
 		}
 
 		$this->icon = $icon;
