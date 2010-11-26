@@ -22,6 +22,12 @@ class GeocodeException extends \Exception {
 	 */
 	public $location;
 
+	/**
+	 * Constructor
+	 *
+	 * @param GeocodeError $geocode_error The GeocodeError object returned
+	 * @returns GeocodeException
+	 */
 	public function __construct( \GoogleMaps\Service\GeocodeError $geocode_error ) {
 		$this->error = $geocode_error->error;
 		$this->location = $geocode_error->location;
