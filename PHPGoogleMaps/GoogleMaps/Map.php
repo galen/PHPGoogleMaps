@@ -750,27 +750,22 @@ class Map {
 	/**
 	 * Set map center
 	 *
-	 * @param LatLng $latlng
+	 * @param string|LatLng $location Location of the center. Can be a
+	 *                                location or a LatLng object.
 	 * @return void
 	 */
-	public function setCenter( \GoogleMaps\Core\LatLng $latlng ) {
-		$this->center = $latlng;
-	}
-
-	/**
-	 * Set map center by location
-	 *
-	 * @throws GeocodeException
-	 * @param string $location Location of the center of the map
-	 * @return void
-	 */
-	public function setCenterByLocation( $location ) {
-		$result = \GoogleMaps\Service\Geocoder::getLatLng( $location );
-		if ( $result instanceof \GoogleMaps\Core\LatLng ) {
-			$this->setCenter( $result );
+	public function setCenter( $location ) {
+		if ( $location instanceof \GoogleMaps\Core\LatLng ) {
+			$this->center = $latlng;
 		}
 		else {
-			throw new \GoogleMaps\Core\GeocodeException( $result );
+			$geocode_result = \GoogleMaps\Service\Geocoder::getLatLng( $location );
+			if ( $geocode_result instanceof \GoogleMaps\Core\LatLng ) {
+				$this->center = $geocode_result;
+			}
+			else {
+				throw new \GoogleMaps\Core\GeocodeException( $geocode_result );
+			}
 		}
 	}
 
