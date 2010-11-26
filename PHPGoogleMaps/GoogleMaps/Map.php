@@ -467,12 +467,7 @@ class Map {
 						$this->map_id = $this->normalizeVariable( $option_val );
 						break;
 					case 'center':
-						if ( $option_val instanceof \GoogleMaps\Core\LatLng ) {
-							$this->setCenter( $option_val );
-						}
-						else {
-							$this->setCenterByLocation( $option_val );
-						}
+						$this->setCenter( $option_val );
 						break;
 					case 'language':
 						$this->setLanguage( $option_val );
