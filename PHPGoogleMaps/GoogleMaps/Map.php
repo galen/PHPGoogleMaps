@@ -1779,7 +1779,7 @@ class Map {
 		if ( is_null( $php ) ) {
 			return '{}';
 		}
-		return json_encode( htmlentities( $php, ENT_QUOTES, 'utf-8' ) );
+		return json_encode( $php );
 	}
 
 	/**
