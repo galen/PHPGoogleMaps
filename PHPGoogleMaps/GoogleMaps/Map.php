@@ -1472,9 +1472,9 @@ class Map {
 			foreach( $this->polygons as $n => $polygon ) {
 	  			$output .= sprintf( "\tthis.polygons[%s] = new google.maps.Polygon( {\n", $n );
 				foreach( $polygon->getOptions() as $var => $val ) {
-					$output .= sprintf( "\t\t%s: %s,\n", $var, $var == 'paths' ? $this->parseLatLngs( $val ) : $this->phpToJs( $val ) );
+					$output .= sprintf( "\t\t%s: %s,\n", $var, $val );
 				}
-				$output .= sprintf( "\t\tpaths: %s,\n", $this->parseLatLngs( $polygon->getPaths() ) );
+				$output .= sprintf( "\t\tpaths: %s,\n", $this->parseLatLngs( $this->phpToJs( $polygon->getPaths() ) ) );
 				$output .= sprintf( "\t\tmap: this.map\n" );
 				$output .= "\t} );\n";
 			}
@@ -1489,7 +1489,7 @@ class Map {
 		  				$renderer_options .= sprintf( "\t\tpanel: document.getElementById(\"%s\"),\n", $renderer_value );
 		  				break;
 		  			default:
-		  				$renderer_options .= sprintf( "\t\t%s:%s,\n", $renderer_option, $this->phpToJs( $renderer_value, null, null, true ) );
+		  				$renderer_options .= sprintf( "\t\t%s:%s,\n", $renderer_option, $this->phpToJs( $renderer_value ) );
 		  		}
 		  	}
 		  	$renderer_options .= "\t};\n\n";
@@ -1505,7 +1505,7 @@ class Map {
 		  	foreach ( $this->directions->request_options as $request_option => $request_value ) {
 		  		switch ( $request_option ) {
 		  			case 'waypoints':
-		  				$request_options .= sprintf("\t\twaypoints: %s,\n", $this->parseLatLngs( $request_value ) );
+		  				$request_options .= sprintf("\t\twaypoints: %s,\n", $this->parseLatLngs( $this->phptoJs( $request_value ) ) );
 		  			case 'origin':
 				  		$request_options .= sprintf( "\t\torigin: new google.maps.LatLng(%s,%s),\n", $this->directions->request_options['origin']->lat, $this->directions->request_options['origin']->lng );
 					  	break;
@@ -1797,7 +1797,7 @@ class Map {
 	 * @access private
 	 */
 	private function parseLatLngs( $str ) {
-		return preg_replace( '~\{"lat":(.*?),"lng":(.*?)\}~i', 'new google.maps.LatLng($1,$2)', json_encode( $str ) );
+		return preg_replace( '~\{"lat":(.*?),"lng":(.*?)\}~i', 'new google.maps.LatLng($1,$2)', $str );
 	}
 
 	/**
