@@ -216,12 +216,12 @@ class Map {
 	private $shapes = array();
 
 	/**
-	 * Map polygons
-	 * Array of polygons added to the map
+	 * Map polys
+	 * Array of polygons and polylines added to the map
 	 *
 	 * @var array
 	 */
-	private $polygons = array();
+	private $polys = array();
 
 
 	/**
@@ -737,8 +737,8 @@ class Map {
 	 * @return ShapeDecorator
 	 * @access protected
 	 */
-	protected function addPolygon( \GoogleMaps\Overlay\Polygon $polygon ) {
-		return $this->polygons[] = new \GoogleMaps\Overlay\PolygonDecorator( $polygon, count( $this->polygons ), $this->map_id );
+	protected function addPoly( \GoogleMaps\Overlay\Poly $poly ) {
+		return $this->polys[] = new \GoogleMaps\Overlay\PolyDecorator( $poly, count( $this->polys ), $this->map_id );
 	}
 
 /************************************************
@@ -1263,7 +1263,8 @@ class Map {
 				$object = $this->addEventListener( $object );
 				break;
 			case 'GoogleMaps\Overlay\Polygon':
-				$object = $this->addPolygon( $object );
+			case 'GoogleMaps\Overlay\Polyline':
+				$object = $this->addPoly( $object );
 				break;
 			case 'GoogleMaps\Overlay\Circle':
 			case 'GoogleMaps\Overlay\Rectangle':
@@ -1462,16 +1463,27 @@ class Map {
 			}
 		}
 
-		if ( count( $this->polygons ) ) {
-			$output .= sprintf( "\n\tthis.polygons = [];\n", $this->map_id );
-			foreach( $this->polygons as $n => $polygon ) {
-	  			$output .= sprintf( "\tthis.polygons[%s] = new google.maps.Polygon( {\n", $n );
-				foreach( $polygon->getOptions() as $var => $val ) {
-					$output .= sprintf( "\t\t%s: %s,\n", $var, $this->phpToJs( $val ) );
+		if ( count( $this->polys ) ) {
+			$output .= sprintf( "\n\tthis.polys = [];\n", $this->map_id );
+			foreach( $this->polys as $n => $poly ) {
+				if ( $poly->decoratee instanceof \GoogleMaps\Overlay\Polygon ) {
+		  			$output .= sprintf( "\tthis.polys[%s] = new google.maps.Polygon( {\n", $n );
+					foreach( $poly->getOptions() as $var => $val ) {
+						$output .= sprintf( "\t\t%s: %s,\n", $var, $this->phpToJs( $val ) );
+					}
+					$output .= sprintf( "\t\tpaths: %s,\n", $this->parseLatLngs( $this->phpToJs( $poly->getPaths() ) ) );
+					$output .= sprintf( "\t\tmap: this.map\n" );
+					$output .= "\t} );\n";
 				}
-				$output .= sprintf( "\t\tpaths: %s,\n", $this->parseLatLngs( $this->phpToJs( $polygon->getPaths() ) ) );
-				$output .= sprintf( "\t\tmap: this.map\n" );
-				$output .= "\t} );\n";
+				elseif ( $poly->decoratee instanceof \GoogleMaps\Overlay\Polyline ) {
+		  			$output .= sprintf( "\tthis.polys[%s] = new google.maps.Polyline( {\n", $n );
+					foreach( $poly->getOptions() as $var => $val ) {
+						$output .= sprintf( "\t\t%s: %s,\n", $var, $this->phpToJs( $val ) );
+					}
+					$output .= sprintf( "\t\tpath: %s,\n", $this->parseLatLngs( $this->phpToJs( $poly->getPaths() ) ) );
+					$output .= sprintf( "\t\tmap: this.map\n" );
+					$output .= "\t} );\n";
+				}
 			}
 		}
 

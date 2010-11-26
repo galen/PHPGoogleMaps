@@ -7,48 +7,46 @@ require( '_system/config.php' );
 
 $map = new \GoogleMaps\Map;
 
-$polygon_paths = array(
+$polyline_paths = array(
 	Geocoder::getLatLng( 'San Diego, CA' ),
 	Geocoder::getLatLng( 'Austin, TX' ),
 	Geocoder::getLatLng( 'New Haven, CT' ),
 	Geocoder::getLatLng( 'Seattle, WA' )
 );
 
-$polygon_options = array(
+$polyline_options = array(
 	'strokeColor'	=> '#0000ff',
-	'fillColor'		=> '#230754',
 	'clickable'		=> false
 );
 
-$polygon = new \GoogleMaps\Overlay\Polygon( $polygon_paths, $polygon_options );
+$polyline = new \GoogleMaps\Overlay\Polyline( $polyline_paths, $polyline_options );
 
-$polygon->addPath( 'San Francisco, CA' );
-
-$m = \GoogleMaps\Overlay\Marker::createFromLatLng( $polygon->getCenter() );
+$polyline->addPath( 'San Francisco, CA' );
 
 $map->disableAutoEncompass();
 $map->setCenter( 'Austin, TX' );
 $map->setZoom( 3 );
 
-$map->addObjects( array( &$polygon, $m ) );
+$map->addObjects( array( &$polyline ) );
 
 ?>
 
 <!DOCTYPE html>
 <head>
 	<meta charset="utf-8">
-	<title>Polygons - <?php echo PAGE_TITLE ?></title>
+	<title>Polylines - <?php echo PAGE_TITLE ?></title>
 	<link rel="stylesheet" type="text/css" href="_css/style.css">
 	<?php $map->printHeaderJS() ?>
 	<?php $map->printMapJS() ?>
 </head>
 <body>
 
-<h1>Polygons</h1>
+<h1>Polylines</h1>
 <?php require( '_system/nav.php' ) ?>
 
 <?php $map->printMap() ?>
-<a href="#" onclick="<?php echo $polygon->getJsVar() ?>.setMap(null)">Hide polygon</a>
+
+<a href="#" onclick="<?php echo $polyline->getJsVar() ?>.setMap(null)">Hide polylines</a>
 </body>
 
 </html>
