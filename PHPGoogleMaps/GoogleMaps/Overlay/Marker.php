@@ -149,9 +149,15 @@ class Marker extends \GoogleMaps\Core\MapObject {
 	 * @param MarkerIcon $icon The marker's icon.
 	 * @return Marker
 	 */
-	public function setIcon( MarkerIcon $icon, MarkerIcon $shadow = null ) {
+	public function setIcon( $icon, MarkerIcon $shadow = null ) {
+		if ( !$icon instanceof MarkerIcon ) {
+			$icon = new MarkerIcon( $icon );
+		}
 		$this->icon = $icon;
 		if ( $shadow ) {
+			if ( !$shadow instanceof MarkerIcon ) {
+				$shadow = new MarkerIcon( $shadow );
+			}
 			$this->shadow = $shadow;
 		}
 		return $this;
