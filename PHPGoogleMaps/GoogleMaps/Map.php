@@ -756,7 +756,7 @@ class Map {
 	 */
 	public function setCenter( $location ) {
 		if ( $location instanceof \GoogleMaps\Core\LatLng ) {
-			$this->center = $latlng;
+			$this->center = $location;
 		}
 		else {
 			$geocode_result = \GoogleMaps\Service\Geocoder::getLatLng( $location );
@@ -1621,9 +1621,6 @@ class Map {
 				$output .= sprintf( "\t\tgroups:[%s],\n", implode( ',', array_map( function( $g ) use ( $gs ) { return $gs[$g->var_name]->_id; }, $marker->groups ) ) );
 			}
 			foreach( $marker->getOptions() as $marker_option => $marker_value ) {
-				if ( $marker_option == 'sidebar' || $marker_option == 'sidebar_html' ) {
-					continue;
-				}
 				$output .= sprintf( "\t\t%s:%s,\n", $marker_option, $this->phpToJs( $marker_value ) );
 			}
 			
@@ -1782,7 +1779,7 @@ class Map {
 		if ( is_null( $php ) ) {
 			return '{}';
 		}
-		return json_encode( $php );
+		return json_encode( htmlentities( $php, ENT_QUOTES, 'utf-8' ) );
 	}
 
 	/**
