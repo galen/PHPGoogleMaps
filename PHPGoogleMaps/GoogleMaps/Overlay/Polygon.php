@@ -21,13 +21,37 @@ class Polygon extends \GoogleMaps\Core\MapObject {
 	/**
 	 * Constructor
 	 *
-	 * @param array $options Array of optoins {@link http://code.google.com/apis/maps/documentation/javascript/reference.html#CircleOptions}
+	 * @param array $options Array of options {@link http://code.google.com/apis/maps/documentation/javascript/reference.html#CircleOptions}
 	 * @return Polygon
 	 */
 	public function __construct( $paths, array $options=null ) {
 		unset( $options['map'] );
 		$this->options = $options;
 		$this->paths = $paths;
+	}
+
+	/**
+	 * Add a path
+	 * Adds a path to the end of the array of paths
+	 *
+	 * @throws GeocodeException
+	 * @param string|LatLng $location Location to add. This can be a location name
+	 *                                or a LatLng object.
+	 * @return void
+	 */
+	public function addPath( $location ) {
+		if ( $location instanceof \GoogleMaps\Core\LatLng ) {
+			$this->paths[] = $location;
+		}
+		else {
+			$geocode_result = \GoogleMaps\Service\Geocoder::getLatLng( $location );
+			if ( $geocode_result instanceof \GoogleMaps\Core\LatLng ) {
+				$this->paths[] = $geocode_result;
+			}
+			else {
+				throw new \GoogleMaps\Core\GeocodeException( $geocode_result );
+			}
+		}
 	}
 
 	/**
