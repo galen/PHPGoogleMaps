@@ -6,7 +6,7 @@ require( '_system/config.php' );
 $map = new \GoogleMaps\Map;
 
 $latlng = \GoogleMaps\Service\Geocoder::getLatLng( 'San Diego, CA' );
-$marker = new \GoogleMaps\Overlay\Marker( $latlng );
+$marker = \GoogleMaps\Overlay\Marker::createFromLatLng( $latlng );
 $map->addObject( $marker );
 $map->disableAutoEncompass();
 $map->setZoom( 13 );

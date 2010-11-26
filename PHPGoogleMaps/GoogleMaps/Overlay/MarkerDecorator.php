@@ -67,4 +67,7 @@ class MarkerDecorator extends \GoogleMaps\Core\MapObjectDecorator {
 		return sprintf( '%s.markers[%s]', $this->_map, $this->_id );
 	}
 	
+	public function getOpener() {
+		return sprintf( 'google.maps.event.trigger(map.markers[%s], \'click\');', $this->_id );
+	}
 }

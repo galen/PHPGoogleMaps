@@ -163,6 +163,10 @@ class Marker extends \GoogleMaps\Core\MapObject {
 		return $this;
 	}
 
+	public function getIcon() {
+		return $this->icon->icon;
+	}
+
 	/**
 	 * Sets the marker's shadow
 	 *
