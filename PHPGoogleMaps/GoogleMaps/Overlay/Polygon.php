@@ -40,6 +40,17 @@ class Polygon extends \GoogleMaps\Core\MapObject {
 	}
 
 	/**
+	 * Get a path
+	 *
+	 * @param integer $path Path to get
+	 * @return LatLng
+	 */
+	public function getPath( $path ) {
+		$path = (int) $path;
+		return $this->paths[$path];
+	}
+
+	/**
 	 * Get polygon center
 	 *
 	 * @return LatLng
