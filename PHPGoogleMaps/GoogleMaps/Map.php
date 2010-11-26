@@ -1472,7 +1472,7 @@ class Map {
 			foreach( $this->polygons as $n => $polygon ) {
 	  			$output .= sprintf( "\tthis.polygons[%s] = new google.maps.Polygon( {\n", $n );
 				foreach( $polygon->getOptions() as $var => $val ) {
-					$output .= sprintf( "\t\t%s: %s,\n", $var, $val );
+					$output .= sprintf( "\t\t%s: %s,\n", $var, $this->phpToJs( $val ) );
 				}
 				$output .= sprintf( "\t\tpaths: %s,\n", $this->parseLatLngs( $this->phpToJs( $polygon->getPaths() ) ) );
 				$output .= sprintf( "\t\tmap: this.map\n" );
