@@ -25,7 +25,7 @@ $rectangle = new \GoogleMaps\Overlay\Rectangle(
 );
 
 $map->addObjects( array( $circle, $rectangle ) );
-$map->setCenterByLocation( 'San Diego, CA' );
+$map->setCenter( 'San Diego, CA' );
 $map->setZoom( 14 );
 
 ?>

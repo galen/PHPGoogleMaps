@@ -4,7 +4,7 @@ require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
 require( '_system/config.php' );
 
 $map = new \GoogleMaps\Map;
-$map->setCenterByLocation( 'USA' );
+$map->setCenter( 'USA' );
 $map->setZoom( 3 );
 
 if ( isset( $_GET['origin'], $_GET['destination'] ) && strlen( $_GET['origin'] ) && strlen( $_GET['destination'] ) ) {

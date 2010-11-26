@@ -11,7 +11,7 @@ $map = new \GoogleMaps\Map;
 $map->addObject( $custom_style );
 $map->setMapTypes( array( 'roadmap', 'terrain', $custom_style ) );
 
-$map->setCenterByLocation( 'San Diego, CA' );
+$map->setCenter( 'San Diego, CA' );
 $map->setZoom( 14 );
 
 ?>

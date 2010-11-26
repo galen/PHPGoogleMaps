@@ -16,15 +16,18 @@ $polygon_paths = array(
 
 $polygon_options = array(
 	'strokeColor'	=> '#0000ff',
-	'fillColor'		=> '#230754'
+	'fillColor'		=> '#230754',
+	'clickable'		=> false
 );
 
 $polygon = new \GoogleMaps\Overlay\Polygon( $polygon_paths, $polygon_options );
 
+$polygon->addPath( 'San Francisco, CA' );
+
 $m = \GoogleMaps\Overlay\Marker::createFromLatLng( $polygon->getCenter() );
 
 $map->disableAutoEncompass();
-$map->setCenterByLocation( 'Austin, TX' );
+$map->setCenter( 'Austin, TX' );
 $map->setZoom( 3 );
 
 $map->addObjects( array( $polygon, $m ) );

@@ -23,7 +23,7 @@ $marker = \GoogleMaps\Overlay\Marker::createFromLocation( 'San Diego, CA', $mark
 $objects = array( &$circle, &$marker );
 
 $map->addObjects( $objects );
-$map->setCenterByLocation( 'San Diego, CA' );
+$map->setCenter( 'San Diego, CA' );
 $map->setZoom( 15 );
 $map->disableAutoEncompass();
 $map->bind( $circle, 'center', $marker, 'position' );

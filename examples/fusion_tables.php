@@ -18,7 +18,7 @@ $ft2 = new \GoogleMaps\Layer\FusionTable( 232192, $ft_options2 );
 $a = array( &$ft, $ft2 );
 
 $map->addObjects( $a );
-$map->setCenterByLocation( 'Connecticut' );
+$map->setCenter( 'Connecticut' );
 $map->setZoom( 7 );
 
 ?>

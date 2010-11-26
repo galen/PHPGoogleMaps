@@ -11,7 +11,7 @@ $event2 = new \GoogleMaps\Event\EventListener( 'click', 'add_marker');
 $dom_event1 = new \GoogleMaps\Event\DomEventListener( 'add_random_marker', 'click', 'add_random_marker' );
 
 $map->addObjects( array( $event1, $event2, $dom_event1 ) );
-$map->setCenterByLocation( 'San Diego, CA' );
+$map->setCenter( 'San Diego, CA' );
 $map->setZoom( 14 );
 
 ?>
