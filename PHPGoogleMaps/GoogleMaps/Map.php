@@ -816,7 +816,7 @@ class Map {
 	 * Get sidebar HTML
 	 *
 	 * @param string $marker_html Custom HTML to use for each marker in the sidebar
-	 *                            use $title, $content, $icon in the HTML as placeholders
+	 *                            use {title}, {content}, {icon} in the HTML as placeholders
 	 * @param integer $tabs_deep The amount of tabs to indent the code
 	 * @return string
 	 */
@@ -824,7 +824,7 @@ class Map {
 		$sidebar_html = sprintf( "%s<div id=\"%s_sidebar\">\n%s<ul class=\"sidebar\">\n", str_repeat( "\t", $tabs_deep ), $this->map_id, str_repeat( "\t", $tabs_deep+1 ) );
 		foreach( $this->getMarkers() as $marker ) {
 			if ( $marker_html ) {
-				$marker_parsed_html = str_replace( array( '$title', '$content', '$icon' ), array( $marker->title, $marker->content, $marker->icon instanceof \GoogleMaps\Overlay\MarkerIcon ? $marker->icon->icon : '' ), $marker_html );
+				$marker_parsed_html = str_replace( array( '{title}', '{content}', '{icon}' ), array( $marker->title, $marker->content, $marker->icon instanceof \GoogleMaps\Overlay\MarkerIcon ? $marker->icon->icon : '' ), $marker_html );
 			}
 			$sidebar_html .= sprintf( "%s<li onclick=\"google.maps.event.trigger(%s, 'click')\">\n%s%s%s</li>\n",
 				str_repeat( "\t", $tabs_deep+2 ),
@@ -1233,12 +1233,12 @@ class Map {
  	 * decorate the objects to allow added functionality
  	 *
  	 * If the objected is already decorated this will strip the
- 	 * decoration and redecorate it
+ 	 * decoration and redecorate it with the new map's info
  	 *
  	 * @param object $object Object to add to the map
  	 * @return object Returns a decorated object
  	 */
-	public function addObject( \GoogleMaps\Core\MapObject &$object ) {
+	public function addObject( &$object ) {
 		if ( !is_object( $object ) ) {
 			return false;
 		}
@@ -1276,7 +1276,7 @@ class Map {
 				$object = $this->addDirections( $object );
 				break;
 			default:
-				trigger_error( sprintf( 'Invalid object passed to addObject(): %s', get_class( $object ) ) , E_USER_ERROR );
+
 		}
 	}
 
