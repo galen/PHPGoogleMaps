@@ -4,13 +4,15 @@ require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
 require( '_system/config.php' );
 
 $map = new \GoogleMaps\Map;
-$map->enableMobile();
-$marker = \GoogleMaps\Overlay\Marker::createFromUserLocation( array( 'geolocation_high_accuracy' => true, 'geolocation_timeout' => 10000 ) );
+//$marker = \GoogleMaps\Overlay\Marker::createFromUserLocation( array( 'geolocation_high_accuracy' => true, 'geolocation_timeout' => 10000 ) );
 $map->addObject( $marker );
-
+$map->enableGeolocation( 5000, true );
+$map->centerOnUser( \GoogleMaps\Service\Geocoder::getLatLng('New Haven, CT') );
 $map->setWidth('500px');
 $map->setHeight('500px');
-
+$map->setZoom(16);
+$map->setGeolocationFailCallback( 'geofail' );
+$map->setGeolocationSuccessCallback( 'geosuccess' );
 ?>
 
 <!DOCTYPE html>
@@ -20,6 +22,14 @@ $map->setHeight('500px');
 	<link rel="stylesheet" type="text/css" href="_css/style.css">
 	<?php $map->printHeaderJS() ?>
 	<?php $map->printMapJS() ?>
+	<script type="text/javascript">
+	function geofail() {
+		alert( 'geolocation failed' );
+	}
+	function geosuccess() {
+		alert( 'geolocation succeeded' );
+	}
+	</script>
 </head>
 <body>
 
