@@ -27,7 +27,7 @@ $map->addObjects( array( $marker1, $marker2, $marker3 ) );
 <!DOCTYPE html>
 <head>
 	<meta charset="utf-8">
-	<title>Simple Sidebar - <?php echo PAGE_TITLE ?></title>
+	<title>Advanced Sidebar - <?php echo PAGE_TITLE ?></title>
 	<link rel="stylesheet" type="text/css" href="_css/style.css">
 	<style type="text/css">
 	#map, #map_sidebar { float: left }
@@ -43,7 +43,7 @@ $map->addObjects( array( $marker1, $marker2, $marker3 ) );
 </head>
 <body>
 
-<h1>Simple Sidebar</h1>
+<h1>Advanced Sidebar</h1>
 <?php require( '_system/nav.php' ) ?>
 
 <?php $map->printMap() ?>
