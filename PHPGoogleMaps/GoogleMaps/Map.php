@@ -327,8 +327,6 @@ class Map {
 
 	/**
 	 * Streetview
-	 *
-	 * Streetview object
 	 * 
 	 * @var boolean
 	 */
@@ -395,12 +393,20 @@ class Map {
 	private $geolocation_high_accuracy = false;
 	
 	/**
-	 * Geolocation fail function
+	 * Geolocation fail callback
 	 * Function to call if geolocation fails
 	 *
 	 * @var string
 	 */
-	private $geolocation_fail_function;
+	private $geolocation_fail_callback;
+
+	/**
+	 * Geolocation success callback
+	 * Function to call if geolocation succeeds
+	 *
+	 * @var string
+	 */
+	private $geolocation_success_callback;
 
 	/**
 	 * Backup geolocation location
@@ -579,6 +585,31 @@ class Map {
  * Layers
  *
  *************************************************/
+
+	/**
+	 * Enable streetview
+	 *
+	 * @return void
+	 */
+	public function enableStreetView( array $options=null, $container=null ) {
+		$default_options = array(
+			'visible'			=> isset( $options['position'] ) && $options['position'] == true ? true : false,
+			'enableCloseButton'	=> true,
+			'pov'				=> array(
+				'heading'	=> 90,
+				'zoom'		=> 1,
+				'pitch'		=> 0
+			)
+		);
+		$this->streetview = new \StdClass;
+		if ( $container ) {
+			$this->streetview->container = $container;
+		}
+		else {
+			$this->streetview->container = $this->map_id;
+		}
+		$this->streetview->options = (array)$options + $default_options;
+	}
 
 	/**
 	 * Enable sensor
@@ -770,7 +801,7 @@ class Map {
 	 * @param string $backup_location Backup location incase geolocation fails
 	 * @return void
 	 */
-	public function setCenterByUserLocation( \GoogleMaps\Core\LatLng $backup_location=null ) {
+	public function centerOnUser( \GoogleMaps\Core\LatLng $backup_location=null ) {
 		$this->enableGeolocation();
 		$this->center_on_user = true;
 		if ( $backup_location !== null ) {
@@ -846,6 +877,28 @@ class Map {
 		if ( $geolocation_timeout ) $this->geolocation_timeout = (int) $geolocation_timeout;
 		if ( $geolocation_high_accuracy ) $this->geolocation_high_accuracy = (bool) $geolocation_high_accuracy;
 		$this->geolocation = true;
+	}
+
+	/**
+	 * Set the geolocation fail callback
+	 *
+	 * @param string $callback Function to call if geolocation fails
+	 *                         e.g. geofail
+	 * @return void
+	 */
+	public function setGeolocationFailCallback( $callback ) {
+		$this->geolocation_fail_callback = $callback;
+	}
+
+	/**
+	 * Set the geolocation success callback
+	 *
+	 * @param string $callback Function to call if geolocation succeeds
+	 *                         e.g. geosuccess
+	 * @return void
+	 */
+	public function setGeolocationSuccessCallback( $callback ) {
+		$this->geolocation_success_callback = $callback;
 	}
 
 	/**
@@ -1700,29 +1753,26 @@ class Map {
 		  	}
 	  	}
 
-		/*
-		* Add ability for multiple onload functions
-		if ( $this->onload_function ) {
-			$output .= sprintf( "\tgoogle.maps.event.addListenerOnce(this.map, 'idle', %s );\n", $this->onload_function );
-		}
-	  	*/
-	  	
 	  	if ( $this->streetview ) {
 	  	
 	  		$streetview_options = '';
 
-			if ( isset( $this->streetview->position->lat, $this->streetview->position->lng ) ) {
-				$this->streetview->options->visible = true;
-	  			$streetview_options .= sprintf( "\t\tposition:new google.maps.LatLng(%s,%s),\n", $this->streetview->position->lat, $this->streetview->position->lng );
-  				$streetview_options .= sprintf( "\t\tpov: {heading:%s,pitch:%s,zoom:%s},\n",$this->streetview->pov->heading, $this->streetview->pov->pitch, $this->streetview->pov->zoom );
+			if ( $this->streetview->options ) {
+	  			foreach( $this->streetview->options as $streetview_option => $streetview_value ) {
+	  				switch( $streetview_option ) {
+	  					case 'container':
+	  						break;
+		  				case 'position':
+		  					if ( $streetview_value == 'geolocation' ) {
+			  					$this->enableGeolocation();
+	  							$streetview_options .= "\t\tposition:geolocation,\n";
+			  					break;
+	  						}
+	  					default:
+			  				$streetview_options .= sprintf( "\t\t%s:%s,\n", $streetview_option,  $this->parseLatLngs( $this->phpToJs( $streetview_value ) ) );
+					}
+	  			}
 			}
-
-  			foreach( $this->streetview->options as $streetview_option => $streetview_value ) {
-  				$streetview_options .= sprintf( "\t\t%s:%s,\n", $streetview_option, $this->phpToJs( $streetview_value ) );
-  			}
-  			if ( isset( $this->streetview->position->geolocation ) ) {
-	  			$streetview_options .= "\t\tposition:geolocation,\n";
-  			}
 
 	  		$output .= sprintf( "\tthis.streetview = new google.maps.StreetViewPanorama(document.getElementById(\"%s\"), {\n%s\t});\n\tthis.map.setStreetView(this.streetview);\n", $this->streetview->container, $streetview_options );
 
@@ -1736,8 +1786,8 @@ class Map {
 			$output .= sprintf( "\tnavigator.geolocation.getCurrentPosition( geolocation_success_init, geolocation_error_init, {enableHighAccuracy: %s, timeout: %s} );\n", ( $this->geolocation_high_accuracy ? 'true' : 'false' ), $this->geolocation_timeout);
 			$output .= "}\n";
 			$output .= "function geolocation_success_init( position ) {\n";
-			$output .= sprintf( "\tgeolocation_status=1;\n\tgeolocation_lat = position.coords.latitude;\n\tgeolocation_lng = position.coords.longitude;\n\tgeolocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);\n\tinitialize_%s();\n}\n", $this->map_id );
-			$output .= sprintf( "function geolocation_error_init( error ){\n\tgeolocation_status=0;\n\tgeolocation_error = error.code;\n\tinitialize_%s();%s\n}\n", $this->map_id, ( $this->geolocation_fail_function ? $this->geolocation_fail_function . "();\n\t" : '' ) );
+			$output .= sprintf( "\tgeolocation_status=1;\n\tgeolocation_lat = position.coords.latitude;\n\tgeolocation_lng = position.coords.longitude;\n\tgeolocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);%s\n\tinitialize_%s();\n}\n", ( $this->geolocation_success_callback ? "\n\t" . $this->geolocation_success_callback . "();" : '' ),$this->map_id );
+			$output .= sprintf( "function geolocation_error_init( error ){\n\tgeolocation_status=0;\n\tgeolocation_error = error.code;%s\n\tinitialize_%s();\n}\n", ( $this->geolocation_fail_callback ? "\n\t" . $this->geolocation_fail_callback . "();" : '' ), $this->map_id );
 			$output .= "if ( navigator.geolocation ) {\n";
   			$output .= "\tgoogle.maps.event.addDomListener(window, \"load\", get_geolocation );\n";
   			$output .= "}\nelse {\n";
