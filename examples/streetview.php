@@ -12,8 +12,7 @@ $map2->enableStreetView( array( 'addressControl' => false, 'enableCloseButton' =
 $map2->setCenter('San Diego, CA');
 
 $map3 = new \GoogleMaps\Map( array( 'map_id' => 'map3' ) );
-$map3->enableStreetView( array( 'position' => \GoogleMaps\Service\Geocoder::getLatLng( 'San Diego, CA' ) ) );
-$map3->setCenter('Houston, TX');
+$map3->enableStreetView( array( 'position' => \GoogleMaps\Service\Geocoder::getLatLng( 'New Haven, CT' ) ) );
 
 ?>
 
