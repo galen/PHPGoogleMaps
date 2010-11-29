@@ -14,7 +14,19 @@ namespace GoogleMaps;
  * Google Map
  *
  * The main class that controls the output of a map
- * All map objects must be added to an instance of GoogleMap via addObject() or addObjects()
+ * All map objects must be added to an instance of a GoogleMap via addObject() or addObjects()
+ *
+ * Using addObject() decorates the object to provide extra functionality
+ * $marker = \GoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY' );
+ * $map->addObject( $marker );
+ * echo $marker->getJsVar(); // Echos map.markers[0]
+ *
+ * If adding multiple objects with addObjects() you can do the same by passing the object by
+ * reference, but this is deprecated as of PHP 5.3
+ * $marker1 = \GoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY' );
+ * $marker2 = \GoogleMaps\Overlay\Marker::createFromLocation( 'San Diego, CA' ); 
+ * $map->addObjects( array( &$marker1, $marker2 ) );
+ * echo $marker1->getJsVar(); // Echos map.markers[0]
  *
  */
 
