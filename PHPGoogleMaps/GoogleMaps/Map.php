@@ -272,7 +272,6 @@ class Map {
 
 	/**
 	 * Map markers
-	 * All the map markers
 	 *
 	 * @var array
 	 */
@@ -280,7 +279,7 @@ class Map {
 
 	/**
 	 * Hash of the marker data
-	 * This is used to keep form extracting the same marker data
+	 * This is used to keep from extracting the same marker data
 	 *
 	 * @var string
 	 */
@@ -312,7 +311,6 @@ class Map {
 
 	/**
 	 * Fusion tables
-	 *
 	 * Array of fusion tables added to the map
 	 * 
 	 * @var array
@@ -321,7 +319,6 @@ class Map {
 
 	/**
 	 * KML layers
-	 *
 	 * Array of KML layers added to the map
 	 * 
 	 * @var array
@@ -329,9 +326,7 @@ class Map {
 	private $kml_layers = array();
 
 	/**
-	 * Traffic flag
-	 *
-	 * Display traffic layer
+	 * Traffic layer flag
 	 * 
 	 * @var boolean
 	 */
@@ -345,9 +340,7 @@ class Map {
 	private $streetview;
 
 	/**
-	 * Bicycle flag
-	 *
-	 * Display bicycle layer
+	 * Bicycle layer flag
 	 * 
 	 * @var boolean
 	 */
@@ -363,7 +356,6 @@ class Map {
 
 	/**
 	 * Infowindow flag
-	 * Controls the displaying of info windows
 	 *
 	 * @var boolean
 	 */
@@ -379,8 +371,6 @@ class Map {
 
 	/**
 	 * Geolocation flag
-	 * Attempt geolocation on the user
-	 * This will check the browser for geolocation capabilities to avoid errors
 	 *
 	 * @var boolean
 	 */
@@ -445,22 +435,6 @@ class Map {
 	 */
 	private $directions;
 	
-	/**
-	 * Directions fail callback
-	 * Function to call if directions fail to load
-	 *
-	 * @var string
-	 */
-	private $directions_fail_callback;
-
-	/**
-	 * Directions success callback
-	 * Function to call if directions succeed to load
-	 *
-	 * @var string
-	 */
-	private $directions_success_callback;
-
 	/**
 	 * Array of map binds
 	 *
@@ -1591,10 +1565,7 @@ class Map {
 		  	}
 			$request_options .= "\t};\n";
 			$output .= $request_options;
-		  	$output .= sprintf( "\t\n\tthis.directions.service.route(this.directions.request_options, function(response,status) {\n\t\tif (status == google.maps.DirectionsStatus.OK) {\n\t\t\tself.directions.success = response;\n\t\t\tself.directions.renderer.setDirections(response);%s\n\t\t}\n\t\telse {\n\t\t\tself.directions.error = status;%s\n\t\t}\n\t});\n\n",
-		  		( $this->directions_success_callback ? sprintf( "\n\t\t\t%s(response);", $this->directions_success_callback ) : "" ),
-		  		( $this->directions_fail_callback ? sprintf( "\n\t\t\t%s(status);", $this->directions_fail_callback ) : "" )
-		  	);
+		  	$output .= "\t\n\tthis.directions.service.route(this.directions.request_options, function(response,status) {\n\t\tif (status == google.maps.DirectionsStatus.OK) {\n\t\t\tself.directions.success = response;\n\t\t\tself.directions.renderer.setDirections(response);\n\t\t}\n\t\telse {\n\t\t\tself.directions.error = status;\n\t\t}\n\t});\n\n";
 		}
 
 		if ( count( $this->marker_shapes ) ) {
