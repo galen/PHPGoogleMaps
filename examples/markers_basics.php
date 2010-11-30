@@ -1,23 +1,23 @@
 <?php
 
-require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
+
 require( '_system/config.php' );
 
-$map = new \GoogleMaps\Map;
+$map = new \PHPGoogleMaps\Core\Map;
 
 $marker1_options = array(
 	'title'	=> 'New York, NY',
 	'content'	=> '<p><strong>New York, NY info window</strong></p>'
 );
-$marker1 = \GoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY', $marker1_options );
+$marker1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY', $marker1_options );
 
 $marker2_options = array(
 	'title'	=> 'San Diego, CA',
 	'content'	=> '<p><strong>San Diego, CA info window</strong></p>'
 );
-$marker2 = \GoogleMaps\Overlay\Marker::createFromLatLng( new \GoogleMaps\Core\LatLng( 32.7153292,-117.1572551 ), $marker2_options );
-
-$map->addObjects( array( $marker1, $marker2 ) );
+$marker2 = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( new \PHPGoogleMaps\Core\LatLng( 32.7153292,-117.1572551 ), $marker2_options );
+$map->addObjects( array( &$marker1, $marker2 ) );
 
 ?>
 
@@ -35,7 +35,7 @@ $map->addObjects( array( $marker1, $marker2 ) );
 <?php require( '_system/nav.php' ) ?>
 
 <?php $map->printMap() ?>
-
+<a href="#" onclick="<?php echo $marker1->getJsVar() ?>.setMap(null)">Hide New York marker</a>
 </body>
 
 </html>
