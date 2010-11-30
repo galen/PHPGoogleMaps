@@ -8,7 +8,7 @@
 */
 
 
-namespace PHPGoogleMaps\Core;
+namespace PHPGoogleMaps;
 
 /**
  * Google Map

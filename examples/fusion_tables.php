@@ -3,7 +3,7 @@
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \PHPGoogleMaps\Core\Map;
+$map = new \PHPGoogleMaps\Map;
 $ft_options = array(
 	'query' => 'SELECT location FROM 232192 WHERE state_province_abbrev="CT"'
 );

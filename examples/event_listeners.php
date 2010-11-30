@@ -3,7 +3,7 @@
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \PHPGoogleMaps\Core\Map;
+$map = new \PHPGoogleMaps\Map;
 
 $event1 = new \PHPGoogleMaps\Event\EventListener( 'idle', 'function(){alert("the map is loaded");}', true );
 $event2 = new \PHPGoogleMaps\Event\EventListener( 'click', 'add_marker');

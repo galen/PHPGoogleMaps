@@ -3,7 +3,7 @@
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \PHPGoogleMaps\Core\Map;
+$map = new \PHPGoogleMaps\Map;
 
 $latlng = \PHPGoogleMaps\Service\Geocoder::getLatLng( 'San Diego, CA' );
 $marker = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( $latlng );

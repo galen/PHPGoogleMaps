@@ -3,7 +3,7 @@
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \PHPGoogleMaps\Core\Map;
+$map = new \PHPGoogleMaps\Map;
 
 $circle_options = array(
 	'fillColor'	=> '#00ff00',

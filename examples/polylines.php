@@ -5,7 +5,7 @@ use \PHPGoogleMaps\Service\Geocoder;
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \PHPGoogleMaps\Core\Map;
+$map = new \PHPGoogleMaps\Map;
 
 $polyline_paths = array(
 	Geocoder::getLatLng( 'San Diego, CA' ),

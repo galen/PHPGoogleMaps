@@ -3,15 +3,15 @@
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \PHPGoogleMaps\Core\Map;
+$map = new \PHPGoogleMaps\Map;
 $map->enableStreetView();
 $map->setCenter('New Haven, CT');
 
-$map2 = new \PHPGoogleMaps\Core\Map( array( 'map_id' => 'map2' ) );
+$map2 = new \PHPGoogleMaps\Map( array( 'map_id' => 'map2' ) );
 $map2->enableStreetView( array( 'addressControl' => false, 'enableCloseButton' => false ), 'container' );
 $map2->setCenter('San Diego, CA');
 
-$map3 = new \PHPGoogleMaps\Core\Map( array( 'map_id' => 'map3' ) );
+$map3 = new \PHPGoogleMaps\Map( array( 'map_id' => 'map3' ) );
 $map3->enableStreetView( array( 'position' => \PHPGoogleMaps\Service\Geocoder::getLatLng( 'New Haven, CT' ) ) );
 
 ?>

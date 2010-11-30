@@ -3,7 +3,7 @@
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \PHPGoogleMaps\Core\Map;
+$map = new \PHPGoogleMaps\Map;
 
 $ny1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY' );
 $ny2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Syracuse, NY' );

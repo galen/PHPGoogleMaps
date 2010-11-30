@@ -3,7 +3,7 @@
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \PHPGoogleMaps\Core\Map;
+$map = new \PHPGoogleMaps\Map;
 
 $kml = new \PHPGoogleMaps\Layer\KmlLayer( 'http://maps.google.com/maps/ms?msa=0&msid=114680467578999980893.00049426282c85822d40e&output=kml' );
 
