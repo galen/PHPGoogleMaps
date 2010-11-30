@@ -12,7 +12,7 @@ There are 2 ways to autoload.
 
         require( '../PHPGoogleMaps/Core/Autoloader.php' );
 
-2. Use an [autoloading class](https://gist.github.com/221634) like the one on the [PSR-0 Final Proposal](http://groups.google.com/group/php-standards/web/psr-0-final-proposal)
+2. Use an [autoloading class](https://gist.github.com/221634) like the one on the [PSR-0 Final Proposal](http://groups.google.com/group/php-standards/web/psr-0-final-proposal).
 
         require( '_system/SplClassLoader.php' ); // This is in the examples folder
         $classLoader = new SplClassLoader('PHPGoogleMaps', '../' ); // Change the include path to reflect your filesystem
