@@ -326,6 +326,14 @@ class Map {
 	private $kml_layers = array();
 
 	/**
+	 * Ground overlays
+	 * Array of ground overlays added to the map
+	 * 
+	 * @var array
+	 */
+	private $ground_overlays = array();
+
+	/**
 	 * Traffic layer flag
 	 * 
 	 * @var boolean
@@ -711,6 +719,17 @@ class Map {
 	 */
 	protected function addKmlLayer( \PHPGoogleMaps\Layer\KmlLayer $kml ) {
 		return $this->kml_layers[] = new \PHPGoogleMaps\Layer\KmlLayerDecorator( $kml, count( $this->kml_layers ), $this->map_id );
+	}
+
+	/**
+	 * Add a ground overlay to the map
+	 *
+	 * @param GroundOverlay $ground_overlay ground overlay to add to the map
+	 * @return GroundOverlayDecorator
+	 * @access protected
+	 */
+	protected function addGroundOverlay( \PHPGoogleMaps\Overlay\GroundOverlay $ground_overlay ) {
+		return $this->ground_overlays[] = new \PHPGoogleMaps\Overlay\GroundOverlayDecorator( $ground_overlay, count( $this->ground_overlays ), $this->map_id );
 	}
 
 	/**
@@ -1292,6 +1311,9 @@ class Map {
 			case 'PHPGoogleMaps\Layer\KmlLayer':
 				$object = $this->addKmlLayer( $object );
 				break;
+			case 'PHPGoogleMaps\Overlay\GroundOverlay':
+				$object = $this->addGroundOverlay( $object );
+				break;
 			case 'PHPGoogleMaps\Event\EventListener':
 			case 'PHPGoogleMaps\Event\DomEventListener':
 				$object = $this->addEventListener( $object );
@@ -1674,10 +1696,26 @@ class Map {
 
 	  	}
 
+		if ( count( $this->ground_overlays ) ) {
+			$output .= "\tthis.ground_overlays = [];\n";
+			foreach( $this->ground_overlays as $n => $ground_overlay ) {
+		  		$output .= sprintf( "\tthis.ground_overlays[%s] = new google.maps.GroundOverlay('%s', new google.maps.LatLngBounds(new google.maps.LatLng(%s,%s),new google.maps.LatLng(%s,%s)), %s);\n\tthis.ground_overlays[%s].setMap(this.map);\n\n",
+			  		$n,
+			  		$ground_overlay->url,
+					$ground_overlay->southwest->lat,
+					$ground_overlay->southwest->lng,
+					$ground_overlay->northeast->lat,
+					$ground_overlay->northeast->lng,
+			  		$this->phpToJs( $ground_overlay->options ),
+			  		$n
+		  		);
+			}
+		}
+
 		if ( count( $this->kml_layers ) ) {
 			$output .= "\tthis.kml_layers = [];\n";
 			foreach( $this->kml_layers as $n => $kml_layer ) {
-		  		$output .= sprintf( "\tthis.kml_layers[%s] = new google.maps.KmlLayer('%s', %s);\n\tthis.kml_layers[%s].setMap(this.map);\n\n", $n, $kml_layer->url, $this->phpToJs( $kml_layer->options ), $n );
+				$output .= sprintf( "\tthis.kml_layers[%s] = new google.maps.KmlLayer('%s', %s);\n\tthis.kml_layers[%s].setMap(this.map);\n\n", $n, $kml_layer->url, $this->phpToJs( $kml_layer->options ), $n );
 			}
 		}
 
