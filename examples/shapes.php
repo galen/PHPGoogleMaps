@@ -1,9 +1,9 @@
 <?php
 
-require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \GoogleMaps\Map;
+$map = new \PHPGoogleMaps\Core\Map;
 
 $circle_options = array(
 	'fillColor'	=> '#00ff00',
@@ -11,16 +11,16 @@ $circle_options = array(
 	'fillOpacity'	=> 0.05,
 	'clickable'	=> false
 );
-$circle = \GoogleMaps\Overlay\Circle::createFromLocation( 'San Diego, CA', 1000, $circle_options );
+$circle = \PHPGoogleMaps\Overlay\Circle::createFromLocation( 'San Diego, CA', 1000, $circle_options );
 
 $rectangle_options = array(
 	'fillColor'	=> '#ff0000',
 	'strokeWeight'	=> 3,
 	'fillOpacity'	=> 0.05,
 );
-$rectangle = new \GoogleMaps\Overlay\Rectangle(
-	\GoogleMaps\Service\Geocoder::getLatLng( 'San Diego, CA' ),
-	\GoogleMaps\Service\Geocoder::getLatLng( 'Balboa Park San Diego, CA' ),
+$rectangle = new \PHPGoogleMaps\Overlay\Rectangle(
+	\PHPGoogleMaps\Service\Geocoder::getLatLng( 'San Diego, CA' ),
+	\PHPGoogleMaps\Service\Geocoder::getLatLng( 'Balboa Park San Diego, CA' ),
 	$rectangle_options
 );
 

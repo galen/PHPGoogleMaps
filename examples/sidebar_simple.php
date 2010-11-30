@@ -1,17 +1,17 @@
 <?php
 
-require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \GoogleMaps\Map;
+$map = new \PHPGoogleMaps\Core\Map;
 
-$marker1 = \GoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY',
+$marker1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY',
 	array( 'title' => 'New York, NY', 'content' => 'New York marker' )
 );
-$marker2 = \GoogleMaps\Overlay\Marker::createFromLatLng( new \GoogleMaps\Core\LatLng( 32.7153292,-117.1572551 ),
+$marker2 = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( new \PHPGoogleMaps\Core\LatLng( 32.7153292,-117.1572551 ),
 	array( 'title' => 'San Diego, CA', 'content' => 'San Diego marker' )
 );
-$marker3 = \GoogleMaps\Overlay\Marker::createFromLocation( 'Dallas, TX',
+$marker3 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Dallas, TX',
 	array( 'title' => 'Dallas, TX', 'content' => 'Dallas marker' )
 );
 

@@ -1,11 +1,11 @@
 <?php
 
-use \GoogleMaps\Service\Geocoder;
+use \PHPGoogleMaps\Service\Geocoder;
 
-require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \GoogleMaps\Map;
+$map = new \PHPGoogleMaps\Core\Map;
 
 $polyline_paths = array(
 	Geocoder::getLatLng( 'San Diego, CA' ),
@@ -19,7 +19,7 @@ $polyline_options = array(
 	'clickable'		=> false
 );
 
-$polyline = new \GoogleMaps\Overlay\Polyline( $polyline_paths, $polyline_options );
+$polyline = new \PHPGoogleMaps\Overlay\Polyline( $polyline_paths, $polyline_options );
 
 $polyline->addPath( 'San Francisco, CA' );
 

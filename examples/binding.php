@@ -1,9 +1,9 @@
 <?php
 
-require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \GoogleMaps\Map;
+$map = new \PHPGoogleMaps\Core\Map;
 
 $circle_options = array(
 	'fillColor'	=> '#00ff00',
@@ -11,14 +11,14 @@ $circle_options = array(
 	'fillOpacity'	=> 0.05,
 	'clickable'	=> false
 );
-$circle = \GoogleMaps\Overlay\Circle::createFromLocation( 'San Diego, CA', 100, $circle_options );
+$circle = \PHPGoogleMaps\Overlay\Circle::createFromLocation( 'San Diego, CA', 100, $circle_options );
 
 $marker_options = array(
 	'title'	=> 'San Diego, CA',
 	'content'	=> '<p><strong>San Diego, CA</strong></p>',
 	'draggable'	=> true
 );
-$marker = \GoogleMaps\Overlay\Marker::createFromLocation( 'San Diego, CA', $marker_options );
+$marker = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'San Diego, CA', $marker_options );
 
 $objects = array( &$circle, &$marker );
 

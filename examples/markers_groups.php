@@ -1,30 +1,30 @@
 <?php
 
-require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \GoogleMaps\Map;
+$map = new \PHPGoogleMaps\Core\Map;
 
-$ny1 = \GoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY' );
-$ny2 = \GoogleMaps\Overlay\Marker::createFromLocation( 'Syracuse, NY' );
+$ny1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY' );
+$ny2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Syracuse, NY' );
 
-$ca1 = \GoogleMaps\Overlay\Marker::createFromLocation( 'San Diego, CA' );
-$ca2 = \GoogleMaps\Overlay\Marker::createFromLocation( 'San Francisco, CA' );
+$ca1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'San Diego, CA' );
+$ca2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'San Francisco, CA' );
 
-$tx1 = \GoogleMaps\Overlay\Marker::createFromLocation( 'Houston, TX' );
-$tx2 = \GoogleMaps\Overlay\Marker::createFromLocation( 'Dallas, TX' );
+$tx1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Houston, TX' );
+$tx2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Dallas, TX' );
 
-$fl1 = \GoogleMaps\Overlay\Marker::createFromLocation( 'Orlando, FL' );
-$fl2 = \GoogleMaps\Overlay\Marker::createFromLocation( 'Tampa, FL' );
+$fl1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Orlando, FL' );
+$fl2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Tampa, FL' );
 
-$mi1 = \GoogleMaps\Overlay\Marker::createFromLocation( 'Detroit, MI' );
-$mi2 = \GoogleMaps\Overlay\Marker::createFromLocation( 'Ann Arbor, MI' );
+$mi1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Detroit, MI' );
+$mi2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Ann Arbor, MI' );
 
-$group_ny = \GoogleMaps\Overlay\MarkerGroup::create( 'New York' )->addMarkers( array( $ny1, $ny2 ) );
-$group_ca = \GoogleMaps\Overlay\MarkerGroup::create( 'California' )->addMarkers( array( $ca1, $ca2 ) );
-$group_tx = \GoogleMaps\Overlay\MarkerGroup::create( 'Texas' )->addMarkers( array( $tx1, $tx2 ) );
-$group_fl = \GoogleMaps\Overlay\MarkerGroup::create( 'Florida' )->addMarkers( array( $fl1, $fl2 ) );
-$group_mi = \GoogleMaps\Overlay\MarkerGroup::create( 'Michigan' )->addMarkers( array( $mi1, $mi2 ) );
+$group_ny = \PHPGoogleMaps\Overlay\MarkerGroup::create( 'New York' )->addMarkers( array( $ny1, $ny2 ) );
+$group_ca = \PHPGoogleMaps\Overlay\MarkerGroup::create( 'California' )->addMarkers( array( $ca1, $ca2 ) );
+$group_tx = \PHPGoogleMaps\Overlay\MarkerGroup::create( 'Texas' )->addMarkers( array( $tx1, $tx2 ) );
+$group_fl = \PHPGoogleMaps\Overlay\MarkerGroup::create( 'Florida' )->addMarkers( array( $fl1, $fl2 ) );
+$group_mi = \PHPGoogleMaps\Overlay\MarkerGroup::create( 'Michigan' )->addMarkers( array( $mi1, $mi2 ) );
 
 $map->addObjects(
 	array(

@@ -1,19 +1,19 @@
 <?php
 
-require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \GoogleMaps\Map;
+$map = new \PHPGoogleMaps\Core\Map;
 $ft_options = array(
 	'query' => 'SELECT location FROM 232192 WHERE state_province_abbrev="CT"'
 );
-$ft = new \GoogleMaps\Layer\FusionTable( 232192, $ft_options );
+$ft = new \PHPGoogleMaps\Layer\FusionTable( 232192, $ft_options );
 
 $ft_options2 = array(
 	'query'	=> 'SELECT location FROM 232192 WHERE state_province_abbrev="RI"',
 	'heatmap'	=> true
 );
-$ft2 = new \GoogleMaps\Layer\FusionTable( 232192, $ft_options2 );
+$ft2 = new \PHPGoogleMaps\Layer\FusionTable( 232192, $ft_options2 );
 
 $a = array( &$ft, $ft2 );
 

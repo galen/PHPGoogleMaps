@@ -1,18 +1,18 @@
 <?php
 
-require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \GoogleMaps\Map;
+$map = new \PHPGoogleMaps\Core\Map;
 $map->setCenter( 'USA' );
 $map->setZoom( 3 );
 
 if ( isset( $_GET['origin'], $_GET['destination'] ) && strlen( $_GET['origin'] ) && strlen( $_GET['destination'] ) ) {
 	try {
-		$directions = new \GoogleMaps\Service\DrivingDirections( $_GET['origin'], $_GET['destination'] );
+		$directions = new \PHPGoogleMaps\Service\DrivingDirections( $_GET['origin'], $_GET['destination'] );
 		$map->addObject( $directions );
 	}
-	catch ( \GoogleMaps\Core\GeocodeException $e ) {
+	catch ( \PHPGoogleMaps\Core\GeocodeException $e ) {
 		$error = $e;
 	}
 }

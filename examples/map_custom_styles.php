@@ -1,12 +1,12 @@
 <?php
 
-require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
 $custom_style_json = '[ { featureType: "water", elementType: "all", stylers: [ { hue: "#ff0008" }, { saturation: 71 }, { lightness: -43 }, { gamma: 0.83 } ] },{ featureType: "road", elementType: "all", stylers: [ { saturation: -24 }, { hue: "#1100ff" } ] },{ featureType: "landscape", elementType: "all", stylers: [ { hue: "#11ff00" }, { saturation: 100 }, { lightness: -34 } ] } ]';
-$custom_style = new \GoogleMaps\Overlay\MapStyle( 'Custom', $custom_style_json );
+$custom_style = new \PHPGoogleMaps\Overlay\MapStyle( 'Custom', $custom_style_json );
 
-$map = new \GoogleMaps\Map;
+$map = new \PHPGoogleMaps\Core\Map;
 
 $map->addObject( $custom_style );
 $map->setMapTypes( array( 'roadmap', 'terrain', $custom_style ) );

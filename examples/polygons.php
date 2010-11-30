@@ -1,11 +1,11 @@
 <?php
 
-use \GoogleMaps\Service\Geocoder;
+use \PHPGoogleMaps\Service\Geocoder;
 
-require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \GoogleMaps\Map;
+$map = new \PHPGoogleMaps\Core\Map;
 
 $polygon_paths = array(
 	Geocoder::getLatLng( 'San Diego, CA' ),
@@ -20,11 +20,11 @@ $polygon_options = array(
 	'clickable'		=> false
 );
 
-$polygon = new \GoogleMaps\Overlay\Polygon( $polygon_paths, $polygon_options );
+$polygon = new \PHPGoogleMaps\Overlay\Polygon( $polygon_paths, $polygon_options );
 
 $polygon->addPath( 'San Francisco, CA' );
 
-$m = \GoogleMaps\Overlay\Marker::createFromLatLng( $polygon->getCenter() );
+$m = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( $polygon->getCenter() );
 
 $map->disableAutoEncompass();
 $map->setCenter( 'Austin, TX' );

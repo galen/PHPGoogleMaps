@@ -1,6 +1,6 @@
 <?php
 
-require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
 $map_options = array(
@@ -12,7 +12,7 @@ $map_options = array(
 	'zoom'			=> 10,
 	'bicycle_layer'	=> true
 );
-$map = new \GoogleMaps\Map( $map_options );
+$map = new \PHPGoogleMaps\Core\Map( $map_options );
 
 ?>
 

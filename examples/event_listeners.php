@@ -1,14 +1,14 @@
 <?php
 
-require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \GoogleMaps\Map;
+$map = new \PHPGoogleMaps\Core\Map;
 
-$event1 = new \GoogleMaps\Event\EventListener( 'idle', 'function(){alert("the map is loaded");}', true );
-$event2 = new \GoogleMaps\Event\EventListener( 'click', 'add_marker');
+$event1 = new \PHPGoogleMaps\Event\EventListener( 'idle', 'function(){alert("the map is loaded");}', true );
+$event2 = new \PHPGoogleMaps\Event\EventListener( 'click', 'add_marker');
 
-$dom_event1 = new \GoogleMaps\Event\DomEventListener( 'add_random_marker', 'click', 'add_random_marker' );
+$dom_event1 = new \PHPGoogleMaps\Event\DomEventListener( 'add_random_marker', 'click', 'add_random_marker' );
 
 $map->addObjects( array( $event1, $event2, $dom_event1 ) );
 $map->setCenter( 'San Diego, CA' );

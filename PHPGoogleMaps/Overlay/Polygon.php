@@ -1,6 +1,6 @@
 <?php
 
-namespace GoogleMaps\Overlay;
+namespace PHPGoogleMaps\Overlay;
 
 /**
  * Polygon class
@@ -24,7 +24,7 @@ class Polygon extends Poly {
 		}
 		$lat_avg = $lat_sum / count( $this->paths );
 		$lng_avg = $lng_sum / count( $this->paths );
-		return new \GoogleMaps\Core\LatLng( $lat_avg, $lng_avg );
+		return new \PHPGoogleMaps\Core\LatLng( $lat_avg, $lng_avg );
 	}
 
 }

@@ -1,17 +1,17 @@
 <?php
 
-require( '../PHPGoogleMaps/PHPGoogleMaps.php' );
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
 require( '_system/config.php' );
 
-$map = new \GoogleMaps\Map;
+$map = new \PHPGoogleMaps\Core\Map;
 
 $marker1_options = array(
 	'title'		=> 'Custom marker icon',
 	'content'	=> 'This marker uses a custom icon'
 );
-$marker1 = \GoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY', $marker1_options );
-$icon = new \GoogleMaps\Overlay\MarkerIcon( '_images/yellow_marker.png' );
-$shadow = new \GoogleMaps\Overlay\MarkerIcon( '_images/yellow_marker_shadow.png' );
+$marker1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY', $marker1_options );
+$icon = new \PHPGoogleMaps\Overlay\MarkerIcon( '_images/yellow_marker.png' );
+$shadow = new \PHPGoogleMaps\Overlay\MarkerIcon( '_images/yellow_marker_shadow.png' );
 $shadow->setAnchor( 11 );
 $marker1->setIcon( $icon )->setShadow( $shadow );
 
@@ -19,8 +19,8 @@ $marker2_options = array(
 	'title'		=> 'Custom marker icon',
 	'content'	=> 'This marker uses a custom icon with a sprite to limit http connections'
 );
-$marker2 = \GoogleMaps\Overlay\Marker::createFromLocation( 'New Haven, CT', $marker2_options );
-$icon2 = \GoogleMaps\Overlay\MarkerIcon::create( '_images/purple_marker_sprite.png', array( 'height' => 34 ) );
+$marker2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'New Haven, CT', $marker2_options );
+$icon2 = \PHPGoogleMaps\Overlay\MarkerIcon::create( '_images/purple_marker_sprite.png', array( 'height' => 34 ) );
 
 $shadow2_options = array(
 	'height'	=> 24,
@@ -29,7 +29,7 @@ $shadow2_options = array(
 	'anchor_x'	=> 11,
 	'anchor_y'	=> 24
 );
-$shadow2 = new \GoogleMaps\Overlay\MarkerIcon( '_images/purple_marker_sprite.png', $shadow2_options );
+$shadow2 = new \PHPGoogleMaps\Overlay\MarkerIcon( '_images/purple_marker_sprite.png', $shadow2_options );
 $marker2->setIcon( $icon2 )->setShadow( $shadow2 );
 $map->addObjects( array( $marker1, $marker2 ) );
 
