@@ -4,6 +4,25 @@ For PHP 5.3+ and Google Maps API v3
 
 [examples](http://galengrover.com/projects/php-google-maps/examples/)
 
+##Features
+ - Binding map objects
+ - Directions with waypoints
+ - Event listeners and DOM event listeners
+ - Fusion tables
+ - Geocoding
+ - Geolocation
+ - Ground overlays
+ - KML layers
+ - Custom map styles
+ - Markers
+ - Custom marker icons
+ - Mobile display
+ - Polygons
+ - Polylines
+ - Shapes (rectangles and circles)
+ - Sidebar
+ - Streetview
+
 ##Autoloading
 
 There are 2 ways to autoload.
