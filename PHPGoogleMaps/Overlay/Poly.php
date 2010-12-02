@@ -27,7 +27,9 @@ abstract class Poly extends \PHPGoogleMaps\Core\MapObject {
 	public function __construct( $paths, array $options=null ) {
 		unset( $options['map'] );
 		$this->options = $options;
-		$this->paths = $paths;
+		foreach( $paths as $path ) {
+			$this->addPath( $path );
+		}
 	}
 
 	/**
