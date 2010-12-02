@@ -6,7 +6,7 @@ For PHP 5.3+ and Google Maps API v3
 
 ##Features
  - Binding map objects
- - Directions with waypoints
+ - Directions with waypoints ( walking, biking and driving )
  - Event listeners and DOM event listeners
  - Fusion tables
  - Geocoding
@@ -17,11 +17,11 @@ For PHP 5.3+ and Google Maps API v3
  - Markers
  - Custom marker icons
  - Mobile display
- - Polygons
- - Polylines
+ - Polygons and polylines
  - Shapes (rectangles and circles)
  - Sidebar
  - Streetview
+ - Simple configuration of map objects
 
 ##Autoloading
 
