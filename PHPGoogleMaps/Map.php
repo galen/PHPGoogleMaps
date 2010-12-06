@@ -271,6 +271,14 @@ class Map {
 	private $default_marker_shadow = null;
 
 	/**
+	 * Stagger markers
+	 * Time in milliseconds to stagger the marker additions
+	 *
+	 * @var integer
+	 */
+	 private $stagger_markers = 0;
+
+	/**
 	 * Map markers
 	 *
 	 * @var array
@@ -1220,6 +1228,27 @@ class Map {
  **************************************/
 
 	/**
+	 * Stagger markers
+	 * This will set a small timeout between marker additions
+	 *
+	 * @param integer $timeout Milliseconds
+	 * @return void
+	 */
+	public function staggerMarkers( $timeout=100 ) {
+		$this->stagger_markers = $timeout;
+		$this->addObject(
+			new \PHPGoogleMaps\Event\EventListener(
+				'idle',
+				sprintf( 'function(){j=0;for(var i=0;i<%1$s.length-1;i++){setTimeout(function(){%1$s[j] = new google.maps.Marker(%1$s[j++])},i*%2$s)};setTimeout(function(){%1$s[%1$s.length-1] = new google.maps.Marker(%1$s[%1$s.length-1])},((%1$s.length-1)*%2$s))}',
+					$this->getMarkersJsVar(),
+					$this->stagger_markers
+				),
+				true
+			)
+		);
+	}
+
+	/**
 	 * Add a marker to the map
 	 *
 	 * @param Marker $marker Marker to add
@@ -1650,8 +1679,12 @@ class Map {
 	  			}
 	  			$output .= "\tif ( navigator.geolocation && typeof geolocation != 'undefined' ) {\n";
 	  		}
-	  	
-			$output .= sprintf( "\tthis.markers[%s] = new google.maps.Marker({\n", $marker_id );
+	  		if ( $this->stagger_markers ) {
+				$output .= sprintf( "\tthis.markers[%s] = {\n", $marker_id );
+			}
+			else {
+				$output .= sprintf( "\tthis.markers[%s] = new google.maps.Marker({\n", $marker_id );
+			}
 			if ( $marker->geolocation ) {
 				$output .= "\t\tposition: geolocation,\n";
 			}
@@ -1673,11 +1706,15 @@ class Map {
 				$gs = $this->marker_groups;
 				$output .= sprintf( "\t\tgroups:[%s],\n", implode( ',', array_map( function( $g ) use ( $gs ) { return $gs[$g->var_name]->_id; }, $marker->groups ) ) );
 			}
+			if ( $marker->getOption( 'animation' ) ) {
+				$output .= sprintf( "\t\tanimation: %s,\n", $marker->getOption( 'animation' ) );
+				$marker->removeOption( 'animation' );
+			}
 			foreach( $marker->getOptions() as $marker_option => $marker_value ) {
 				$output .= sprintf( "\t\t%s:%s,\n", $marker_option, $this->phpToJs( $marker_value ) );
 			}
 			
-			$output .= "\t});\n";
+			$output .= sprintf( "\t}%s;\n", $this->stagger_markers ? '' : ')');
 
 			if ( $this->info_windows ) {
 				if ( isset( $marker->content ) ) {
@@ -1892,6 +1929,15 @@ class Map {
 	}
 
 	/**
+	 * Get the map's javascript variable
+	 *
+	 * @return string
+	 */
+	public function getMarkersJsVar() {
+		return sprintf( '%s.markers', $this->map_id );
+	}
+
+	/**
 	 * Get info window's javascript variable
 	 *
 	 * @return string
@@ -1960,4 +2006,3 @@ class Map {
 	}
 
 }
-
