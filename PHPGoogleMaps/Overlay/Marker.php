@@ -68,6 +68,14 @@ class Marker extends \PHPGoogleMaps\Core\MapObject {
 	protected $groups = array();
 
 	/**
+	 * Animations
+	 * Array of valid animations
+	 *
+	 * @var array
+	 */
+	protected $animations = array( 'bounce', 'drop' );
+
+	/**
 	 * Marker constructor
 	 * Initializes the marker options
 	 *
@@ -105,8 +113,16 @@ class Marker extends \PHPGoogleMaps\Core\MapObject {
 						$this->enableGeolocation( $timeout, $high_accuracy );
 					}
 					break;
+				case 'animation':
+					if ( in_array( $option, $this->animations ) ){
+						$this->options['animation'] = sprintf( 'google.maps.Animation.%s', strtoupper( $option ) );
+					}
+					else {
+						$this->options['animation'] = $option;
+					}
+					break;
 				default:
-					$this->$option_name = $option;
+					$this->options[$option_name] = $option;
 			
 			}
 				
