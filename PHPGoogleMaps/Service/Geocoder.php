@@ -16,8 +16,8 @@ class Geocoder {
 	/**
 	 * Geocodes a location
 	 * 
-	 * This will return a `GeocodeResult` object if the location is successfully geocoded
-	 * The object will contain a `latitude`, a `longitude`, and optionally a viewport and or bounds
+	 * This will return a `LatLng` object if the location is successfully geocoded
+	 * The object will contain a `latitude`, a `longitude`
 	 *
 	 * If an error occurred a `GeocodeError` object will be returned with a `status` property
 	 * containing the error status returned from google
@@ -25,11 +25,9 @@ class Geocoder {
 	 * @link http://code.google.com/apis/maps/documentation/geocoding/
 	 *
 	 * @param string $location
-	 * @param boolean $return_viewport {@link http://code.google.com/apis/maps/documentation/geocoding/#Results}
-	 * @param boolean $return_bounds {@link http://code.google.com/apis/maps/documentation/geocoding/#Results}
 	 * @return LatLng|GeocodeError
 	 */
-	public function getLatLng( $location, $return_viewport=false, $return_bounds=false ) {
+	public function getLatLng( $location ) {
 		$response = self::scrapeAPI( $location );
 		if ( $response instanceof GeocodeError ) {
 			return $response;
@@ -37,6 +35,52 @@ class Geocoder {
 		return new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->location->lat, $response->results[0]->geometry->location->lng );
 	}
 
+	/**
+	 * Geocodes a location
+	 * 
+	 * This will return a `GeocodeResult` object if the location is successfully geocoded
+	 * The object will contain the properties `latlng`, `formatted_address`, `viewport` `bounds` and `raw`
+	 * latlng: LatLng object for the first returned location
+	 * viewport: viewport for the first returned location
+	 * bounds: bounds for the first returned location
+	 * raw: the entire response
+	 * formatted_address: formatted address for the first returned location
+	 *
+	 * If an error occurred a `GeocodeError` object will be returned with a `error` property
+	 * containing the error status returned from google
+	 *
+	 * @link http://code.google.com/apis/maps/documentation/geocoding/
+	 *
+	 * @param string $location
+	 * @return GeocodeResult|GeocodeError
+	 */
+	public function geocode( $location ) {
+		$response = self::scrapeAPI( $location );
+		if ( $response instanceof GeocodeError ) {
+			return $response;
+		}
+		
+		$geocoded_location = new GeocodeResult;
+		$geocoded_location->latlng = new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->location->lat, $response->results[0]->geometry->location->lng );
+		$geocoded_location->formatted_address = $response->results[0]->formatted_address;
+		$geocoded_location->raw = $response->results;
+		$geocoded_location->viewport = new \stdClass;
+		$geocoded_location->viewport->southwest = new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->viewport->southwest->lat, $response->results[0]->geometry->viewport->southwest->lng );
+		$geocoded_location->viewport->northeast = new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->viewport->northeast->lat, $response->results[0]->geometry->viewport->northeast->lng );
+
+		$geocoded_location->bounds = new \stdClass;
+		$geocoded_location->bounds->southwest = new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->bounds->southwest->lat, $response->results[0]->geometry->bounds->southwest->lng );
+		$geocoded_location->bounds->northeast = new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->bounds->northeast->lat, $response->results[0]->geometry->bounds->northeast->lng );
+
+		return $geocoded_location;
+	}
+
+	/**
+	 * Scrape the API
+	 *
+	 * @param string $location Location to geocode
+	 * @return GeocodeError|LatLng Returns a GeocodeError on error, LatLng on success.
+	 */
 	private function scrapeAPI( $location ) {
 		$url = sprintf( "http://maps.google.com/maps/api/geocode/json?address=%s&sensor=false", urlencode( $location ) );
 		$response = json_decode( Scraper::scrape( $url ) );
@@ -49,29 +93,8 @@ class Geocoder {
 		return $response;
 	}
 
-	/*
-			if ( $return_viewport ) {
-			$geocoded_location->viewport = new stdClass;
-			$geocoded_location->viewport->southwest = new stdClass;
-			$geocoded_location->viewport->southwest->lat = $gc->results[0]->geometry->viewport->southwest->lat;
-			$geocoded_location->viewport->southwest->lng = $gc->results[0]->geometry->viewport->southwest->lng;
-			$geocoded_location->viewport->northeast = new stdClass;
-			$geocoded_location->viewport->northeast->lat = $gc->results[0]->geometry->viewport->northeast->lat;
-			$geocoded_location->viewport->northeast->lng = $gc->results[0]->geometry->viewport->northeast->lng;
-		}
-		
-		if ( $return_bounds ) {
-			$geocoded_location->bounds = new stdClass;
-			$geocoded_location->bounds->southwest = new stdClass;
-			$geocoded_location->bounds->southwest->lat = $gc->results[0]->geometry->bounds->southwest->lat;
-			$geocoded_location->bounds->southwest->lng = $gc->results[0]->geometry->bounds->southwest->lng;
-			$geocoded_location->bounds->northeast = new stdClass;
-			$geocoded_location->bounds->northeast->lat = $gc->results[0]->geometry->bounds->northeast->lat;
-			$geocoded_location->bounds->northeast->lng = $gc->results[0]->geometry->bounds->northeast->lng;
-		}*/
-
 }
 
-class GeocodeResult {}
+class GeocodeResult{}
 class GeocodeError {}
 
