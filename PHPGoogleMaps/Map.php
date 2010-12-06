@@ -1234,7 +1234,7 @@ class Map {
 	 * @param integer $timeout Milliseconds
 	 * @return void
 	 */
-	public function staggerMarkers( $timeout=100 ) {
+	public function enableMarkerStaggering( $timeout=100 ) {
 		$this->stagger_markers = $timeout;
 		$this->addObject(
 			new \PHPGoogleMaps\Event\EventListener(
