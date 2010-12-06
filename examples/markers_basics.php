@@ -16,6 +16,7 @@ $marker2_options = array(
 	'content'	=> '<p><strong>San Diego, CA info window</strong></p>'
 );
 $marker2 = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( new \PHPGoogleMaps\Core\LatLng( 32.7153292,-117.1572551 ), $marker2_options );
+
 $map->addObjects( array( &$marker1, $marker2 ) );
 
 ?>

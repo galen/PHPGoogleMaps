@@ -16,6 +16,8 @@ For PHP 5.3+ and Google Maps API v3
  - Custom map styles
  - Markers
  - Custom marker icons
+ - Marker staggering
+ - Marker animation (bounce, drop)
  - Mobile display
  - Polygons and polylines
  - Shapes (rectangles and circles)

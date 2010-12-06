@@ -5,22 +5,34 @@ require( '_system/config.php' );
 
 $map = new \PHPGoogleMaps\Map;
 
-$marker1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY',
-	array( 'title' => 'New York, NY', 'content' => 'New York marker"' )
-)
-->setIcon( 'http://www.galengrover.com/projects/php-google-maps/examples/_images/blueA.png' );
+$locations = array(
+	'New York, NY',
+	'San Diego, CA',
+	'Dallas, TX',
+	'Seattle, WA',
+	'Miami, FL',
+	'Atlanta, GA',
+	'Boise, ID',
+	'Green Bay, WI',
+	'Detroit, MI',
+	'Denver, CO',
+	'Phoenix, AZ',
+	'Portland, OR',
+	'Chicago, IL',
+	'New Orleans, LA',
+	'San Francisco, CA',
+	'Las Vegas, NV'
+);
 
-$marker2 = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( new \PHPGoogleMaps\Core\LatLng( 32.7153292,-117.1572551 ),
-	array( 'title' => 'San Diego, CA', 'content' => 'San Diego marker' )
-)
-->setIcon( 'http://www.galengrover.com/projects/php-google-maps/examples/_images/blueB.png' );
+foreach( $locations as $i => $location ) {
+	$marker = \PHPGoogleMaps\Overlay\Marker::createFromLocation( $location,
+		array( 'title' => $location, 'content' => "$location marker", 'animation' => 'drop' )
+	)
+	->setIcon( sprintf( "http://www.galengrover.com/projects/php-google-maps/examples/_images/blue%s.png", chr( $i++ + 65 ) ) );
+	$map->addObject( $marker );
+}
 
-$marker3 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Dallas, TX',
-	array( 'title' => 'Dallas, TX', 'content' => 'Dallas marker' )
-)
-->setIcon( 'http://www.galengrover.com/projects/php-google-maps/examples/_images/blueC.png' );
-
-$map->addObjects( array( $marker1, $marker2, $marker3 ) );
+$map->enableMarkerStaggering();
 
 ?>
 

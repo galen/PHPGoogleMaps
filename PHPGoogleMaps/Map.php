@@ -1238,6 +1238,7 @@ class Map {
 		$this->stagger_markers = $timeout;
 		$this->addObject(
 			new \PHPGoogleMaps\Event\EventListener(
+			$this->getJsVar(),
 				'idle',
 				sprintf( 'function(){j=0;for(var i=0;i<%1$s.length-1;i++){setTimeout(function(){%1$s[j] = new google.maps.Marker(%1$s[j++])},i*%2$s)};setTimeout(function(){%1$s[%1$s.length-1] = new google.maps.Marker(%1$s[%1$s.length-1])},((%1$s.length-1)*%2$s))}',
 					$this->getMarkersJsVar(),
@@ -1800,11 +1801,12 @@ class Map {
 	  	if ( count ($this->event_listeners ) ) {
 			$output .= "\tthis.event_listeners = [];\n";
 	  		foreach( $this->event_listeners as $n => $event_listener ) {
+	  			$event_class = get_class( $event_listener->decoratee );
 		  		$output .= sprintf( "\tthis.event_listeners[%s] = google.maps.event.add%sListener%s(%s, '%s', %s);\n",
 		  						$n,
-		  						get_class( $event_listener->decoratee ) == 'PHPGoogleMaps\Event\DomEventListener' ? 'Dom' : '',
+		  						$event_class == 'PHPGoogleMaps\Event\DomEventListener' ? 'Dom' : '',
 		  						$event_listener->once ? 'Once' : '',
-		  						isset( $event_listener->object ) ? sprintf( 'document.getElementById("%s")', $event_listener->object ) : $this->getJsVar(),
+		  						$event_class == 'PHPGoogleMaps\Event\DomEventListener' ? sprintf( 'document.getElementById("%s")', $event_listener->object ) : $event_listener->object,
 		  						$event_listener->event,
 		  						$event_listener->function
 		  					);

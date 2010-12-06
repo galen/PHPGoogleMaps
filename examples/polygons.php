@@ -9,7 +9,7 @@ $map = new \PHPGoogleMaps\Map;
 
 $polygon_paths = array(
 	Geocoder::getLatLng( 'San Diego, CA' ),
-	Geocoder::getLatLng( 'Austin, TX' ),
+	'Austin, TX',
 	Geocoder::getLatLng( 'New Haven, CT' ),
 	Geocoder::getLatLng( 'Seattle, WA' )
 );
