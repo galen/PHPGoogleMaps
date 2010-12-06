@@ -44,12 +44,32 @@ abstract class MapObject {
 	}
 
 	/**
+	 * Return an option
+	 *
+	 * @param string $option Option to return
+	 * @return mixed
+	 */
+	public function getOption( $option ) {
+		return isset( $this->options[$option] ) ? $this->options[$option] : false;
+	}
+
+	/**
 	 * Return the options
 	 *
 	 * @return array
 	 */
 	public function getOptions() {
 		return $this->options;
+	}
+
+	/**
+	 * Remove an option
+	 *
+	 * @param string $option Option to remove
+	 * @return void
+	 */
+	public function removeOption( $option ) {
+		unset( $this->options[$option] );
 	}
 
 	/**
