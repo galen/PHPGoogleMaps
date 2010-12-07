@@ -24,6 +24,13 @@ class LatLng {
 	public $lng;
 
 	/**
+	 * LatLng location
+	 *
+	 * @var string
+	 */
+	private $location;
+
+	/**
 	 * Constructor
 	 *
 	 * @param float $lat Latitude
@@ -33,6 +40,15 @@ class LatLng {
 	public function __construct( $lat, $lng ) {
 		$this->lat = $lat;
 		$this->lng = $lng;
+	}
+
+	/**
+	 * Get lat lng
+	 *
+	 * @return LatLng
+	 */
+	public function getLatLng() {
+		return $this;
 	}
 
 	/**

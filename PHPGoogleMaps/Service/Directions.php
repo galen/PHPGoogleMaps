@@ -62,7 +62,7 @@ abstract class Directions extends \PHPGoogleMaps\Core\MapObject {
 			$this->request_options['origin'] = $origin;
 		}
 		else {
-			if ( ( $geo = \PHPGoogleMaps\Service\Geocoder::getLatLng( $origin ) ) instanceof \PHPGoogleMaps\Core\LatLng ) {
+			if ( ( $geo = \PHPGoogleMaps\Service\Geocoder::geocode( $origin ) ) instanceof \PHPGoogleMaps\Core\LatLng ) {
 				$this->request_options['origin'] = $geo;
 			}
 			else {
@@ -74,7 +74,7 @@ abstract class Directions extends \PHPGoogleMaps\Core\MapObject {
 			$this->request_options['destination'] = $destination;
 		}
 		else {
-			if ( ( $geo = \PHPGoogleMaps\Service\Geocoder::getLatLng( $destination ) ) instanceof \PHPGoogleMaps\Core\LatLng ) {
+			if ( ( $geo = \PHPGoogleMaps\Service\Geocoder::geocode( $destination ) ) instanceof \PHPGoogleMaps\Core\LatLng ) {
 				$this->request_options['destination'] = $geo;
 			}
 			else {

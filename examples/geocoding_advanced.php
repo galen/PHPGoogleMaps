@@ -12,7 +12,7 @@ if ( isset( $_GET['location'] ) && strlen( $_GET['location'] ) ) {
 		}
 		else {
 			$location = $geocode_result->formatted_address;
-			$latlng = $geocode_result->latlng;
+			$position = $geocode_result;
 		}
 	}
 	else {
@@ -22,16 +22,16 @@ if ( isset( $_GET['location'] ) && strlen( $_GET['location'] ) ) {
 }
 if ( isset( $_GET['geocoded_location'] ) ) {
 	list( $location, $lat, $lng ) = explode( '|', $_GET['geocoded_location'] );
-	$latlng = new \PHPGoogleMaps\Core\LatLng( $lat, $lng );
+	$position = new \PHPGoogleMaps\Core\LatLng( $lat, $lng );
 }
 
-if ( isset( $latlng ) ) {
+if ( isset( $position ) ) {
 	$map = new \PHPGoogleMaps\Map;
-	$marker = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( $latlng, array( 'content' => $location ) );
+	$marker = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( $position, array( 'content' => $location ) );
 	$map->addObject( $marker );
 	$map->disableAutoEncompass();
 	$map->setZoom( 13 );
-	$map->setCenter( $latlng );
+	$map->setCenter( $position );
 }
 
 ?>
@@ -70,7 +70,7 @@ if ( isset( $latlng ) ) {
 <input type="submit" value=" Geocode ">
 </form>
 
-<?php if( isset( $location ) ): ?><p><?php echo $location ?></p><?php endif; ?>
+<?php if( isset( $location ) && !isset( $location_options ) ): ?><p><?php echo $location ?></p><?php endif; ?>
 <?php if( isset( $error ) ): ?><p>Unable to geocode "<?php echo $location ?>" (<?php echo $error ?>)</p><?php endif; ?>
 <?php if( isset( $map ) ) $map->printMap() ?>
 

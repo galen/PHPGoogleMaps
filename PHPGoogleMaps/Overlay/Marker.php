@@ -244,7 +244,7 @@ class Marker extends \PHPGoogleMaps\Core\MapObject {
 	 * @return Marker
 	 */
 	public static function createFromLocation( $location, array $options=null ) {
-		$geocode_result = \PHPGoogleMaps\Service\Geocoder::getLatLng( $location );
+		$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $location );
 		if ( $geocode_result instanceof \PHPGoogleMaps\Core\LatLng ) {
 			return self::createFromLatLng( $geocode_result, $options );
 		}

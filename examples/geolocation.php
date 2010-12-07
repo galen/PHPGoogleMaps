@@ -7,7 +7,7 @@ $map = new \PHPGoogleMaps\Map;
 //$marker = \PHPGoogleMaps\Overlay\Marker::createFromUserLocation( array( 'geolocation_high_accuracy' => true, 'geolocation_timeout' => 10000 ) );
 $map->addObject( $marker );
 $map->enableGeolocation( 5000, true );
-$map->centerOnUser( \PHPGoogleMaps\Service\Geocoder::getLatLng('New Haven, CT') );
+$map->centerOnUser( \PHPGoogleMaps\Service\Geocoder::geocode('New YOrk, NY') );
 $map->setWidth('500px');
 $map->setHeight('500px');
 $map->setZoom(16);

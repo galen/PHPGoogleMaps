@@ -43,10 +43,10 @@ abstract class Poly extends \PHPGoogleMaps\Core\MapObject {
 	 */
 	public function addPath( $location ) {
 		if ( $location instanceof \PHPGoogleMaps\Core\LatLng ) {
-			$this->paths[] = $location;
+			$this->paths[] = $location->getLatLng();
 		}
 		else {
-			$geocode_result = \PHPGoogleMaps\Service\Geocoder::getLatLng( $location );
+			$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $location, true );
 			if ( $geocode_result instanceof \PHPGoogleMaps\Core\LatLng ) {
 				$this->paths[] = $geocode_result;
 			}

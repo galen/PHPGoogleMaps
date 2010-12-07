@@ -5,7 +5,7 @@ require( '_system/config.php' );
 
 $map = new \PHPGoogleMaps\Map;
 
-$latlng = \PHPGoogleMaps\Service\Geocoder::getLatLng( 'San Diego, CA' );
+$latlng = \PHPGoogleMaps\Service\Geocoder::geocode( 'San Diego, CA' );
 $marker = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( $latlng );
 $map->addObject( $marker );
 $map->disableAutoEncompass();

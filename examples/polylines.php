@@ -8,10 +8,10 @@ require( '_system/config.php' );
 $map = new \PHPGoogleMaps\Map;
 
 $polyline_paths = array(
-	Geocoder::getLatLng( 'San Diego, CA' ),
-	Geocoder::getLatLng( 'Austin, TX' ),
-	Geocoder::getLatLng( 'New Haven, CT' ),
-	Geocoder::getLatLng( 'Seattle, WA' )
+	Geocoder::geocode( 'San Diego, CA' ),
+	Geocoder::geocode( 'Austin, TX' ),
+	Geocoder::geocode( 'New Haven, CT' ),
+	Geocoder::geocode( 'Seattle, WA' )
 );
 
 $polyline_options = array(

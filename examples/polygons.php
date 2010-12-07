@@ -8,10 +8,10 @@ require( '_system/config.php' );
 $map = new \PHPGoogleMaps\Map;
 
 $polygon_paths = array(
-	Geocoder::getLatLng( 'San Diego, CA' ),
+	Geocoder::geocode( 'San Diego, CA' ),
 	'Austin, TX',
-	Geocoder::getLatLng( 'New Haven, CT' ),
-	Geocoder::getLatLng( 'Seattle, WA' )
+	Geocoder::geocode( 'New Haven, CT' ),
+	Geocoder::geocode( 'Seattle, WA' )
 );
 
 $polygon_options = array(

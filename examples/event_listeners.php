@@ -5,8 +5,8 @@ require( '_system/config.php' );
 
 $map = new \PHPGoogleMaps\Map;
 
-$event1 = new \PHPGoogleMaps\Event\EventListener( 'idle', 'function(){alert("the map is loaded");}', true );
-$event2 = new \PHPGoogleMaps\Event\EventListener( 'click', 'add_marker');
+$event1 = new \PHPGoogleMaps\Event\EventListener( $map->getJsVar(), 'idle', 'function(){alert("the map is loaded");}', true );
+$event2 = new \PHPGoogleMaps\Event\EventListener( $map->getJsVar(), 'click', 'add_marker');
 
 $dom_event1 = new \PHPGoogleMaps\Event\DomEventListener( 'add_random_marker', 'click', 'add_random_marker' );
 

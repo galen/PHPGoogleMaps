@@ -12,7 +12,12 @@ $map2->enableStreetView( array( 'addressControl' => false, 'enableCloseButton' =
 $map2->setCenter('San Diego, CA');
 
 $map3 = new \PHPGoogleMaps\Map( array( 'map_id' => 'map3' ) );
-$map3->enableStreetView( array( 'position' => \PHPGoogleMaps\Service\Geocoder::getLatLng( 'New Haven, CT' ) ) );
+try {
+	$map3->enableStreetView( array( 'position' => 'New Haven, CT' ) );
+}
+catch ( GeocodeException $e ) {
+	echo $e->error;
+}
 
 ?>
 

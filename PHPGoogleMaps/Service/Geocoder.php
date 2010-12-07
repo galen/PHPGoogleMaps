@@ -16,31 +16,10 @@ class Geocoder {
 	/**
 	 * Geocodes a location
 	 * 
-	 * This will return a `LatLng` object if the location is successfully geocoded
-	 * The object will contain a `latitude`, a `longitude`
-	 *
-	 * If an error occurred a `GeocodeError` object will be returned with a `status` property
-	 * containing the error status returned from google
-	 *
-	 * @link http://code.google.com/apis/maps/documentation/geocoding/
-	 *
-	 * @param string $location
-	 * @return LatLng|GeocodeError
-	 */
-	public function getLatLng( $location ) {
-		$response = self::scrapeAPI( $location );
-		if ( $response instanceof GeocodeError ) {
-			return $response;
-		}
-		return new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->location->lat, $response->results[0]->geometry->location->lng );
-	}
-
-	/**
-	 * Geocodes a location
-	 * 
 	 * This will return a `GeocodeResult` object if the location is successfully geocoded
-	 * The object will contain the properties `latlng`, `formatted_address`, `viewport` `bounds` and `raw`
-	 * latlng: LatLng object for the first returned location
+	 * The object will contain the properties `lat`, `lng`, `formatted_address`, `viewport` `bounds` and `raw`
+	 * lat: latitude for the first returned location
+	 * lng: longitude for the first returned location
 	 * viewport: viewport for the first returned location
 	 * bounds: bounds for the first returned location
 	 * raw: the entire response
@@ -54,14 +33,17 @@ class Geocoder {
 	 * @param string $location
 	 * @return GeocodeResult|GeocodeError
 	 */
-	public function geocode( $location ) {
+	public function geocode( $location, $simple=false ) {
 		$response = self::scrapeAPI( $location );
 		if ( $response instanceof GeocodeError ) {
 			return $response;
 		}
 		
-		$geocoded_location = new GeocodeResult;
-		$geocoded_location->latlng = new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->location->lat, $response->results[0]->geometry->location->lng );
+		if ( $simple ) {
+			return new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->location->lat, $response->results[0]->geometry->location->lng );
+		}
+		
+		$geocoded_location = new GeocodeResult( $response->results[0]->geometry->location->lat, $response->results[0]->geometry->location->lng );
 		$geocoded_location->formatted_address = $response->results[0]->formatted_address;
 		$geocoded_location->raw = $response->results;
 		$geocoded_location->viewport = new \stdClass;
@@ -81,7 +63,7 @@ class Geocoder {
 	 * @param string $location Location to geocode
 	 * @return GeocodeError|LatLng Returns a GeocodeError on error, LatLng on success.
 	 */
-	private function scrapeAPI( $location ) {
+	private static function scrapeAPI( $location ) {
 		$url = sprintf( "http://maps.google.com/maps/api/geocode/json?address=%s&sensor=false", urlencode( $location ) );
 		$response = json_decode( Scraper::scrape( $url ) );
 		if ( $response->status != 'OK' ) {
@@ -94,7 +76,3 @@ class Geocoder {
 	}
 
 }
-
-class GeocodeResult{}
-class GeocodeError {}
-

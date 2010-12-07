@@ -19,8 +19,8 @@ $rectangle_options = array(
 	'fillOpacity'	=> 0.05,
 );
 $rectangle = new \PHPGoogleMaps\Overlay\Rectangle(
-	\PHPGoogleMaps\Service\Geocoder::getLatLng( 'San Diego, CA' ),
-	\PHPGoogleMaps\Service\Geocoder::getLatLng( 'Balboa Park San Diego, CA' ),
+	'San Diego, CA',
+	\PHPGoogleMaps\Service\Geocoder::geocode( 'Balboa Park San Diego, CA' ),
 	$rectangle_options
 );
 

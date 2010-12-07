@@ -27,14 +27,38 @@ class Rectangle extends \PHPGoogleMaps\Overlay\Shape {
 	/**
 	 * Constructor
 	 *
-	 * @param LatLng $southwest Southwest point of the rectangle
-	 * @param LatLng $northeast Northeast point of the rectangle
+	 * @param string|LatLng $southwest Southwest point of the rectangle
+	 * @param string|LatLng $northeast Northeast point of the rectangle
 	 * @param array $options Array of rectangle options {@link http://code.google.com/apis/maps/documentation/javascript/reference.html#RectangleOptions}
 	 * @return Rectangle
 	 */
-	public function __construct( \PHPGoogleMaps\Core\LatLng $southwest, \PHPGoogleMaps\Core\LatLng $northeast, array $options=null ) {
-		$this->southwest = $southwest;
-		$this->northeast = $northeast;
+	public function __construct( $southwest, $northeast, array $options=null ) {
+
+		if ( $southwest instanceof \PHPGoogleMaps\Core\LatLng ) {
+			$this->southwest = $southwest->getLatLng();
+		}
+		else {
+			$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $southwest, true );
+			if ( $geocode_result instanceof \PHPGoogleMaps\Core\LatLng ) {
+				$this->southwest = $geocode_result;
+			}
+			else {
+				throw new \PHPGoogleMaps\Core\GeocodeException( $geocode_result );
+			}
+		}
+		if ( $northeast instanceof \PHPGoogleMaps\Core\LatLng ) {
+			$this->northeast = $northeast->getLatLng();
+		}
+		else {
+			$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $northeast, true );
+			if ( $geocode_result instanceof \PHPGoogleMaps\Core\LatLng ) {
+				$this->northeast = $geocode_result;
+			}
+			else {
+				throw new \PHPGoogleMaps\Core\GeocodeException( $geocode_result );
+			}
+		}
+
 		unset( $options['map'], $options['bounds'] );
 		$this->options = $options;
 	}

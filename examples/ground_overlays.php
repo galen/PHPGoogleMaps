@@ -7,8 +7,8 @@ $map = new \PHPGoogleMaps\Map;
 
 $go = new \PHPGoogleMaps\Overlay\GroundOverlay(
 	'http://www.volunteer.blogs.com/winewaves/images/san_diego_postcard.jpg',
-	\PHPGoogleMaps\Service\Geocoder::getLatLng( 'San Diego, CA' ),
-	\PHPGoogleMaps\Service\Geocoder::getLatLng( 'Balboa Park San Diego, CA' )
+	\PHPGoogleMaps\Service\Geocoder::geocode( 'San Diego, CA' ),
+	\PHPGoogleMaps\Service\Geocoder::geocode( 'Balboa Park San Diego, CA' )
 );
 
 $map->addObject( $go );

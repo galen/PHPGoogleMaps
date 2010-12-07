@@ -610,6 +610,25 @@ class Map {
 		else {
 			$this->streetview->container = $this->map_id;
 		}
+		
+		if ( isset( $options['position'] ) ) {
+			if ( $options['position'] == 'geolocation' ) {
+					$this->enableGeolocation();
+					$options['position'] = "geolocation";
+			}
+			elseif ( $options['position'] instanceof \PHPGoogleMaps\Core\LatLng ) {
+				$options['position'] = $options['position']->getLatLng();
+			}
+			else {
+				$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $options['position'], true );
+				if ( $geocode_result instanceof \PHPGoogleMaps\Core\LatLng ) {
+					$options['position'] = $geocode_result;
+				}
+				else {
+					throw new \PHPGoogleMaps\Core\GeocodeException( $geocode_result );
+				}
+			}		
+		}		
 		$this->streetview->options = (array)$options + $default_options;
 	}
 
@@ -798,7 +817,7 @@ class Map {
 			$this->center = $location;
 		}
 		else {
-			$geocode_result = \PHPGoogleMaps\Service\Geocoder::getLatLng( $location );
+			$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $location );
 			if ( $geocode_result instanceof \PHPGoogleMaps\Core\LatLng ) {
 				$this->center = $geocode_result;
 			}
@@ -1822,18 +1841,11 @@ class Map {
 	  				switch( $streetview_option ) {
 	  					case 'container':
 	  						break;
-		  				case 'position':
-		  					if ( $streetview_value == 'geolocation' ) {
-			  					$this->enableGeolocation();
-	  							$streetview_options .= "\t\tposition:geolocation,\n";
-			  					break;
-	  						}
 	  					default:
 			  				$streetview_options .= sprintf( "\t\t%s:%s,\n", $streetview_option,  $this->parseLatLngs( $this->phpToJs( $streetview_value ) ) );
 					}
 	  			}
 			}
-
 	  		$output .= sprintf( "\tthis.streetview = new google.maps.StreetViewPanorama(document.getElementById(\"%s\"), {\n%s\t});\n\tthis.map.setStreetView(this.streetview);\n", $this->streetview->container, $streetview_options );
 
 	  	}
