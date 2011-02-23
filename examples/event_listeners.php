@@ -10,7 +10,7 @@ $event2 = new \PHPGoogleMaps\Event\EventListener( $map->getJsVar(), 'click', 'ad
 
 $dom_event1 = new \PHPGoogleMaps\Event\DomEventListener( 'add_random_marker', 'click', 'add_random_marker' );
 
-$map->addObjects( array( $event1, $event2, $dom_event1 ) );
+$map->addObjects( array( $event1, &$event2, $dom_event1 ) );
 $map->setCenter( 'San Diego, CA' );
 $map->setZoom( 14 );
 
@@ -26,6 +26,7 @@ $map->setZoom( 14 );
 		markers = [];
 		var marker = new google.maps.Marker({
 			position: event.latLng,
+			animation: google.maps.Animation.DROP,
 			map: <?php echo $map->getJsVar() ?>
 		});
 		markers.push(marker);
@@ -50,6 +51,7 @@ $map->setZoom( 14 );
 		new_lng = lng_sw + Math.random()*lng_diff;
 		var marker = new google.maps.Marker({
 			position: new google.maps.LatLng( new_lat, new_lng ),
+			animation: google.maps.Animation.DROP,
 			map: <?php echo $map->getJsVar() ?>
 		});
 		var info_window = <?php echo $map->getInfoWindowJsVar() ?>;
@@ -80,7 +82,7 @@ $map->setZoom( 14 );
 
 <?php $map->printMap() ?>
 
-<a href="#" id="add_random_marker">Add a random marker</a>
+<a href="#" id="add_random_marker">Add a random marker</a>, <a href="#" onclick="google.maps.event.removeListener(<?php echo $event2->getJsVar() ?>);alert('Event listener has been removed')">Remove map click listener</a>
 
 </body>
 

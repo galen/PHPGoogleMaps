@@ -1618,6 +1618,7 @@ class Map {
 		  		switch ( $request_option ) {
 		  			case 'waypoints':
 		  				$request_options .= sprintf("\t\twaypoints: %s,\n", $this->parseLatLngs( $this->phptoJs( $request_value ) ) );
+		  				break;
 		  			case 'origin':
 				  		$request_options .= sprintf( "\t\torigin: new google.maps.LatLng(%s,%s),\n", $this->directions->request_options['origin']->lat, $this->directions->request_options['origin']->lng );
 					  	break;

@@ -10,8 +10,7 @@ $ft_options = array(
 $ft = new \PHPGoogleMaps\Layer\FusionTable( 232192, $ft_options );
 
 $ft_options2 = array(
-	'query'	=> 'SELECT location FROM 232192 WHERE state_province_abbrev="RI"',
-	'heatmap'	=> true
+	'query'	=> 'SELECT location FROM 232192 WHERE state_province_abbrev="RI"'
 );
 $ft2 = new \PHPGoogleMaps\Layer\FusionTable( 232192, $ft_options2 );
 

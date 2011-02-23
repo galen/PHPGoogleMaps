@@ -53,6 +53,7 @@ abstract class Directions extends \PHPGoogleMaps\Core\MapObject {
 			$this->renderer_options = $renderer_options ;
 		}
 		if ( $request_options ) {
+			unset( $request_options['waypoints'] );
 			$this->request_options = $request_options;
 		}
 
@@ -87,6 +88,20 @@ abstract class Directions extends \PHPGoogleMaps\Core\MapObject {
 			}
 		}
 
-	} 
+	}
+	
+	public function addWaypoint( $waypoint, $stopover=true ) {
+		if ( $waypoint instanceof \PHPGoogleMaps\Core\LatLng ) {
+			$this->request_options['waypoints'][] = array( 'location' => $waypoint,  );
+		}
+		else {
+			if ( ( $geo = \PHPGoogleMaps\Service\Geocoder::geocode( $waypoint, true ) ) instanceof \PHPGoogleMaps\Core\LatLng ) {
+				$this->request_options['waypoints'][] =  array( 'location' => $geo );
+			}
+			else {
+				throw new \PHPGoogleMaps\Core\GeocodeException( $geo );
+			}
+		}
+	}
 
 }

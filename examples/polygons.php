@@ -24,7 +24,11 @@ $polygon = new \PHPGoogleMaps\Overlay\Polygon( $polygon_paths, $polygon_options 
 
 $polygon->addPath( 'San Francisco, CA' );
 
-$m = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( $polygon->getCenter() );
+$m_options = array(
+	'title'	=> 'Center of Polygon',
+	'content'	=> 'This marker was added to the center of the polygon via Polygon::getCenter()'
+);
+$m = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( $polygon->getCenter(), $m_options );
 
 $map->disableAutoEncompass();
 $map->setCenter( 'Austin, TX' );

@@ -10,6 +10,7 @@ $map->setZoom( 3 );
 if ( isset( $_GET['origin'], $_GET['destination'] ) && strlen( $_GET['origin'] ) && strlen( $_GET['destination'] ) ) {
 	try {
 		$directions = new \PHPGoogleMaps\Service\DrivingDirections( $_GET['origin'], $_GET['destination'] );
+		//$directions->addWaypoint( 'Austin, TX' );
 		$map->addObject( $directions );
 	}
 	catch ( \PHPGoogleMaps\Core\GeocodeException $e ) {

@@ -38,4 +38,8 @@ class EventListenerDecorator extends \PHPGoogleMaps\Core\MapObjectDecorator {
 		parent::__construct( $listener, array( '_id' => $id, '_map' => $map ) );
 	}
 
+	public function getJsVar() {
+		return sprintf( '%s.event_listeners[%s]', $this->_map, $this->_id );
+	}
+
 }
