@@ -5,6 +5,7 @@ For PHP 5.3+ and Google Maps API v3
 [examples](http://galengrover.com/projects/php-google-maps/examples/)
 
 ##Features
+ - Adsense ads
  - Binding map objects
  - Directions with waypoints ( walking, biking and driving )
  - Event listeners and DOM event listeners
