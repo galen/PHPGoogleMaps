@@ -459,6 +459,48 @@ class Map {
 	private $binds = array();
 
 	/**
+	 * Array of google map libraries to load
+	 *
+	 * @var array
+	 */
+	private $libraries = array;
+
+	/**
+	 * Adsense flag
+	 *
+	 * @var boolean
+	 */
+	private $adsense = false;
+
+	/**
+	 * Adsense publisher id
+	 *
+	 * @var string
+	 */
+	private $adsense_publisher_id = null;
+
+	/**
+	 * Adsense format
+	 *
+	 * @var string
+	 */
+	private $adsense_format = 'banner';
+
+	/**
+	 * Adsense position
+	 *
+	 * @var
+	 */
+	private $adsense_position = 'bottom';
+
+	/**
+	 * Adsense visibility
+	 *
+	 * @var boolean
+	 */
+	private $adsense_visible = true;
+
+	/**
 	 * Constructor
 	 *
 	 * @var string $map_id ID to give the map
@@ -1459,7 +1501,15 @@ class Map {
 	 * @return string
 	 */
 	function getHeaderJS() {
-		return sprintf( "%s<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=%s&v=%s&language=%s&region=%s\"></script>\n\n", ( $this->mobile ? "<meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n" : '' ), json_encode( $this->sensor ), $this->api_version, $this->language, $this->region );
+		return sprintf(
+			"%s<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=%s&v=%s&language=%s&region=%s&libraries=%s\"></script>\n\n",
+			( $this->mobile ? "<meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n" : '' ),
+			json_encode( $this->sensor ),
+			$this->api_version,
+			$this->language,
+			$this->region,
+			( count( $this->libraries ) ? sprintf( implode( ',', $this->libraries ) ) : '' )
+		);
 	}
 
 	/**
@@ -1797,6 +1847,16 @@ class Map {
 	  		}
 	  	}
 	  	
+	  	if ( $this->adsense ) {
+	  		$output .= sprintf(
+	  			"\tadsense_options = {\n\t\tformat: google.maps.adsense.AdFormat.%s,\n\t\tposition: google.maps.ControlPosition.%s,\n\t\tmap: this.map,\n\t\tvisible: %s,\n\t\tpublisherId: '%s'\n\t}\n\tad_unit = new google.maps.adsense.AdUnit(document.createElement('div'), adsense_options);\n\n", 
+				strtoupper( $this->adsense_format ),
+				strtoupper( $this->adsense_position ),
+				$this->phpToJs( $this->adsense_visible ),
+				$this->adsense_publisher_id
+			);
+	  	}
+	  	
 	  	if ( $this->traffic_layer ) {
 	  		$output .= "\tthis.traffic_layer = new google.maps.TrafficLayer();\n\tthis.traffic_layer.setMap(this.map);\n\n";
 	  	}
@@ -2018,6 +2078,27 @@ class Map {
 	  	}
 	  	$this->marker_data_hash = md5( serialize( $this->getMarkers() ) );
 
+	}
+
+ 	/**
+ 	 * Enable Adsense ads
+ 	 *
+ 	 * Format and position must be valid or the map will not display
+ 	 * @link http://code.google.com/apis/maps/documentation/javascript/advertising.html
+ 	 *
+ 	 * @param string $publisher_id Your adsense publisher id
+ 	 * @param string $format A valid adsense ad format {@link http://code.google.com/apis/maps/documentation/javascript/advertising.html#AdUnitFormats}
+ 	 * @param string $position A valid control position {@link http://code.google.com/apis/maps/documentation/javascript/reference.html#ControlPosition}
+	 * @param boolean $visible
+ 	 * @return object Returns a decorated object
+ 	 */
+	function enableAdsense( $publisher_id, $format = null, $position = null, $visible = null ) {
+		$this->libraries[] = 'adsense';
+		$this->adsense = true;
+		$this->adsense_publisher_id = $publisher_id;
+		if ( $format ) $this->adsense_format = $format;
+		if ( $position ) $this->adsense_position = $position;
+		$this->adsense_visible = $visible;
 	}
 
 }
