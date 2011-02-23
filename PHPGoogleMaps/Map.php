@@ -78,7 +78,7 @@ class Map {
 	 *
 	 * @var int
 	 */
-	private $api_version = 3;
+	private $api_version = 3.4;
 
 
 	/**
