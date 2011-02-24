@@ -463,7 +463,7 @@ class Map {
 	 *
 	 * @var array
 	 */
-	private $libraries = array;
+	private $libraries = array();
 
 	/**
 	 * Adsense flag
@@ -499,6 +499,9 @@ class Map {
 	 * @var boolean
 	 */
 	private $adsense_visible = true;
+
+	private $clustering_js = null;
+	private $clustering_options = array();
 
 	/**
 	 * Constructor
@@ -1501,7 +1504,7 @@ class Map {
 	 * @return string
 	 */
 	function getHeaderJS() {
-		return sprintf(
+		$header_js = sprintf(
 			"%s<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=%s&v=%s&language=%s&region=%s&libraries=%s\"></script>\n\n",
 			( $this->mobile ? "<meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n" : '' ),
 			json_encode( $this->sensor ),
@@ -1510,6 +1513,10 @@ class Map {
 			$this->region,
 			( count( $this->libraries ) ? sprintf( implode( ',', $this->libraries ) ) : '' )
 		);
+		if ( $this->clustering_js ) {
+			$header_js .= sprintf( "\n<script type=\"text/javascript\" src=\"%s\"></script>", $this->clustering_js );
+		}
+		return $header_js;
 	}
 
 	/**
@@ -1742,7 +1749,6 @@ class Map {
 		if ( count( $this->markers ) ) {
 			$output .= "\n\tthis.markers = [];\n";
 	  	}
-
 	  	foreach ( $this->getMarkers() as $marker_id => $marker ) {
 	  		if ( $marker->isGeolocated() ) {
 	  			if ( !$this->geolocation ) {
@@ -1762,8 +1768,9 @@ class Map {
 			else {
 				$output .= sprintf( "\t\tposition: new google.maps.LatLng(%s,%s),\n", $marker->position->lat, $marker->position->lng );			
 			}
-			$output .= "\t\tmap: this.map,\n";
-
+			if ( !$this->clustering_js  ) {
+				$output .= "\t\tmap: this.map,\n";
+			}
 			if ( is_int( $marker->_icon_id ) ) {
 				$output .= sprintf( "\t\ticon:this.marker_icons[%s],\n", $marker->_icon_id );
 			}
@@ -1803,7 +1810,9 @@ class Map {
 	  		}
 
 	  	}
-
+	  	if ( $this->clustering_js ) {
+			$output .= sprintf( "\n\tvar markerCluster = new MarkerClusterer(this.map, this.markers, %s);\n", $this->phpToJs( $this->clustering_options ) );
+		}
 		if ( count( $this->ground_overlays ) ) {
 			$output .= "\tthis.ground_overlays = [];\n";
 			foreach( $this->ground_overlays as $n => $ground_overlay ) {
@@ -2099,6 +2108,11 @@ class Map {
 		if ( $format ) $this->adsense_format = $format;
 		if ( $position ) $this->adsense_position = $position;
 		$this->adsense_visible = $visible;
+	}
+
+	function enableClustering( $clustering_js_file, $options = null ) {
+		$this->clustering_js = $clustering_js_file;
+		$this->clustering_options = $options;
 	}
 
 }

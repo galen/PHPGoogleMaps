@@ -16,6 +16,7 @@ For PHP 5.3+ and Google Maps API v3
  - KML layers
  - Custom map styles
  - Markers
+ - Marker clustering
  - Custom marker icons
  - Marker staggering
  - Marker animation (bounce, drop)
