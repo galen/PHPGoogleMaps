@@ -21,6 +21,7 @@ For PHP 5.3+ and Google Maps API v3
  - Marker staggering
  - Marker animation (bounce, drop)
  - Mobile display
+ - Panoramio layers
  - Polygons and polylines
  - Shapes (rectangles and circles)
  - Sidebar

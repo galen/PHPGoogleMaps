@@ -16,7 +16,7 @@ $marker3 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Dallas, TX',
 );
 
 $map->addObjects( array( $marker1, $marker2, $marker3 ) );
-
+$map->setApiVersion(3.3);
 ?>
 
 <!DOCTYPE html>

@@ -33,6 +33,7 @@ foreach( $locations as $i => $location ) {
 }
 
 $map->enableMarkerStaggering();
+$map->setApiVersion(3.3);
 
 ?>
 

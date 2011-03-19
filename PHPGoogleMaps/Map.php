@@ -78,7 +78,7 @@ class Map {
 	 *
 	 * @var int
 	 */
-	private $api_version = 3.4;
+	private $api_version = 3.3;
 
 
 	/**
@@ -332,6 +332,14 @@ class Map {
 	 * @var array
 	 */
 	private $kml_layers = array();
+
+	/**
+	 * Panoramio layers
+	 * Array of Panoramio layers added to the map
+	 * 
+	 * @var array
+	 */
+	private $panoramio_layers = array();
 
 	/**
 	 * Ground overlays
@@ -791,6 +799,18 @@ class Map {
 	 */
 	protected function addKmlLayer( \PHPGoogleMaps\Layer\KmlLayer $kml ) {
 		return $this->kml_layers[] = new \PHPGoogleMaps\Layer\KmlLayerDecorator( $kml, count( $this->kml_layers ), $this->map_id );
+	}
+
+	/**
+	 * Add a Panoramio layer to the map
+	 * @link http://code.google.com/apis/maps/documentation/javascript/overlays.html#PanoramioLibrary
+	 *
+	 * @param PanoramioLayer $panoramio Panoramio layer to add to the map
+	 * @return PanoramioLayerDecorator
+	 * @access protected
+	 */
+	protected function addPanoramioLayer( \PHPGoogleMaps\Layer\PanoramioLayer $panoramio ) {
+		return $this->panoramio_layers[] = new \PHPGoogleMaps\Layer\PanoramioLayerDecorator( $panoramio, count( $this->panoramio_layers ), $this->map_id );
 	}
 
 	/**
@@ -1405,6 +1425,10 @@ class Map {
 			case 'PHPGoogleMaps\Layer\KmlLayer':
 				$object = $this->addKmlLayer( $object );
 				break;
+			case 'PHPGoogleMaps\Layer\PanoramioLayer':
+				$this->libraries[] = 'panoramio';
+				$object = $this->addPanoramioLayer( $object );
+				break;
 			case 'PHPGoogleMaps\Overlay\GroundOverlay':
 				$object = $this->addGroundOverlay( $object );
 				break;
@@ -1833,6 +1857,20 @@ class Map {
 			$output .= "\tthis.kml_layers = [];\n";
 			foreach( $this->kml_layers as $n => $kml_layer ) {
 				$output .= sprintf( "\tthis.kml_layers[%s] = new google.maps.KmlLayer('%s', %s);\n\tthis.kml_layers[%s].setMap(this.map);\n\n", $n, $kml_layer->url, $this->phpToJs( $kml_layer->options ), $n );
+			}
+		}
+
+		if ( count( $this->panoramio_layers ) ) {
+			$output .= "\tthis.panoramio_layers = [];\n";
+			foreach( $this->panoramio_layers as $n => $panoramio_layer ) {
+				$output .= sprintf( "\tthis.panoramio_layers[%s] = new google.maps.panoramio.PanoramioLayer();\n\tthis.panoramio_layers[%s].setMap(this.map);\n", $n, $n );
+				if ( $p_tag = $panoramio_layer->getOption('tag') ) {
+					$output .= sprintf( "\tthis.panoramio_layers[%s].setTag('%s');\n", $n, $p_tag );
+				}
+				if ( $p_user_id = $panoramio_layer->getOption('user_id') ) {
+					$output .= sprintf( "\tthis.panoramio_layers[%s].setUserId('%s');\n", $n, $p_user_id );
+				}
+				$output .= "\n";
 			}
 		}
 
