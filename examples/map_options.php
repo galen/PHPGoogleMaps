@@ -1,6 +1,9 @@
 <?php
 
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
+
 require( '_system/config.php' );
 
 $map_options = array(

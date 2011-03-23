@@ -1,9 +1,12 @@
 <?php
 
-use \PHPGoogleMaps\Service\Geocoder;
-
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
+
 require( '_system/config.php' );
+
+use \PHPGoogleMaps\Service\Geocoder;
 
 $map = new \PHPGoogleMaps\Map;
 

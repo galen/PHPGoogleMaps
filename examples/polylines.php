@@ -1,11 +1,13 @@
 <?php
 
-use \PHPGoogleMaps\Service\Geocoder;
-
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
+
 require( '_system/config.php' );
 
 $map = new \PHPGoogleMaps\Map;
+use \PHPGoogleMaps\Service\Geocoder;
 
 $polyline_paths = array(
 	Geocoder::geocode( 'San Diego, CA' ),

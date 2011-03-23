@@ -1,6 +1,9 @@
 <?php
 
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
+
 require( '_system/config.php' );
 
 if ( isset( $_GET['location'] ) && strlen( $_GET['location'] ) ) {

@@ -1,8 +1,10 @@
 <?php
 
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
-require( '_system/config.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
 
+require( '_system/config.php' );
 
 $map = new \PHPGoogleMaps\Map;
 $map->enableAdsense( 'pub-9317852351271673', 'small_rectangle' );

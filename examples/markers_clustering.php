@@ -1,6 +1,9 @@
 <?php
 
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
+
 require( '_system/config.php' );
 
 $map = new \PHPGoogleMaps\Map;
@@ -12,7 +15,7 @@ for ( $i=0;$i<200;$i++ ) {
 $cluster_options = array(
 	'maxZoom' => 8
 );
-$map->enableClustering( 'http://www.galengrover.com/projects/php-google-maps-dev/examples/_js/markerclusterer.js', $cluster_options );
+$map->enableClustering( 'http://www.galengrover.com/projects/php-google-maps/examples/_js/markerclusterer.js', $cluster_options );
 ?>
 
 <!DOCTYPE html>
