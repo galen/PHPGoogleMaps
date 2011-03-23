@@ -946,6 +946,9 @@ class Map {
 	public function getSidebar( $marker_html='', $tabs_deep=0 ) {
 		$sidebar_html = sprintf( "%s<div id=\"%s_sidebar\">\n%s<ul class=\"sidebar\">\n", str_repeat( "\t", $tabs_deep ), $this->map_id, str_repeat( "\t", $tabs_deep+1 ) );
 		foreach( $this->getMarkers() as $marker ) {
+			if ( isset( $marker->sidebar ) && $marker->sidebar === false ) {
+				continue;
+			}
 			if ( $marker_html ) {
 				$marker_parsed_html = str_replace( array( '{title}', '{content}', '{icon}' ), array( $marker->title, $marker->content, $marker->icon instanceof \PHPGoogleMaps\Overlay\MarkerIcon ? $marker->icon->icon : '' ), $marker_html );
 			}
