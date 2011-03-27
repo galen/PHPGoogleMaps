@@ -9,7 +9,7 @@ require( '_system/config.php' );
 if ( isset( $_GET['location'] ) && strlen( $_GET['location'] ) ) {
 	$map = new \PHPGoogleMaps\Map;
 	
-	$geoPDO = new \PHPGoogleMaps\Service\GeocodeCachePDO( 'localhost', 'mysql', 'wowouterspace23', 'development' );
+	$geoPDO = new \PHPGoogleMaps\Service\GeocodeCachePDO( 'localhost', 'username', 'password', 'database' );
 	$caching_geo = new \PHPGoogleMaps\Service\CachingGeocoder( $geoPDO );
 	
 	$latlng = $caching_geo->geocode( $_GET['location'] );
