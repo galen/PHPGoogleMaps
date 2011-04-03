@@ -9,9 +9,9 @@ require( '_system/config.php' );
 if ( isset( $_GET['location'] ) && strlen( $_GET['location'] ) ) {
 	$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $_GET['location'] );
 	if ( $geocode_result instanceof \PHPGoogleMaps\Service\GeocodeResult ) {
-		if ( count( $geocode_result->raw ) > 1 ) {
+		if ( count( $geocode_result->raw_results ) > 1 ) {
 			$location = $_GET['location'];
-			$location_options = $geocode_result->raw;
+			$location_options = $geocode_result->raw_results;
 		}
 		else {
 			$location = $geocode_result->formatted_address;
