@@ -42,10 +42,11 @@ class Geocoder {
 		if ( $simple ) {
 			return new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->location->lat, $response->results[0]->geometry->location->lng );
 		}
-		
+
 		$geocoded_location = new GeocodeResult( $response->results[0]->geometry->location->lat, $response->results[0]->geometry->location->lng );
 		$geocoded_location->formatted_address = $response->results[0]->formatted_address;
-		$geocoded_location->raw = $response->results;
+		$geocoded_location->result_count = count( $response->results );
+		$geocoded_location->raw_results = $response->results;
 		$geocoded_location->viewport = new \stdClass;
 		$geocoded_location->viewport->southwest = new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->viewport->southwest->lat, $response->results[0]->geometry->viewport->southwest->lng );
 		$geocoded_location->viewport->northeast = new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->viewport->northeast->lat, $response->results[0]->geometry->viewport->northeast->lng );
