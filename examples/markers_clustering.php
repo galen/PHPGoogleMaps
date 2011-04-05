@@ -33,7 +33,7 @@ $map->enableClustering( 'http://www.galengrover.com/projects/php-google-maps/exa
 <?php require( '_system/nav.php' ) ?>
 
 <?php $map->printMap() ?>
-<a href="#" onclick="<?php echo $marker1->getJsVar() ?>.setMap(null)">Hide New York marker</a>
+
 </body>
 
 </html>
