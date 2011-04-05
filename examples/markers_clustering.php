@@ -37,7 +37,8 @@ $map->enableClustering( 'http://www.galengrover.com/projects/php-google-maps/exa
 <body>
 
 <h1>Marker Clustering</h1>
-<p>This uses the marker clusterer provided in the <a href="http://code.google.com/p/google-maps-utility-library-v3/wiki/Libraries">Google Maps utility library</a>.</p>
+<p>Marker clustering is provided by the  <a href="http://code.google.com/p/google-maps-utility-library-v3/wiki/Libraries">Google Maps utility library</a>.</p>
+<p>This example was taken from <a href="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/examples/advanced_example.html">this page</a></p>
 <?php require( '_system/nav.php' ) ?>
 
 <?php $map->printMap() ?>
