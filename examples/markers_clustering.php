@@ -7,13 +7,21 @@ $map_loader->register();
 require( '_system/config.php' );
 
 $map = new \PHPGoogleMaps\Map;
+$map->setWidth('800px');
+$map->setHeight('400px');
+$map->setZoom( 2 );
+$map->disableAutoEncompass();
+$map->setCenterCoords( 39.91, 116.38 );
 
-for ( $i=0;$i<200;$i++ ) {
-	$marker = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( new \PHPGoogleMaps\Core\LatLng( mt_rand( 37, 41 )+(mt_rand(100,1000)/1000), mt_rand( -102, -109 )+(mt_rand(100,1000)/1000) ) );
+$json = json_decode( str_replace( 'var data = ', '', file_get_contents( 'http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/data.json' ) ) );
+
+for ( $i=0;$i<1000;$i++ ) {
+	$marker = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( new \PHPGoogleMaps\Core\LatLng( $json->photos[$i]->latitude, $json->photos[$i]->longitude ) );
 	$map->addObject( $marker );
 }
 $cluster_options = array(
-	'maxZoom' => 8
+	'maxZoom' => 8,
+	'gridSize' => null
 );
 $map->enableClustering( 'http://www.galengrover.com/projects/php-google-maps/examples/_js/markerclusterer.js', $cluster_options );
 ?>
