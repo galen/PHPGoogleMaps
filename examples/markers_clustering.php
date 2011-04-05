@@ -17,10 +17,11 @@ $json = json_decode( str_replace( 'var data = ', '', file_get_contents( 'http://
 
 for ( $i=0;$i<1000;$i++ ) {
 	$marker = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( new \PHPGoogleMaps\Core\LatLng( $json->photos[$i]->latitude, $json->photos[$i]->longitude ) );
+	$marker->setContent( sprintf( '<img src="%s" style="width: 200px">', $json->photos[$i]->photo_file_url ) );
 	$map->addObject( $marker );
 }
 $cluster_options = array(
-	'maxZoom' => 8,
+	'maxZoom' => 10,
 	'gridSize' => null
 );
 $map->enableClustering( 'http://www.galengrover.com/projects/php-google-maps/examples/_js/markerclusterer.js', $cluster_options );
