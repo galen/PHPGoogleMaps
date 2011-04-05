@@ -876,6 +876,7 @@ class Map {
 	 * @param string|LatLng $location Location of the center. Can be a
 	 *                                location or a LatLng object.
 	 * @return void
+	 * @throws GeocodeException
 	 */
 	public function setCenter( $location ) {
 		if ( $location instanceof \PHPGoogleMaps\Core\LatLng ) {
@@ -890,6 +891,19 @@ class Map {
 				throw new \PHPGoogleMaps\Core\GeocodeException( $geocode_result );
 			}
 		}
+	}
+
+	/**
+	 * Set map center by coordinates
+	 * 
+	 * Convenience function for setting the center via a lat/lng 
+	 *
+	 * @var float $lat latitude
+	 * @var float $lng longitude
+	 * @return void
+	 */
+	public function setCenterCoords( $lat, $lng ) {
+		$this->setCenter( new \PHPGoogleMaps\Core\LatLng( floatval( $lat ), floatval( $lng ) ) );
 	}
 
 	/**
