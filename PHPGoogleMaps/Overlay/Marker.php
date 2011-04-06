@@ -20,7 +20,6 @@ use PHPGoogleMaps\Utility;
  * user's position using HTML5's geolocation API {@link http://dev.w3.org/geo/api/spec-source.html}
  * $m = \PHPGoogleMaps\Overlay\Marker::createFromUserLocation( $title, $content );
  */
- 
 
 class Marker extends \PHPGoogleMaps\Core\MapObject {
 
