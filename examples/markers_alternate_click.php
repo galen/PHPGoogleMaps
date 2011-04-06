@@ -48,6 +48,7 @@ $map->disableInfoWindows();
 ?>
 
 <!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Alternate Click Handlers - <?php echo PAGE_TITLE ?></title>

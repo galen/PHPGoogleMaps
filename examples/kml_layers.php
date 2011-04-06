@@ -15,6 +15,7 @@ $map->addObject( $kml );
 ?>
 
 <!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>KML Layers - <?php echo PAGE_TITLE ?></title>

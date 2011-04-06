@@ -7,8 +7,8 @@ $map_loader->register();
 require( '_system/config.php' );
 
 $map = new \PHPGoogleMaps\Map;
-$map->setWidth('800px');
-$map->setHeight('400px');
+$map->setWidth( 800 );
+$map->setHeight( 400 );
 $map->setZoom( 2 );
 $map->disableAutoEncompass();
 $map->setCenterCoords( 39.91, 116.38 );
@@ -28,6 +28,7 @@ $map->enableClustering( 'http://www.galengrover.com/projects/php-google-maps/exa
 ?>
 
 <!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Marker Clustering - <?php echo PAGE_TITLE ?></title>

@@ -42,6 +42,7 @@ $map->addObjects(
 ?>
 
 <!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Marker Groups - <?php echo PAGE_TITLE ?></title>

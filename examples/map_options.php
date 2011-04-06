@@ -20,6 +20,7 @@ $map = new \PHPGoogleMaps\Map( $map_options );
 ?>
 
 <!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Map Options - <?php echo PAGE_TITLE ?></title>

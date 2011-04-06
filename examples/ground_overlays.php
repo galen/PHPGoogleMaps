@@ -22,6 +22,7 @@ $map->setZoom( 14 );
 ?>
 
 <!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Ground Overlays - <?php echo PAGE_TITLE ?></title>

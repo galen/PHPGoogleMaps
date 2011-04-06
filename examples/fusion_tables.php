@@ -26,6 +26,7 @@ $map->setZoom( 7 );
 ?>
 
 <!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Fusion Tables - <?php echo PAGE_TITLE ?></title>

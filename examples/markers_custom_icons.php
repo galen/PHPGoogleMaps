@@ -39,6 +39,7 @@ $map->addObjects( array( $marker1, $marker2 ) );
 ?>
 
 <!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Custom Marker Icons - <?php echo PAGE_TITLE ?></title>

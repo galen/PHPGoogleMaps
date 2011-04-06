@@ -25,6 +25,7 @@ catch ( GeocodeException $e ) {
 ?>
 
 <!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Streetview - <?php echo PAGE_TITLE ?></title>

@@ -34,6 +34,7 @@ $map->bind( $circle, 'center', $marker, 'position' );
 ?>
 
 <!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Binding Objects - <?php echo PAGE_TITLE ?></title>

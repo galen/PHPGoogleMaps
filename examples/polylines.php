@@ -34,6 +34,7 @@ $map->addObjects( array( &$polyline ) );
 ?>
 
 <!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Polylines - <?php echo PAGE_TITLE ?></title>

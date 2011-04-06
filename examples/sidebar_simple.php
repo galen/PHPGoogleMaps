@@ -19,10 +19,11 @@ $marker3 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Dallas, TX',
 );
 
 $map->addObjects( array( $marker1, $marker2, $marker3 ) );
-$map->setApiVersion(3.3);
+
 ?>
 
 <!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Simple Sidebar - <?php echo PAGE_TITLE ?></title>

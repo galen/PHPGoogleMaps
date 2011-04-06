@@ -25,6 +25,7 @@ $map->addObjects( array( &$marker1, $marker2 ) );
 ?>
 
 <!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Marker Basics - <?php echo PAGE_TITLE ?></title>

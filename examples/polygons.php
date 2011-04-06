@@ -42,6 +42,7 @@ $map->addObjects( array( &$polygon, $m ) );
 ?>
 
 <!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Polygons - <?php echo PAGE_TITLE ?></title>

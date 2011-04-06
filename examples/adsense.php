@@ -13,6 +13,7 @@ $map->setCenter( 'New York, NY' );
 ?>
 
 <!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Adsense - <?php echo PAGE_TITLE ?></title>
