@@ -1027,26 +1027,26 @@ class Map {
 
 	/**
 	 * Set the map width
-	 * e.g. 500px, 100%
+	 * e.g. 50x, 100%
 	 * 500px is default
 	 *
-	 * @param string $width Width of the map
+	 * @param string|int $width Width of the map
 	 * @return void
 	 */
 	public function setWidth( $width ) {
-		$this->width = $width;
+		$this->width = sprintf( '%s%s', $width, is_int( $width ) ? 'px' : '' );
 	}
 
 	/**
 	 * Set the map height
-	 * e.g. 500px, 100%
+	 * e.g. 500, 100%
 	 * 500px is default
 	 *
-	 * @param string $height Height of the map
+	 * @param string|int $height Height of the map
 	 * @return void
 	 */
 	public function setHeight( $height ) {
-		$this->height = $height;
+		$this->height = sprintf( '%s%s', $height, is_int( $height ) ? 'px' : '' );
 	}
 
 	/**
