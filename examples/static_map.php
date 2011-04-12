@@ -7,6 +7,7 @@ $map_loader->register();
 require( '_system/config.php' );
 
 $map = new \PHPGoogleMaps\Map;
+$map2 = new \PHPGoogleMaps\Map( array( 'ma_id' => 'map2' ) );
 
 $locations = array(
 	'New York, NY',
@@ -32,6 +33,7 @@ foreach( $locations as $i => $location ) {
 		)
 	);
 	$map->addObject( $marker );
+	$map2->addObject( $marker );
 }
 //print_r($map->getMarkers());
 ?>
@@ -40,7 +42,7 @@ foreach( $locations as $i => $location ) {
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Static Map - <?php echo PAGE_TITLE ?></title>
+	<title>Static Maps - <?php echo PAGE_TITLE ?></title>
 	<link rel="stylesheet" type="text/css" href="_css/style.css">
 	<style type="text/css">
 	#map, #map_sidebar { float: left }
@@ -56,14 +58,18 @@ foreach( $locations as $i => $location ) {
 </head>
 <body>
 
-<h1>Advanced Sidebar</h1>
+<h1>Static Maps</h1>
 <?php require( '_system/nav.php' ) ?>
 
-<p>This example uses the first letter of the city and a random color/size for each marker added to the map.</p>
 <p>As of now only markers are able to be placed on a static map. Paths and polygons coming soon.</p>
+
+<p>This example uses the first letter of the city and a random color/size for each marker added to the map.</p>
 
 <img src="<?php $map->printStaticMap() ?>">
 
+<p>This example uses the same markers as the first but has Alaska, and Brazil passed as a viewport.</p>
+
+<img src="<?php $map2->printStaticMap( null, array( 'Alaska', 'Brazil' ) ) ?>">
 
 </body>
 

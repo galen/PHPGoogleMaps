@@ -666,7 +666,7 @@ class Map {
 	 * @return boolean|int
 	 */
 	function validateStaticMap( $format='png', array $visible = null ) {
-		$headers = get_headers($this->getStaticMap());
+		$headers = get_headers($this->getStaticMap( $format, $visible ));
 		if ( $headers ) {
 			if ( strpos( $headers[0], '200' ) ) {
 				return true;
@@ -683,7 +683,7 @@ class Map {
 	 * @return void
 	 */
 	function printStaticMap( $format='png', array $visible = null ) {
-		echo $this->getStaticMap();
+		echo $this->getStaticMap( $format, $visible );
 	}
 
 /*************************
