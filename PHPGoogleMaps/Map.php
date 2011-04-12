@@ -611,6 +611,83 @@ class Map {
 
 /*************************
  *
+ * Static map
+ *
+ ************************/
+
+	/**
+	 * Get a static map url
+	 *
+	 * This will turn your map into a static map url
+	 *
+	 *
+	 * @param string $format Image format
+	 * @param array $visible Array of visible locations
+	 * @return string
+	 */
+
+	function getStaticMap( $format='png', array $visible = null ) {
+	
+		$url = "http://maps.google.com/maps/api/staticmap?";
+		$request = '';
+		$request .= sprintf( "size=%sx%s&", intval( $this->width ), intval( $this->height ) );
+		$request .= sprintf( "sensor=%s&", $this->sensor ? 'true' : 'false' );
+		$request .= sprintf( "format=%s&", $format );
+		$request .= sprintf( "maptype=%s&", $this->map_type );
+		$request .= sprintf( "language=%s&", $this->language );
+		if ( is_array( $visible ) ) {
+			$request .= sprintf( "visible=%s&", implode( '|', $visible ) );
+		}
+		if ( isset( $this->center->lat ) && isset( $this->center->lng ) ) {
+			$request .= sprintf( "center=%s,%s&", $this->center->lat, $this->center->lng );
+			$request .= sprintf( "zoom=%s&", $this->zoom );
+		}
+		foreach( $this->markers as $marker ) {
+			$request .= sprintf( "markers=size:%s|color:%s|label:%s|%sshadow:%s|%s,%s&",
+				isset( $marker->static->size ) ? $marker->static->size : '',
+				isset( $marker->static->color ) ? $marker->static->color : '',
+				isset( $marker->static->label ) ? strtoupper( (string) $marker->static->label[0] ) : '',
+				$marker->icon ? sprintf( 'icon:%s|', $marker->icon ) : '',
+				isset( $marker->static->flat ) ?  ( ( $marker->static->flat ) ? 'false' : 'true' ) : '',
+				$marker->position->lat, $marker->position->lng
+			);
+		}
+		return sprintf( "%s%s", $url, $request );
+	
+	}
+
+	/**
+	 * Validate a static map
+	 *
+	 * Wil return true or an http error code
+	 *
+	 * @param string $format Image format
+	 * @param array $visible Array of visible locations
+	 * @return boolean|int
+	 */
+	function validateStaticMap( $format='png', array $visible = null ) {
+		$headers = get_headers($this->getStaticMap());
+		if ( $headers ) {
+			if ( strpos( $headers[0], '200' ) ) {
+				return true;
+			}
+			return array_slice( explode( ' ', $headers[0] ), 1, 1 );
+		}
+	}
+
+	/**
+	 * Print the satic map url
+	 *
+	 * @param string $format Image format
+	 * @param array $visible Array of visible locations
+	 * @return void
+	 */
+	function printStaticMap( $format='png', array $visible = null ) {
+		echo $this->getStaticMap();
+	}
+
+/*************************
+ *
  * Directions
  *
  *************************/

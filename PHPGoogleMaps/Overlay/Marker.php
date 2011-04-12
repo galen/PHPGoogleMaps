@@ -75,6 +75,15 @@ class Marker extends \PHPGoogleMaps\Core\MapObject {
 	protected $animations = array( 'bounce', 'drop' );
 
 	/**
+	 * Static options
+	 *
+	 * size, color, label, flat
+	 *
+	 * @var StdClass
+	 */
+	public $static;
+
+	/**
 	 * Marker constructor
 	 * Initializes the marker options
 	 *
@@ -83,6 +92,7 @@ class Marker extends \PHPGoogleMaps\Core\MapObject {
 	 * @return Marker
 	*/
 	private function __construct( $position=null, array $options=null ) {
+		$this->static = new \StdClass;
 		$this->position = $position;
 		if ( !$options ) {
 			return;
@@ -99,6 +109,9 @@ class Marker extends \PHPGoogleMaps\Core\MapObject {
 					break;
 				case 'icon':
 					$this->setIcon( $option );
+					break;
+				case 'static':
+					$this->static = (object)$option;
 					break;
 				case 'shadow':
 					$this->setShadow( $option );
@@ -245,7 +258,7 @@ class Marker extends \PHPGoogleMaps\Core\MapObject {
 	public static function createFromLocation( $location, array $options=null ) {
 		$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $location );
 		if ( $geocode_result instanceof \PHPGoogleMaps\Core\LatLng ) {
-			return self::createFromLatLng( $geocode_result, $options );
+			return self::createFromLatLng( $geocode_result->getLatLng(), $options );
 		}
 		return false;
 	}
