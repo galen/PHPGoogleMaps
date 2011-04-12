@@ -25,6 +25,7 @@ For PHP 5.3+ and Google Maps API v3
  - Polygons and polylines
  - Shapes (rectangles and circles)
  - Sidebar
+ - Static Map
  - Streetview
  - Simple configuration of map objects
 

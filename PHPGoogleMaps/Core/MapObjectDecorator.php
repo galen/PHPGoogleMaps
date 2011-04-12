@@ -88,4 +88,8 @@ abstract class MapObjectDecorator {
 		}
 	}
 
+
+	public function __toString() {
+		return $this->getJsVar();
+	}
 }

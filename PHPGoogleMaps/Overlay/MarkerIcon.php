@@ -189,5 +189,12 @@ class MarkerIcon  extends \PHPGoogleMaps\Core\MapObject {
 		}
 		return $this;
 	}
-	
+
+	/**
+	 * Return string
+	 */
+	public function __toString() {
+		return $this->icon;
+	}
+
 }
