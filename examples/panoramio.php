@@ -5,18 +5,20 @@ $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
 
 require( '_system/config.php' );
+$relevant_code = array(
+	'\PHPGoogleMaps\Layer\PanoramioLayer',
+	'\PHPGoogleMaps\Layer\PanoramioLayerDecorator'
+);
 
 $map = new \PHPGoogleMaps\Map;
-$panoramio_options = array(
-	'tag'		=> 'beach'
-);
-$panoramio = new \PHPGoogleMaps\Layer\PanoramioLayer( $panoramio_options );
+$panoramio = new \PHPGoogleMaps\Layer\PanoramioLayer;
+$panoramio->setTag( 'beach' );
+//$panoramio->setUserID( 4106947 );
 
 $map->addObject( $panoramio );
 $map->setCenter( 'San Diego, CA' );
-$map->setZoom( 16 );
+$map->setZoom( 10 );
 $map->disableAutoEncompass();
-$map->setApiVersion(3.4);
 ?>
 
 <!DOCTYPE html>
@@ -32,6 +34,10 @@ $map->setApiVersion(3.4);
 
 <h1>Panoramio Layer</h1>
 <?php require( '_system/nav.php' ) ?>
+
+<p>Implementation of the <a href="http://code.google.com/apis/maps/documentation/javascript/overlays.html#PanoramioLibrary">Google Panoramio Library</a>.</p>
+
+<p>You can set a user_id or tag to limit the visible photos, but not both.</p>
 
 <?php $map->printMap() ?>
 

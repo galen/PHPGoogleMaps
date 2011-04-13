@@ -5,6 +5,13 @@ $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
 
 require( '_system/config.php' );
+$relevant_code = array(
+	'\PHPGoogleMaps\Service\DrivingDirections',
+	'\PHPGoogleMaps\Service\WalkingDirections',
+	'\PHPGoogleMaps\Service\BicyclingDirections',
+	'\PHPGoogleMaps\Service\Directions',
+	'\PHPGoogleMaps\Service\DirectionsDecorator'
+);
 
 $map = new \PHPGoogleMaps\Map;
 $map->setCenter( 'USA' );

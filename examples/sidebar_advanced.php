@@ -5,6 +5,9 @@ $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
 
 require( '_system/config.php' );
+$relevant_code = array(
+	'\PHPGoogleMaps\Overlay\Marker'
+);
 
 $map = new \PHPGoogleMaps\Map;
 

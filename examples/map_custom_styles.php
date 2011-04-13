@@ -5,6 +5,9 @@ $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
 
 require( '_system/config.php' );
+$relevant_code = array(
+	'\PHPGoogleMaps\Overlay\MapStyle'
+);
 
 $custom_style_json = '[ { featureType: "water", elementType: "all", stylers: [ { hue: "#ff0008" }, { saturation: 71 }, { lightness: -43 }, { gamma: 0.83 } ] },{ featureType: "road", elementType: "all", stylers: [ { saturation: -24 }, { hue: "#1100ff" } ] },{ featureType: "landscape", elementType: "all", stylers: [ { hue: "#11ff00" }, { saturation: 100 }, { lightness: -34 } ] } ]';
 $custom_style = new \PHPGoogleMaps\Overlay\MapStyle( 'Custom', $custom_style_json );

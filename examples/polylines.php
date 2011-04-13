@@ -5,6 +5,11 @@ $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
 
 require( '_system/config.php' );
+$relevant_code = array(
+	'\PHPGoogleMaps\Overlay\Polyline',
+	'\PHPGoogleMaps\Overlay\Poly',
+	'\PHPGoogleMaps\Overlay\PolyDecorator'
+);
 
 $map = new \PHPGoogleMaps\Map;
 use \PHPGoogleMaps\Service\Geocoder;

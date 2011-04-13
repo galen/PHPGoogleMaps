@@ -5,6 +5,10 @@ $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
 
 require( '_system/config.php' );
+$relevant_code = array(
+	'\PHPGoogleMaps\Overlay\GroundOverlay',
+	'\PHPGoogleMaps\Overlay\GroundOverlayDecorator'
+);
 
 $map = new \PHPGoogleMaps\Map;
 

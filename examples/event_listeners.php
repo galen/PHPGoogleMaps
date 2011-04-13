@@ -5,6 +5,11 @@ $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
 
 require( '_system/config.php' );
+$relevant_code = array(
+	'\PHPGoogleMaps\Event\EventListener',
+	'\PHPGoogleMaps\Event\DomEventListener',
+	'\PHPGoogleMaps\Event\EventListenerDecorator'
+);
 
 $map = new \PHPGoogleMaps\Map;
 

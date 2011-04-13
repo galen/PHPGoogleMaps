@@ -5,11 +5,13 @@ $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
 
 require( '_system/config.php' );
+$relevant_code = array(
+	'\PHPGoogleMaps\Layer\KmlLayer',
+	'\PHPGoogleMaps\Layer\KmlLayerDecorator'
+);
 
 $map = new \PHPGoogleMaps\Map;
-
 $kml = new \PHPGoogleMaps\Layer\KmlLayer( 'http://local.yahooapis.com/MapsService/rss/trafficData.xml?appid=YahooDemo&city=new+york' );
-
 $map->addObject( $kml );
 
 ?>

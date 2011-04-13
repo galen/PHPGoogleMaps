@@ -5,6 +5,10 @@ $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
 
 require( '_system/config.php' );
+$relevant_code = array(
+	'\PHPGoogleMaps\Layer\FusionTable',
+	'\PHPGoogleMaps\Layer\FusionTableDecorator'
+);
 
 $map = new \PHPGoogleMaps\Map;
 $ft_options = array(

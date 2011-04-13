@@ -5,6 +5,11 @@ $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
 
 require( '_system/config.php' );
+$relevant_code = array(
+	'\PHPGoogleMaps\Service\Geocoder',
+	'\PHPGoogleMaps\Service\GeocodeError',
+	'\PHPGoogleMaps\Service\GeocodeResult'
+);
 
 if ( isset( $_GET['location'] ) && strlen( $_GET['location'] ) ) {
 	$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $_GET['location'] );

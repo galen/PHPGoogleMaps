@@ -5,6 +5,7 @@ namespace PHPGoogleMaps\Layer;
 /**
  * Panoramio layer decorator
  * 
+ * Decorate a panoramio layer after it has been added to a map
  */
  
 

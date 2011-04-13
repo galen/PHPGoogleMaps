@@ -2,7 +2,7 @@
 
 namespace PHPGoogleMaps\Service;
 
-class GeocodeCachePDO implements GeocodeCache {
+class GeocodeCachePDO implements GeocodeCacheInterface {
 
 	/**
 	 * PDO object

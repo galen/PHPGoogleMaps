@@ -5,6 +5,12 @@ $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
 
 require( '_system/config.php' );
+$relevant_code = array(
+	'\PHPGoogleMaps\Overlay\Circle',
+	'\PHPGoogleMaps\Overlay\Rectangle',
+	'\PHPGoogleMaps\Overlay\Shape',
+	'\PHPGoogleMaps\Overlay\ShapeDecorator'
+);
 
 $map = new \PHPGoogleMaps\Map;
 
