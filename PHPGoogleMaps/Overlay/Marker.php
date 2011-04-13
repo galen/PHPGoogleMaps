@@ -21,7 +21,7 @@ use PHPGoogleMaps\Utility;
  * $m = \PHPGoogleMaps\Overlay\Marker::createFromUserLocation( $title, $content );
  */
 
-class Marker extends \PHPGoogleMaps\Core\MapObject {
+class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 
 	/**
 	 * Position of the marker
@@ -75,15 +75,6 @@ class Marker extends \PHPGoogleMaps\Core\MapObject {
 	protected $animations = array( 'bounce', 'drop' );
 
 	/**
-	 * Static options
-	 *
-	 * size, color, label, flat
-	 *
-	 * @var StdClass
-	 */
-	public $static;
-
-	/**
 	 * Marker constructor
 	 * Initializes the marker options
 	 *
@@ -92,7 +83,7 @@ class Marker extends \PHPGoogleMaps\Core\MapObject {
 	 * @return Marker
 	*/
 	private function __construct( $position=null, array $options=null ) {
-		$this->static = new \StdClass;
+
 		$this->position = $position;
 		if ( !$options ) {
 			return;

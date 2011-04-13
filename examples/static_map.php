@@ -7,7 +7,8 @@ $map_loader->register();
 require( '_system/config.php' );
 
 $map = new \PHPGoogleMaps\Map;
-$map2 = new \PHPGoogleMaps\Map( array( 'ma_id' => 'map2' ) );
+$map2 = new \PHPGoogleMaps\Map( array( 'map_id' => 'map2' ) );
+$map3 = new \PHPGoogleMaps\Map( array( 'map_id' => 'map3' ) );
 
 $locations = array(
 	'New York, NY',
@@ -35,7 +36,18 @@ foreach( $locations as $i => $location ) {
 	$map->addObject( $marker );
 	$map2->addObject( $marker );
 }
-//print_r($map->getMarkers());
+
+$marker = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'New Haven, CT');
+$icon = new \PHPGoogleMaps\Overlay\MarkerIcon( 'http://galengrover.com/projects/php-google-maps/examples/_images/bullseye_marker.png' );
+$marker->setStaticVar( 'flat', true );
+$marker->setIcon( $icon );
+
+$marker2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY');
+$icon2 = new \PHPGoogleMaps\Overlay\MarkerIcon( 'http://galengrover.com/projects/php-google-maps/examples/_images/yellow_marker.png' );
+$marker2->setIcon( $icon2 );
+
+$map3->addObjects( array( $marker, $marker2 ) );
+
 ?>
 
 <!DOCTYPE html>
@@ -70,6 +82,9 @@ foreach( $locations as $i => $location ) {
 <p>This example uses the same markers as the first but has Alaska, and Brazil passed as a viewport.</p>
 
 <img src="<?php $map2->printStaticMap( null, array( 'Alaska', 'Brazil' ) ) ?>">
+
+<p>This example uses a flat marker. Flat markers are anchored using the center of the image.</p>
+<img src="<?php $map3->printStaticMap() ?>">
 
 </body>
 

@@ -508,7 +508,20 @@ class Map {
 	 */
 	private $adsense_visible = true;
 
-	private $clustering_js = null;
+	/**
+	 * Clustering javascript
+	 *
+	 * This will hold the location of the file
+	 *
+	 * @var string
+	 */
+	private $clustering_js;
+
+	/**
+	 * Clustering options
+	 *
+	 * @var array
+	 */
 	private $clustering_options = array();
 
 	/**
