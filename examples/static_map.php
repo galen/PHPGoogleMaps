@@ -83,7 +83,7 @@ $map3->addObjects( array( $marker, $marker2 ) );
 
 <img src="<?php $map2->printStaticMap( null, array( 'Alaska', 'Brazil' ) ) ?>">
 
-<p>This example uses a flat marker. Flat markers are anchored using the center of the image.</p>
+<p>This example uses 2 custom icons (one flat marker). Flat markers are anchored using the center of the image.</p>
 <img src="<?php $map3->printStaticMap() ?>">
 
 </body>
