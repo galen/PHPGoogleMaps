@@ -14,4 +14,55 @@ namespace PHPGoogleMaps\Event;
  * $map->addObject( $event );
  */
 
-class EventListener extends \PHPGoogleMaps\Event\DomEventListener {}
+class EventListener extends \PHPGoogleMaps\Core\MapObject {
+
+
+	/**
+	 * The object to listen to
+	 * This should be the ID of the DOM element to listen to
+	 *
+	 * @var string
+	 */
+	protected $object;
+	
+	/**
+	 * The event to listen for
+	 *
+	 * @var string
+	 */
+	protected $event;
+	
+	/**
+	 * The function to call
+	 * Can be a name of a function that you've defined or a complete function.
+	 * e.g. function(){ alert('Click!') }
+	 *
+	 * @var string
+	 */
+	protected $function;
+	
+	/**
+	 * Once flag
+	 * If true the event listener will be removed after the first firing.
+	 *
+	 * @var boolean
+	 */
+	protected $once;
+
+	/**
+	 * Constructor
+	 *
+	 * @param string $object Object to listen to. This should be the ID of the DOM element to listen to.
+	 * @param string $event Event to listen for.
+	 * @param string $function Function to call.
+	 * @param boolean $once Once flag. If true the event listener will be removed after first call.
+	 * @return DOMEventListener
+	 */
+	public function __construct( $object, $event, $function, $once=false ) {
+		$this->event = $event;
+		$this->function = $function;
+		$this->object = $object;
+		$this->once = $once;
+	}
+
+}

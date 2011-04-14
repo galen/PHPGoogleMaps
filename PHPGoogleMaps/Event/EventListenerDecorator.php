@@ -34,7 +34,7 @@ class EventListenerDecorator extends \PHPGoogleMaps\Core\MapObjectDecorator {
 	 * @param int integer $id ID of the event listener in the map
 	 * @param string $map Map ID of the map the event listener is attached to
 	 */	
-	public function __construct( DOMEventListener $listener, $id, $map ) {
+	public function __construct( EventListener $listener, $id, $map ) {
 		parent::__construct( $listener, array( '_id' => $id, '_map' => $map ) );
 	}
 

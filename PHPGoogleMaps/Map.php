@@ -1365,7 +1365,7 @@ class Map {
 	 * @return EventListenerDecorator
 	 * @access protected
 	 */
-	protected function addEventListener( \PHPGoogleMaps\Event\DomEventListener $event_listener ) {
+	protected function addEventListener( \PHPGoogleMaps\Event\EventListener $event_listener ) {
 		return $this->event_listeners[] = new \PHPGoogleMaps\Event\EventListenerDecorator( $event_listener, count( $this->event_listeners ), $this->map_id );
 	}
 

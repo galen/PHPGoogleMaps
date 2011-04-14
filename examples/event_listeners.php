@@ -48,6 +48,7 @@ $map->setZoom( 14 );
 				info_window.open(<?php echo $map->getJsVar() ?>,marker);
 			}
 		);
+		return false;
 	}
 	function add_random_marker() {
 		lat_sw = <?php echo $map->getJsVar() ?>.getBounds().getSouthWest().lat();
@@ -72,6 +73,7 @@ $map->setZoom( 14 );
 				info_window.open(<?php echo $map->getJsVar() ?>,marker);
 			}
 		);
+		return false;
 	}
 	</script>
 	<?php $map->printHeaderJS() ?>
