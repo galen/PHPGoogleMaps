@@ -525,6 +525,13 @@ class Map {
 	private $clustering_options = array();
 
 	/**
+	 * Loading content
+	 *
+	 * @var string
+	 */
+	private $loading_content;
+
+	/**
 	 * Constructor
 	 *
 	 * @var string $map_id ID to give the map
@@ -620,6 +627,10 @@ class Map {
 				}
 			}
 		}
+	}
+
+	function setLoadingContent( $content ) {
+		$this->loading_content = $content;
 	}
 
 /*************************
@@ -1617,7 +1628,7 @@ class Map {
 	 * @return string
 	 */
 	function getMap() {
-		return sprintf( '<div id="%s" style="%s%s"></div>', $this->map_id, ( $this->width ? 'width:' . $this->width . ';' : '' ), ( $this->height ? 'height:' . $this->height . ';' : '' ) );
+		return sprintf( '<div id="%s" style="%s%s">%s</div>', $this->map_id, ( $this->width ? 'width:' . $this->width . ';' : '' ), ( $this->height ? 'height:' . $this->height . ';' : '' ), $this->loading_content ? $this->loading_content : '' );
 	}
 
 	/**

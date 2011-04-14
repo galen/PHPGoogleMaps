@@ -16,6 +16,7 @@ $map->setHeight('500px');
 $map->setZoom(16);
 $map->setGeolocationFailCallback( 'geofail' );
 $map->setGeolocationSuccessCallback( 'geosuccess' );
+$map->setLoadingContent('<div style="width:100%;height:100%;text-align:center;"><img src="_images/loading.gif" style="display:block; margin: 200px auto 0 auto;"><p>Loading</p></div>');
 ?>
 
 <!DOCTYPE html>
@@ -39,6 +40,8 @@ $map->setGeolocationSuccessCallback( 'geosuccess' );
 
 <h1>Geolocation</h1>
 <?php require( '_system/nav.php' ) ?>
+
+<p>This example finds your location and centers the map on it. It also uses map::setLoadingContent() to display a loading message to the user.</p>
 
 <?php $map->printMap() ?>
 
