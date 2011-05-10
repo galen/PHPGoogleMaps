@@ -33,7 +33,7 @@ class Geocoder {
 	 * @param string $location
 	 * @return GeocodeResult|GeocodeError
 	 */
-	public function geocode( $location, $simple=false ) {
+	public static function geocode( $location, $simple=false ) {
 		$response = self::scrapeAPI( $location );
 		if ( $response instanceof GeocodeError ) {
 			return $response;
