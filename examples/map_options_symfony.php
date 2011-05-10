@@ -24,14 +24,14 @@ $map = new \PHPGoogleMaps\Map( $map_options );
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Map Options - <?php echo PAGE_TITLE ?></title>
+	<title>Symfony Class Loader - <?php echo PAGE_TITLE ?></title>
 	<link rel="stylesheet" type="text/css" href="_css/style.css">
 	<?php $map->printHeaderJS() ?>
 	<?php $map->printMapJS() ?>
 </head>
 <body>
 
-<h1>Map Options</h1>
+<h1>This loads a map using <a href="https://github.com/symfony/symfony/blob/master/autoload.php.dist">Symfony's UniversalClassLoader</a></h1>
 <?php require( '_system/nav.php' ) ?>
 
 <?php $map->printMap() ?>
