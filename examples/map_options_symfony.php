@@ -31,7 +31,8 @@ $map = new \PHPGoogleMaps\Map( $map_options );
 </head>
 <body>
 
-<h1>This loads a map using <a href="https://github.com/symfony/symfony/blob/master/autoload.php.dist">Symfony's UniversalClassLoader</a></h1>
+<h1>Using the Symfony class loader</h1>
+<p>This loads a map using <a href="https://github.com/symfony/symfony/blob/master/autoload.php.dist">Symfony's UniversalClassLoader</a></p>
 <?php require( '_system/nav.php' ) ?>
 
 <?php $map->printMap() ?>
