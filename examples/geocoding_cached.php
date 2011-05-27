@@ -16,7 +16,7 @@ $relevant_code = array(
 if ( isset( $_GET['location'] ) && strlen( $_GET['location'] ) ) {
 	$map = new \PHPGoogleMaps\Map;
 	
-	$geoPDO = new \PHPGoogleMaps\Service\GeocodeCachePDO( 'localhost', 'username', 'password', 'database' );
+	$geoPDO = new \PHPGoogleMaps\Service\GeocodeCachePDO( 'localhost', 'user', 'password', 'database' );
 	$caching_geo = new \PHPGoogleMaps\Service\CachingGeocoder( $geoPDO );
 	
 	$latlng = $caching_geo->geocode( $_GET['location'] );

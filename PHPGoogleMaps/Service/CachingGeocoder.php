@@ -9,7 +9,7 @@ namespace PHPGoogleMaps\Service;
  * @link http://code.google.com/apis/maps/documentation/geocoding/
  */
 
-class CachingGeocoder extends Geocoder {
+class CachingGeocoder {
 
 	/**
 	 * Geocode cache object
@@ -71,7 +71,7 @@ class CachingGeocoder extends Geocoder {
 			return $get_cache;
 		}
 		else {
-			$geocode_result = parent::geocode( $location );
+			$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $location );
 			if ( $geocode_result instanceof \PHPGoogleMaps\Service\GeocodeResult ) {
 				if ( $write_cache = $this->writeCache( $location, $geocode_result->lat, $geocode_result->lng ) ) {
 					$geocode_result->wasPutInCache( true );

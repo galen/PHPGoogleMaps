@@ -14,6 +14,7 @@ $map->centerOnUser( \PHPGoogleMaps\Service\Geocoder::geocode('New York, NY') );
 $map->setWidth('500px');
 $map->setHeight('500px');
 $map->setZoom(16);
+
 $map->setGeolocationFailCallback( 'geofail' );
 $map->setGeolocationSuccessCallback( 'geosuccess' );
 $map->setLoadingContent('<div style="background:#eee;height:300px;padding: 200px 0 0 0;text-align:center;"><img src="_images/loading.gif" style="display:block; margin: auto;"><p>Locating you...</p></div>');

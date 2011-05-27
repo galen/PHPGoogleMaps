@@ -47,6 +47,8 @@ $map->bind( $circle, 'center', $marker, 'position' );
 <h1>Binding objects</h1>
 <?php require( '_system/nav.php' ) ?>
 
+<p>This map has a circle bound to a marker. If you drag the marker, the circle will go with it.</p>
+
 <?php $map->printMap() ?>
 
 </body>

@@ -43,15 +43,6 @@ class LatLng {
 	}
 
 	/**
-	 * Get lat lng
-	 *
-	 * @return LatLng
-	 */
-	public function getLatLng() {
-		return $this;
-	}
-
-	/**
 	 * Get distance from another latlng
 	 *
 	 * @param LatLng $latlng LatLng object to get distance from.
@@ -82,5 +73,14 @@ class LatLng {
 				return $miles;
 				break;
 		}
+	}
+	
+	/**
+	 * Returns a string in the format lat,lng
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return sprintf( '%s,%s', $this->lat, $this->lng );
 	}
 }
