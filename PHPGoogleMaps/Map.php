@@ -220,6 +220,14 @@ class Map {
 	private $scale_control_position;
 
 	/**
+	 * Map custom controls
+	 * Array of custom controls added to the map
+	 *
+	 * @var array
+	 */
+	private $custom_controls = array();
+
+	/**
 	 * Map shapes
 	 * Array of shapes added to the map
 	 *
@@ -972,6 +980,17 @@ class Map {
  ************************************************/
 
 	/**
+	 * Add a custom control to the map
+	 *
+	 * @param Marker $marker Marker to add
+	 * @return MarkerDecorator
+	 * @access protected
+	 */
+	protected function addCustomControl( \PHPGoogleMaps\Core\CustomControl $control ) {
+		return $this->custom_controls[] = new \PHPGoogleMaps\Core\CustomControlDecorator( $control, count( $this->custom_controls ), $this->map_id );
+	}
+
+	/**
 	 * Set map center
 	 *
 	 * @param string|LatLng $location Location of the center. Can be a
@@ -1531,6 +1550,9 @@ class Map {
 			$object = $object->decoratee;
 		}
 		switch( get_class( $object ) ) {
+			case 'PHPGoogleMaps\Core\CustomControl':
+				$object = $this->addCustomControl( $object );
+				break;
 			case 'PHPGoogleMaps\Overlay\Marker':
 				$object = $this->addMarker( $object );
 				break;
@@ -1741,6 +1763,29 @@ class Map {
 			$output .= sprintf( "\t%sMapType = new google.maps.StyledMapType(%sMapStyle, %sStyleOptions);\n", $map_style->var_name, $map_style->var_name, $map_style->var_name );
 			$output .= sprintf( "\tthis.map.mapTypes.set('%s', %sMapType);\n", $map_style->var_name, $map_style->var_name );
 		}
+
+		if ( count( $this->custom_controls ) ) {
+			$output .= "\n\tthis.custom_controls = [];\n";
+			foreach( $this->custom_controls as $n => $custom_control ) {
+				$output .= sprintf( "\tvar cc%s_outer = document.createElement('DIV');\n", $n );
+				foreach( $custom_control->options['outer'] as $var => $val ) {
+					$output .= sprintf( "\tcc%s_outer.%s = '%s';\n", $n, $var, $val );
+				}
+				$output .= sprintf( "\tvar cc%s_inner = document.createElement('DIV');\n", $n );
+				foreach( $custom_control->options['inner'] as $var => $val ) {
+					$output .= sprintf( "\tcc%s_inner.%s = '%s';\n", $n, $var, $val );
+				}
+				$output .= sprintf( "\tcc%s_outer.appendChild(cc%s_inner);\n", $n, $n );
+				$output .= sprintf( "\tvar cc%s_holder = document.createElement('DIV');\n", $n );
+				$output .= sprintf( "\tcc%s_holder.appendChild(cc%s_outer);\n", $n, $n );
+				$output .= sprintf( "\tthis.map.controls[google.maps.ControlPosition.%s].push(cc%s_holder);\n", $custom_control->position, $n );
+				$output .= sprintf( "\tthis.custom_controls[%s] = cc%s_holder;\n\n", $n, $n );
+				foreach( $custom_control->listeners as $listener ) {
+					  $output .= sprintf( "\tgoogle.maps.event.addDomListener(cc%s_holder, '%s', %s);\n\n", $n, $listener['event'], $listener['function'] );
+				}
+			}
+		}
+
 
 		if ( count( $this->shapes ) ) {
 			$output .= sprintf( "\n\tthis.shapes = [];\n", $this->map_id );
@@ -2051,7 +2096,7 @@ class Map {
 		  						$n,
 		  						$event_class == 'PHPGoogleMaps\Event\DomEventListener' ? 'Dom' : '',
 		  						$event_listener->once ? 'Once' : '',
-		  						$event_class == 'PHPGoogleMaps\Event\DomEventListener' ? sprintf( 'document.getElementById("%s")', $event_listener->object ) : $event_listener->object,
+		  						$event_class == 'PHPGoogleMaps\Event\DomEventListener' && !$event_listener->object instanceof \PHPGoogleMaps\Core\MapObjectDecorator ? sprintf( 'document.getElementById("%s")', $event_listener->object ) : $event_listener->object,
 		  						$event_listener->event,
 		  						$event_listener->function
 		  					);
@@ -2166,6 +2211,15 @@ class Map {
 	 */
 	public function getJsVar() {
 		return sprintf( '%s.map', $this->map_id );
+	}
+
+	/*
+	 * toString magic method
+	 *
+	 * @return string
+	 */
+	public function toString() {
+		return $this->getJsVar();
 	}
 
 	/**

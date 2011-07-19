@@ -56,15 +56,6 @@ $map3->addObjects( array( $marker, $marker2 ) );
 	<meta charset="utf-8">
 	<title>Static Maps - <?php echo PAGE_TITLE ?></title>
 	<link rel="stylesheet" type="text/css" href="_css/style.css">
-	<style type="text/css">
-	#map, #map_sidebar { float: left }
-	#map_sidebar *, .infowindow * {padding:0;margin:0;}
-	#map_sidebar { float:left;margin-left:20px;overflow:auto;height:500px; border:1px solid #ddd;width:200px;font-size:.8em; }
-	.sidebar { list-style:none;margin:0;padding:0; }
-	.sidebar li { border-bottom: 1px dotted #ddd;padding: 5px 10px 5px 40px !important; cursor:pointer; background-repeat: no-repeat;background-position: 5px 5px;}
-	.sidebar li:hover { background-color:#eee; }
-	.sidebar .active { background-color:#eee; }
-	</style>
 	<?php $map->printHeaderJS() ?>
 	<?php $map->printMapJS() ?>
 </head>
@@ -75,10 +66,11 @@ $map3->addObjects( array( $marker, $marker2 ) );
 
 <p>As of now only markers are able to be placed on a static map. Paths and polygons coming soon.</p>
 
+<p>Static maps are created in the same way that regular maps are. The only difference is you call <em>printStaticMap()</em> instead of <em>printMap()</em>. You can pass static options to markers with the initialization array or via <em>$marker->setStaticVar()</em>. Both methods are included in this example.</p>
+
 <p>This example uses the first letter of the city and a random color/size for each marker added to the map.</p>
 
 <img src="<?php $map->printStaticMap() ?>">
-
 <p>This example uses the same markers as the first but has Alaska, and Brazil passed as a viewport.</p>
 
 <img src="<?php $map2->printStaticMap( null, array( 'Alaska', 'Brazil' ) ) ?>">

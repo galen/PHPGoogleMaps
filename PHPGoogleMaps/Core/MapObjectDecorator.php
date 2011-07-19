@@ -34,7 +34,7 @@ abstract class MapObjectDecorator {
 	}
 
 	/**
-	 * Sends all function calls to the marker
+	 * Sends all function calls to the decorated object
 	 *
 	 * @param string $name Name of the variable
 	 * @param array $arguments Array of arguments
@@ -58,7 +58,7 @@ abstract class MapObjectDecorator {
 	}
 
 	/**
-	 * Sends all variable assignments to the marker
+	 * Sends all variable assignments to the decorated object
 	 *
 	 * @param string $var Name of the variable
 	 * @param mixed $val Value of the variable
