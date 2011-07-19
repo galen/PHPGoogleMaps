@@ -19,12 +19,19 @@ class CustomControl extends \PHPGoogleMaps\Core\MapObject {
 	 */
 	protected $position = 'TOP_RIGHT';
 
+	/**
+	 * Control listeners
+	 *
+	 * All the listeners that have been added to the control
+	 *
+	 * @var array
+	 */
 	protected $listeners = array();
 
 	/**
 	 * Constructor
 	 *
-	 * @param array $wrapper_options array of control's wrapper options
+	 * @param array $outeroptions array of control's wrapper options
 	 * @param array $inner_options array of control's inner options
 	 * @return CustomControl
 	 */
