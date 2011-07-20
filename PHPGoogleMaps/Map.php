@@ -461,6 +461,14 @@ class Map {
 	private $mobile = false;
 
 	/**
+	 * Mobile iphone fullscreen flag
+	 * This will hide the navigation bar on the iphone
+	 *
+	 * @var boolean
+	 */
+	private $mobile_iphone_fullscreen = false;
+
+	/**
 	 * Map Directions
 	 *
 	 * @var Directions
@@ -1434,12 +1442,18 @@ class Map {
 
 	/**
 	 * Enable mobile display
+	 *
+	 * @var boolean $mobile_iphone_fullscreen If you have set the height of the map to 100% and
+	 *      $mobile_iphone_fullscreen is true, then the iphone navigation bar will be hidden on page load
 	 * @link http://code.google.com/apis/maps/documentation/javascript/basics.html#Mobile
 	 *
 	 * @return void
 	 */
-	public function enableMobile() {
+	public function enableMobile( $mobile_iphone_fullscreen=null) {
 		$this->mobile = true;
+		if ( isset( $mobile_iphone_fullscreen ) ) {
+			$this->mobile_iphone_fullscreen = $mobile_iphone_fullscreen;
+		}
 	}
 
 /*************************************
@@ -1650,8 +1664,10 @@ class Map {
 	 * @return string
 	 */
 	function getMap() {
-		return sprintf( '<div id="%s" style="%s%s">%s</div>', $this->map_id, ( $this->width ? 'width:' . $this->width . ';' : '' ), ( $this->height ? 'height:' . $this->height . ';' : '' ), $this->loading_content ? $this->loading_content : '' );
+		$iphone_safari_hide_navbar = sprintf( "\n<script type=\"text/javascript\">if (navigator.userAgent.indexOf('iPhone') > -1 && navigator.userAgent.indexOf('Safari') > -1){ document.getElementById('%s').style.height = screen.height + 60 + 'px' }</script>", $this->map_id );
+		return sprintf( '<div id="%s" style="%s%s">%s</div>%s', $this->map_id, ( $this->width ? 'width:' . $this->width . ';' : '' ), ( $this->height ? 'height:' . $this->height . ';' : '' ), $this->loading_content ? $this->loading_content : '', $this->mobile_iphone_fullscreen ? $iphone_safari_hide_navbar : '' );
 	}
+
 
 	/**
 	 * Print the map header javascript
@@ -2122,7 +2138,7 @@ class Map {
 	  	}
 		
 
-	  	$output .= sprintf( "\n};\n\n}\nfunction initialize_%s() {\n\t%s = new phpgooglemap_%s();\n\t%s.initialize();\n}\n\n", $this->map_id, $this->map_id, $this->map_id, $this->map_id );
+	  	$output .= sprintf( "\n};\n\n}\nfunction initialize_%s() {\n\t%s = new phpgooglemap_%s();\n\t%s.initialize();\n\n%s\n\n}\n\n", $this->map_id, $this->map_id, $this->map_id, $this->map_id, $this->mobile_iphone_fullscreen ? 'setTimeout(function() { window.scrollTo(0, 1) }, 100);' : '' );
 
 		if ( $this->geolocation ) {
 			$output .= "function get_geolocation() {\n";
