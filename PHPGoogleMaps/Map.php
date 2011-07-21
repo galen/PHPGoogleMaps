@@ -1611,7 +1611,7 @@ class Map {
 	/**
 	 * Add an array objects to the map
 	 * 
-	 * @return array Returns an array of decorated map objects
+	 * @return void
 	 */
 
 	public function addObjects( array $objects ) {
