@@ -43,6 +43,15 @@ class CustomControl extends \PHPGoogleMaps\Core\MapObject {
 		}
 	}
 
+	/**
+	 * Add Listener
+	 *
+	 * Add a listener to the control
+	 *
+	 * @param string $event Event to listen for (click)
+	 * @param string $function Function to call
+	 * @return void
+	 */
 	public function addListener( $event, $function ) {
 		$this->listeners[] = array(
 			'event'		=> $event,
