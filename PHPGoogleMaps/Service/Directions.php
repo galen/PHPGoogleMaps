@@ -67,7 +67,7 @@ abstract class Directions extends \PHPGoogleMaps\Core\MapObject {
 				$this->request_options['origin'] = $geo;
 			}
 			else {
-				throw new \PHPGoogleMaps\Core\GeocodeException( $geo );
+				throw new \PHPGoogleMaps\Service\GeocodeException( $geo );
 			}
 		}
 
@@ -79,12 +79,7 @@ abstract class Directions extends \PHPGoogleMaps\Core\MapObject {
 				$this->request_options['destination'] = $geo;
 			}
 			else {
-				$exc = new \PHPGoogleMaps\Core\GeocodeException( sprintf( 'Unable to geocode "%s"', $destination ) );
-				$exc->error = $geo->error;
-				if ( $geo->error == 'ZERO_RESULTS' ) {
-					$exc->invalid_location = $destination;
-				}
-				throw $exc;
+				throw new \PHPGoogleMaps\Service\GeocodeException( $geo );
 			}
 		}
 
@@ -99,7 +94,7 @@ abstract class Directions extends \PHPGoogleMaps\Core\MapObject {
 				$this->request_options['waypoints'][] =  array( 'location' => $geo );
 			}
 			else {
-				throw new \PHPGoogleMaps\Core\GeocodeException( $geo );
+				throw new \PHPGoogleMaps\Service\GeocodeException( $geo );
 			}
 		}
 	}

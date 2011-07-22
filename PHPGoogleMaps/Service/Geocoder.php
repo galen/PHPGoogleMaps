@@ -38,7 +38,7 @@ class Geocoder {
 		if ( $response instanceof GeocodeError ) {
 			return $response;
 		}
-		
+
 		if ( $simple ) {
 			return new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->location->lat, $response->results[0]->geometry->location->lng );
 		}

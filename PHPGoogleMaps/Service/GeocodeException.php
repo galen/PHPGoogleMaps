@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPGoogleMaps\Core;
+namespace PHPGoogleMaps\Service;
 
 /**
 * Geocode exception

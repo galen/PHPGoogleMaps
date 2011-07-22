@@ -23,7 +23,7 @@ if ( isset( $_GET['origin'], $_GET['destination'] ) && strlen( $_GET['origin'] )
 		//$directions->addWaypoint( 'Austin, TX' );
 		$map->addObject( $directions );
 	}
-	catch ( \PHPGoogleMaps\Core\GeocodeException $e ) {
+	catch ( \PHPGoogleMaps\Service\GeocodeException $e ) {
 		$error = $e;
 	}
 }
