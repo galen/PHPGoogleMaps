@@ -2112,7 +2112,7 @@ class Map {
 		  						$n,
 		  						$event_class == 'PHPGoogleMaps\Event\DomEventListener' ? 'Dom' : '',
 		  						$event_listener->once ? 'Once' : '',
-		  						$event_class == 'PHPGoogleMaps\Event\DomEventListener' && $event_listener->object instanceof \PHPGoogleMaps\Core\MapObjectDecorator ? $event_listener->object : sprintf( 'document.getElementById("%s")', $event_listener->object ),
+		  						$event_listener->object instanceof \PHPGoogleMaps\Core\MapObjectDecorator || $event_listener->object instanceof \PHPGoogleMaps\Map ? $event_listener->object : sprintf( 'document.getElementById("%s")', $event_listener->object ),
 		  						$event_listener->event,
 		  						$event_listener->function
 		  					);
@@ -2234,7 +2234,7 @@ class Map {
 	 *
 	 * @return string
 	 */
-	public function toString() {
+	public function __toString() {
 		return $this->getJsVar();
 	}
 
