@@ -42,7 +42,7 @@ foreach( $locations as $i => $location ) {
 	$map->addObject( $marker );
 }
 
-$e = new \PHPGoogleMaps\Event\EventListener( $map->getJsVar(), 'click', 'find_closest_marker');
+$e = new \PHPGoogleMaps\Event\EventListener( $map, 'click', 'find_closest_marker');
 $map->addObject( $e );
 ?>
 
@@ -73,7 +73,7 @@ $map->addObject( $e );
 		    var R = 6371;
 		    var distances = [];
 		    var closest = -1;
-		    for( i=1;i<map.markers.length; i++ ) {
+		    for( i=0;i<map.markers.length; i++ ) {
 		        var mlat = map.markers[i].position.lat();
 		        var mlng = map.markers[i].position.lng();
 		        var dLat  = rad(mlat - lat);

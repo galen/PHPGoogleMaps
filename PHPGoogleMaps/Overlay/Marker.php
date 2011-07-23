@@ -183,7 +183,9 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 	}
 
 	public function getIcon() {
-		return $this->icon->icon;
+		if ( isset( $this->icon->icon ) ) {
+			return $this->icon->icon;
+		}
 	}
 
 	/**
