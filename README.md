@@ -7,6 +7,7 @@ For PHP 5.3+ and Google Maps API v3
 ##Features
  - Adsense ads
  - Binding map objects
+ - Custom map controls
  - Directions with waypoints ( walking, biking and driving )
  - Event listeners and DOM event listeners
  - Fusion tables
