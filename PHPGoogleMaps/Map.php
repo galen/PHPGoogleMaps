@@ -1473,7 +1473,7 @@ class Map {
 		$this->stagger_markers = $timeout;
 		$this->addObject(
 			new \PHPGoogleMaps\Event\EventListener(
-			$this->getJsVar(),
+			$this,
 				'idle',
 				sprintf( 'function(){j=0;for(var i=0;i<%1$s.length-1;i++){setTimeout(function(){%1$s[j] = new google.maps.Marker(%1$s[j++])},i*%2$s)};setTimeout(function(){%1$s[%1$s.length-1] = new google.maps.Marker(%1$s[%1$s.length-1])},((%1$s.length-1)*%2$s))}',
 					$this->getMarkersJsVar(),
