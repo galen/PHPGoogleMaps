@@ -678,8 +678,8 @@ class Map {
 		if ( is_array( $visible ) ) {
 			$request .= sprintf( "visible=%s&", implode( '|', $visible ) );
 		}
-		if ( isset( $this->center->lat ) && isset( $this->center->lng ) ) {
-			$request .= sprintf( "center=%s,%s&", $this->center->lat, $this->center->lng );
+		if ( $this->center instanceof \PHPGoogleMaps\Core\AbstractLocation ) {
+			$request .= sprintf( "center=%s,%s&", $this->center->getLat(), $this->center->getLng() );
 			$request .= sprintf( "zoom=%s&", $this->zoom );
 		}
 		foreach( $this->markers as $marker ) {
@@ -689,7 +689,7 @@ class Map {
 				isset( $marker->static->label ) ? strtoupper( (string) $marker->static->label[0] ) : '',
 				$marker->icon ? sprintf( 'icon:%s|', $marker->icon ) : '',
 				isset( $marker->static->flat ) ?  ( ( $marker->static->flat ) ? 'false' : 'true' ) : '',
-				$marker->position->lat, $marker->position->lng
+				$marker->position->getLat(), $marker->position->getLng()
 			);
 		}
 		return sprintf( "%s%s", $url, $request );
@@ -1006,19 +1006,8 @@ class Map {
 	 * @return void
 	 * @throws GeocodeException
 	 */
-	public function setCenter( $location ) {
-		if ( $location instanceof \PHPGoogleMaps\Core\LatLng ) {
-			$this->center = $location;
-		}
-		else {
-			$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $location );
-			if ( $geocode_result instanceof \PHPGoogleMaps\Core\LatLng ) {
-				$this->center = $geocode_result;
-			}
-			else {
-				throw new \PHPGoogleMaps\Core\GeocodeException( $geocode_result );
-			}
-		}
+	public function setCenter( \PHPGoogleMaps\Core\AbstractLocation $location ) {
+		$this->center = $location->getLatLng();
 	}
 
 	/**
@@ -1040,7 +1029,7 @@ class Map {
 	 * @param string $backup_location Backup location incase geolocation fails
 	 * @return void
 	 */
-	public function centerOnUser( \PHPGoogleMaps\Core\LatLng $backup_location=null ) {
+	public function centerOnUser( \PHPGoogleMaps\Core\AbstractLocation $backup_location=null ) {
 		$this->enableGeolocation();
 		$this->center_on_user = true;
 		if ( $backup_location !== null ) {
@@ -1473,7 +1462,7 @@ class Map {
 		$this->stagger_markers = $timeout;
 		$this->addObject(
 			new \PHPGoogleMaps\Event\EventListener(
-			$this,
+			$this->getJsVar(),
 				'idle',
 				sprintf( 'function(){j=0;for(var i=0;i<%1$s.length-1;i++){setTimeout(function(){%1$s[j] = new google.maps.Marker(%1$s[j++])},i*%2$s)};setTimeout(function(){%1$s[%1$s.length-1] = new google.maps.Marker(%1$s[%1$s.length-1])},((%1$s.length-1)*%2$s))}',
 					$this->getMarkersJsVar(),
@@ -1544,7 +1533,6 @@ class Map {
  **************************************/
  
  	/**
- 	 * Add object
  	 * Add an object to the map
  	 *
  	 * This method calls the various protected add* methods() which
@@ -1556,7 +1544,7 @@ class Map {
  	 * @param object $object Object to add to the map
  	 * @return object Returns a decorated object
  	 */
-	public function addObject( &$object ) {
+	public function addObject( $object ) {
 		if ( !is_object( $object ) ) {
 			return false;
 		}
@@ -1604,18 +1592,20 @@ class Map {
 				$object = $this->addDirections( $object );
 				break;
 			default:
-
+				return false;
 		}
+		return $object;
 	}
 
 	/**
 	 * Add an array objects to the map
 	 * 
+	 * @param array $objects Array of objects to add to the map
 	 * @return void
 	 */
 
 	public function addObjects( array $objects ) {
-		foreach( $objects as &$object ) {
+		foreach( $objects as $object ) {
 			$this->addObject( $object );
 		}
 	}
@@ -1808,16 +1798,16 @@ class Map {
 			foreach( $this->shapes as $n => $shape ) {
 				if ( $shape->decoratee instanceof \PHPGoogleMaps\Overlay\Circle ) {
 		  			$output .= sprintf( "\tthis.shapes[%s] = new google.maps.Circle( {\n", $n );
-					$output .= sprintf( "\t\tcenter: new google.maps.LatLng(%s,%s),\n", $shape->center->lat, $shape->center->lng );
+					$output .= sprintf( "\t\tcenter: new google.maps.LatLng(%s,%s),\n", $shape->center->getLat(), $shape->center->getLng() );
 					$output .= sprintf( "\t\tradius: %s,\n", $shape->radius );
 				}
 				elseif ( $shape->decoratee instanceof \PHPGoogleMaps\Overlay\Rectangle ) {
 		  			$output .= sprintf( "\tthis.shapes[%s] = new google.maps.Rectangle( {\n", $n );
 					$output .= sprintf( "\t\tbounds: new google.maps.LatLngBounds(new google.maps.LatLng(%s,%s),new google.maps.LatLng(%s,%s)),\n",
-										$shape->southwest->lat,
-										$shape->southwest->lng,
-										$shape->northeast->lat,
-										$shape->northeast->lng
+										$shape->southwest->getLat(),
+										$shape->southwest->getLng(),
+										$shape->northeast->getLat(),
+										$shape->northeast->getLng()
 									);
 				}
 				foreach( $shape->getOptions() as $var => $val ) {
@@ -1880,10 +1870,10 @@ class Map {
 		  				$request_options .= sprintf("\t\twaypoints: %s,\n", $this->parseLatLngs( $this->phptoJs( $request_value ) ) );
 		  				break;
 		  			case 'origin':
-				  		$request_options .= sprintf( "\t\torigin: new google.maps.LatLng(%s,%s),\n", $this->directions->request_options['origin']->lat, $this->directions->request_options['origin']->lng );
+				  		$request_options .= sprintf( "\t\torigin: new google.maps.LatLng(%s,%s),\n", $this->directions->request_options['origin']->getLat(), $this->directions->request_options['origin']->getLng() );
 					  	break;
 					case 'destination':
-				  		$request_options .= sprintf( "\t\tdestination: new google.maps.LatLng(%s,%s),\n", $this->directions->request_options['destination']->lat, $this->directions->request_options['destination']->lng );
+				  		$request_options .= sprintf( "\t\tdestination: new google.maps.LatLng(%s,%s),\n", $this->directions->request_options['destination']->getLat(), $this->directions->request_options['destination']->getLng() );
 					  	break;
 					case 'travelMode':
 					  	$request_options .= sprintf( "\t\ttravelMode: google.maps.DirectionsTravelMode.%s,\n", strtoupper( $this->directions->request_options['travelMode'] ) );
@@ -1969,7 +1959,7 @@ class Map {
 				$output .= "\t\tposition: geolocation,\n";
 			}
 			else {
-				$output .= sprintf( "\t\tposition: new google.maps.LatLng(%s,%s),\n", $marker->position->lat, $marker->position->lng );			
+				$output .= sprintf( "\t\tposition: new google.maps.LatLng(%s,%s),\n", $marker->position->getLat(), $marker->position->getLng() );			
 			}
 			if ( !$this->clustering_js  ) {
 				$output .= "\t\tmap: this.map,\n";
@@ -2022,10 +2012,10 @@ class Map {
 		  		$output .= sprintf( "\tthis.ground_overlays[%s] = new google.maps.GroundOverlay('%s', new google.maps.LatLngBounds(new google.maps.LatLng(%s,%s),new google.maps.LatLng(%s,%s)), %s);\n\tthis.ground_overlays[%s].setMap(this.map);\n\n",
 			  		$n,
 			  		$ground_overlay->url,
-					$ground_overlay->southwest->lat,
-					$ground_overlay->southwest->lng,
-					$ground_overlay->northeast->lat,
-					$ground_overlay->northeast->lng,
+					$ground_overlay->southwest->getLat(),
+					$ground_overlay->southwest->getLng(),
+					$ground_overlay->northeast->getLat(),
+					$ground_overlay->northeast->getLng(),
 			  		$this->phpToJs( $ground_overlay->options ),
 			  		$n
 		  		);
@@ -2097,11 +2087,11 @@ class Map {
 			}
 			$output .= "\t\tthis.map.setCenter( geolocation );\n";
 			if ( $this->geolocation_backup ) {
-				$output .= sprintf( "\t}\n\telse {\n\t\tthis.map.setCenter( new google.maps.LatLng(%s,%s) );\n\t}\n\n", $this->geolocation_backup->lat, $this->geolocation_backup->lng );
+				$output .= sprintf( "\t}\n\telse {\n\t\tthis.map.setCenter( new google.maps.LatLng(%s,%s) );\n\t}\n\n", $this->geolocation_backup->getLat(), $this->geolocation_backup->getLng() );
 			}
 		}
 	  	if ( $this->center ) {
-			$output .= sprintf( "\tthis.map.setCenter( new google.maps.LatLng(%s,%s) );\n", $this->center->lat, $this->center->lng );
+			$output .= sprintf( "\tthis.map.setCenter( new google.maps.LatLng(%s,%s) );\n", $this->center->getLat(), $this->center->getLng() );
 		}
 	  	
 	  	if ( count ($this->event_listeners ) ) {

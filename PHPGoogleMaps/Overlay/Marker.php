@@ -237,8 +237,8 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 	 * @param string $content The infowindow content of the marker.
 	 * @return Marker
 	 */
-	public static function createFromLatLng( \PHPGoogleMaps\Core\LatLng $position, array $options=null ) {
-		return new Marker( $position, $options );
+	public static function createFromLatLng( \PHPGoogleMaps\Core\AbstractLocation $position, array $options=null ) {
+		return new Marker( $position->getLatLng(), $options );
 	}
 
 	/**
@@ -250,8 +250,8 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 	 */
 	public static function createFromLocation( $location, array $options=null ) {
 		$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $location );
-		if ( $geocode_result instanceof \PHPGoogleMaps\Core\LatLng ) {
-			return self::createFromLatLng( $geocode_result->getLatLng(), $options );
+		if ( $geocode_result instanceof \PHPGoogleMaps\Service\GeocodeResult ) {
+			return self::createFromLatLng( $geocode_result, $options );
 		}
 		return false;
 	}

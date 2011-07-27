@@ -1,29 +1,39 @@
 <?php
 
+// Autoloader stuff
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
 
+// This is just for my examples
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Layer\FusionTable',
 	'\PHPGoogleMaps\Layer\FusionTableDecorator'
 );
 
+// Create a map
 $map = new \PHPGoogleMaps\Map;
-$ft_options = array(
+
+// Create a fusion table for CT
+$ft_ct_options = array(
 	'query' => 'SELECT location FROM 232192 WHERE state_province_abbrev="CT"'
 );
-$ft = new \PHPGoogleMaps\Layer\FusionTable( 232192, $ft_options );
+$ft_ct = new \PHPGoogleMaps\Layer\FusionTable( 232192, $ft_ct_options );
 
-$ft_options2 = array(
+// Create a fusion table for RI
+$ft_ri_options = array(
 	'query'	=> 'SELECT location FROM 232192 WHERE state_province_abbrev="RI"'
 );
-$ft2 = new \PHPGoogleMaps\Layer\FusionTable( 232192, $ft_options2 );
+$ft_ri = new \PHPGoogleMaps\Layer\FusionTable( 232192, $ft_ri_options );
 
-$a = array( &$ft, $ft2 );
+// Add the CT fusion table to the map and get the decorator for later use
+$ft_ct_map = $map->addObject( $ft_ct );
 
-$map->addObjects( $a );
+// Add the RI fusion table to the map
+$map->addObject( $ft_ri );
+
+// Set map options
 $map->setCenter( 'Connecticut' );
 $map->setZoom( 7 );
 
@@ -45,7 +55,7 @@ $map->setZoom( 7 );
 
 <?php $map->printMap() ?>
 
-<a href="#" onclick="<?php echo $ft->getJsVar() ?>.setOptions({heatmap:true})">Make CT a heat map</a>
+<a href="#" onclick="<?php echo $ft_ct_map->getJsVar() ?>.setOptions({heatmap:true})">Make CT a heat map</a>
 
 </body>
 

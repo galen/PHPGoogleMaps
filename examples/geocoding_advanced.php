@@ -1,9 +1,11 @@
 <?php
 
+// Autoloader stuff
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
 
+// This is just for my examples
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Service\Geocoder',
@@ -11,31 +13,33 @@ $relevant_code = array(
 	'\PHPGoogleMaps\Service\GeocodeResult'
 );
 
+// If a location is set, geocode it
 if ( isset( $_GET['location'] ) && strlen( $_GET['location'] ) ) {
 	$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $_GET['location'] );
 	if ( $geocode_result instanceof \PHPGoogleMaps\Service\GeocodeResult ) {
-		if ( $geocode_result->result_count > 1 ) {
+		// If more than one result was found we are going to give the user an option to pick one
+		if ( count( $geocode_result->response->results ) > 1 ) {
 			$location = $_GET['location'];
-			$location_options = $geocode_result->raw_results;
+			$location_options = $geocode_result->response->results;
 		}
+		// 
 		else {
-			$location = $geocode_result->formatted_address;
 			$position = $geocode_result;
 		}
 	}
 	else {
-		$location = $_GET['location'];
+		$location = $geocode_result->location;
 		$error = $geocode_result->error;
 	}
 }
 if ( isset( $_GET['geocoded_location'] ) ) {
 	list( $location, $lat, $lng ) = explode( '|', $_GET['geocoded_location'] );
-	$position = new \PHPGoogleMaps\Core\LatLng( $lat, $lng );
+	$position = new \PHPGoogleMaps\Core\LatLng( $lat, $lng, $location );
 }
 
 if ( isset( $position ) ) {
 	$map = new \PHPGoogleMaps\Map;
-	$marker = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( $position, array( 'content' => $location ) );
+	$marker = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( $position, array( 'content' => $position->location ) );
 	$map->addObject( $marker );
 	$map->disableAutoEncompass();
 	$map->setZoom( 13 );
@@ -79,7 +83,7 @@ if ( isset( $position ) ) {
 <input type="submit" value=" Geocode ">
 </form>
 
-<?php if( isset( $location ) && !isset( $location_options ) ): ?><p><?php echo $location ?></p><?php endif; ?>
+<?php if( isset( $position ) ): ?><p><?php echo $position->location ?></p><?php endif; ?>
 <?php if( isset( $error ) ): ?><p>Unable to geocode "<?php echo $location ?>" (<?php echo $error ?>)</p><?php endif; ?>
 <?php if( isset( $map ) ) $map->printMap() ?>
 

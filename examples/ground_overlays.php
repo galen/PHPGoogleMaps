@@ -19,8 +19,7 @@ $go = new \PHPGoogleMaps\Overlay\GroundOverlay(
 );
 
 $map->addObject( $go );
-
-$map->setCenter( 'San Diego, CA' );
+$map->setCenter( \PHPGoogleMaps\Service\Geocoder::geocode( 'San Diego, CA' ) );
 $map->setZoom( 14 );
 
 ?>

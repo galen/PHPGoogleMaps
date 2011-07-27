@@ -1,9 +1,11 @@
 <?php
 
+// Autoloader stuff
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
 
+// This is just for my examples
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Service\DrivingDirections',
@@ -13,14 +15,15 @@ $relevant_code = array(
 	'\PHPGoogleMaps\Service\DirectionsDecorator'
 );
 
+// Create a new map and set some options
 $map = new \PHPGoogleMaps\Map;
 $map->setCenter( 'USA' );
 $map->setZoom( 3 );
 
+// If origin and destination are set add directions
 if ( isset( $_GET['origin'], $_GET['destination'] ) && strlen( $_GET['origin'] ) && strlen( $_GET['destination'] ) ) {
 	try {
 		$directions = new \PHPGoogleMaps\Service\DrivingDirections( $_GET['origin'], $_GET['destination'] );
-		//$directions->addWaypoint( 'Austin, TX' );
 		$map->addObject( $directions );
 	}
 	catch ( \PHPGoogleMaps\Service\GeocodeException $e ) {

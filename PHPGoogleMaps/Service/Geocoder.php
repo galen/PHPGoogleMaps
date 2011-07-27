@@ -31,31 +31,24 @@ class Geocoder {
 	 * @link http://code.google.com/apis/maps/documentation/geocoding/
 	 *
 	 * @param string $location
+	 * @param boolean $simple If true, only the lat/lng will be returned
 	 * @return GeocodeResult|GeocodeError
 	 */
-	public static function geocode( $location, $simple=false ) {
+	public static function geocode( $location ) {
+		$response = self::scrapeAPI( $location );
+		if ( $response->status != 'OK' ) {
+			$error = new GeocodeError( $response->status, $location );
+			return $error;
+		}
+		return new GeocodeResult( $location, $response );
+	}
+
+	function getLatLng() {
 		$response = self::scrapeAPI( $location );
 		if ( $response instanceof GeocodeError ) {
 			return $response;
 		}
-
-		if ( $simple ) {
-			return new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->location->lat, $response->results[0]->geometry->location->lng );
-		}
-
-		$geocoded_location = new GeocodeResult( $response->results[0]->geometry->location->lat, $response->results[0]->geometry->location->lng );
-		$geocoded_location->formatted_address = $response->results[0]->formatted_address;
-		$geocoded_location->result_count = count( $response->results );
-		$geocoded_location->raw_results = $response->results;
-		$geocoded_location->viewport = new \stdClass;
-		$geocoded_location->viewport->southwest = new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->viewport->southwest->lat, $response->results[0]->geometry->viewport->southwest->lng );
-		$geocoded_location->viewport->northeast = new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->viewport->northeast->lat, $response->results[0]->geometry->viewport->northeast->lng );
-
-		$geocoded_location->bounds = new \stdClass;
-		$geocoded_location->bounds->southwest = new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->bounds->southwest->lat, $response->results[0]->geometry->bounds->southwest->lng );
-		$geocoded_location->bounds->northeast = new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->bounds->northeast->lat, $response->results[0]->geometry->bounds->northeast->lng );
-
-		return $geocoded_location;
+		return new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->location->lat, $response->results[0]->geometry->location->lng );
 	}
 
 	/**
@@ -67,12 +60,6 @@ class Geocoder {
 	private static function scrapeAPI( $location ) {
 		$url = sprintf( "http://maps.google.com/maps/api/geocode/json?address=%s&sensor=false", urlencode( $location ) );
 		$response = json_decode( Scraper::scrape( $url ) );
-		if ( $response->status != 'OK' ) {
-			$e = new GeocodeError;
-			$e->error = $response->status;
-			$e->location = $location;
-			return $e;
-		}
 		return $response;
 	}
 

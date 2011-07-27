@@ -7,7 +7,7 @@ $map_loader->register();
 require( '_system/config.php' );
 
 $map = new \PHPGoogleMaps\Map;
-//$marker = \PHPGoogleMaps\Overlay\Marker::createFromUserLocation( array( 'geolocation_high_accuracy' => true, 'geolocation_timeout' => 10000 ) );
+$marker = \PHPGoogleMaps\Overlay\Marker::createFromUserLocation( array( 'geolocation_high_accuracy' => true, 'geolocation_timeout' => 10000 ) );
 $map->addObject( $marker );
 $map->enableGeolocation( 5000, true );
 $map->centerOnUser( \PHPGoogleMaps\Service\Geocoder::geocode('New York, NY') );

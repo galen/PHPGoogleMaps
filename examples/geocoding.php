@@ -1,9 +1,11 @@
 <?php
 
+// Autoloader stuff
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
 
+// This is just for my examples
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Service\Geocoder',
@@ -11,14 +13,15 @@ $relevant_code = array(
 	'\PHPGoogleMaps\Service\GeocodeResult'
 );
 
+// Create a map
 $map = new \PHPGoogleMaps\Map;
 
-$latlng = \PHPGoogleMaps\Service\Geocoder::geocode( 'San Diego, CA' );
-$marker = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( $latlng );
-$map->addObject( $marker );
-$map->disableAutoEncompass();
-$map->setZoom( 13 );
-$map->setCenter( $latlng );
+// Geocode a location
+$geocode = \PHPGoogleMaps\Service\Geocoder::geocode( 'San Diego, CA' );
+if ( $geocode instanceof \PHPGoogleMaps\Service\GeocodeResult ) {
+	// Set center of map to geocoded location
+	$map->setCenter( $geocode );
+}
 
 ?>
 

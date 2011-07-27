@@ -2,49 +2,15 @@
 
 namespace PHPGoogleMaps\Service;
 
-class GeocodeResult extends \PHPGoogleMaps\Core\LatLng {
+class GeocodeResult extends \PHPGoogleMaps\Core\AbstractLocation {
 
-	/**
-	 * Formatted address returned by the geocoder service
-	 *
-	 * @var string
-	 */
-	public $formatted_address;
+	public $response;
+	public $location;
 
-	/**
-	 * Raw geocode result
-	 *
-	 * @var StdClass
-	 */
-	public $raw;
-
-	/**
-	 * Viewport of the first result returned by the geocoder service
-	 *
-	 * @var StdClass
-	 */
-	public $viewport;
-
-	/**
-	 * Bounds of the first result returned by the geocoder service
-	 *
-	 * @var StdClass
-	 */
-	public $bounds;
-
-	/**
-	 * Was the location retreived from the cache 
-	 *
-	 * @var boolean
-	 */
-	private $was_in_cache = false;
-
-	/**
-	 * Was the location written to the cache 
-	 *
-	 * @var boolean
-	 */
-	private $was_put_in_cache = false;
+	public function __construct( $location, $geocode_response ) {
+		$this->location = $location;
+		$this->response = $geocode_response;
+	}
 
 	/**
 	 * Get lat lng
@@ -53,39 +19,19 @@ class GeocodeResult extends \PHPGoogleMaps\Core\LatLng {
 	 * @return LatLng
 	 */
 	public function getLatLng() {
-		return new \PHPGoogleMaps\Core\LatLng( $this->lat, $this->lng );
+		return new \PHPGoogleMaps\Core\LatLng( $this->response->results[0]->geometry->location->lat, $this->response->results[0]->geometry->location->lng, $this->location );
 	}
-
-	/**
-	 * Set or return cache status
-	 * If a boolean is passed this function will set the property
-	 * Otherwise it will return it
-	 *
-	 * @return void|boolean
-	 */
-	public function wasInCache( $bool=null ) {
-		if ( $bool ) {
-			$this->was_in_cache = (bool) $bool;
-		}
-		else {
-			return $this->was_in_cache;
-		}
+	public function getLat() {
+		return $this->response->results[0]->geometry->location->lat;
 	}
-
-	/**
-	 * Set or return cache write status
-	 * If a boolean is passed this function will set the property
-	 * Otherwise it will return it
-	 *
-	 * @return void|boolean
-	 */
-	public function wasPutInCache( $bool=null ) {
-		if ( $bool ) {
-			$this->was_put_in_cache = (bool) $bool;
+	public function getLng() {
+		return $this->response->results[0]->geometry->location->lng;
+	}
+	public function __get( $var ) {
+		if ( isset( $this->response->results[0]->$var ) ) {
+			return $this->response->results[0]->$var;
 		}
-		else {
-			return $this->was_put_in_cache;
-		}
+		return null;
 	}
 	
 }
