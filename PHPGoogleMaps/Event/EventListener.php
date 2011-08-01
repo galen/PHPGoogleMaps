@@ -52,13 +52,16 @@ class EventListener extends \PHPGoogleMaps\Core\MapObject {
 	/**
 	 * Constructor
 	 *
-	 * @param string $object Object to listen to. This should be the ID of the DOM element to listen to.
+	 * @param MapObjectDecorator|String $object Object to listen to. This should be the ID of the DOM element to listen to.
 	 * @param string $event Event to listen for.
 	 * @param string $function Function to call.
 	 * @param boolean $once Once flag. If true the event listener will be removed after first call.
 	 * @return DOMEventListener
 	 */
 	public function __construct( $object, $event, $function, $once=false ) {
+		if ( $object instanceof \PHPGoogleMaps\Core\MapObject ) {
+			trigger_error( 'You must pass a MapObjectDecorator to an EventListener. e.g. $decorator = $map->addObject( $object ); $event = new EventListener( $decorator… )', E_USER_ERROR );
+		}
 		$this->event = $event;
 		$this->function = $function;
 		$this->object = $object;

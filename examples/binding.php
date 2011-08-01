@@ -1,32 +1,34 @@
 <?php
 
+// This is just for my examples
+require( '_system/config.php' );
+
 // Autoloader stuff
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
-
-// This is just for my examples
-require( '_system/config.php' );
 
 // Create a new map
 $map = new \PHPGoogleMaps\Map;
 
 // Create some circle options
 $circle_options = array(
-	'fillColor'	=> '#00ff00',
+	'fillColor'		=> '#00ff00',
 	'strokeWeight'	=> 1,
 	'fillOpacity'	=> 0.05,
-	'clickable'	=> false
+	'clickable'		=> false
 );
+
 // Create a circle with radius of 100m
 $circle = \PHPGoogleMaps\Overlay\Circle::createFromLocation( 'San Diego, CA', 100, $circle_options );
 
 // Create some marker options
 $marker_options = array(
-	'title'	=> 'San Diego, CA',
+	'title'		=> 'San Diego, CA',
 	'content'	=> '<p><strong>San Diego, CA</strong></p>',
 	'draggable'	=> true
 );
+
 // Create a marker
 $marker = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'San Diego, CA', $marker_options );
 

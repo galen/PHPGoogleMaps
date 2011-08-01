@@ -36,10 +36,11 @@ $map->addObject( $custom_control );
 
 // Create a control and event, attaching the event to the control
 // This has the added benefit of being able to remove the event later using $event
+
 $custom_control_inner_options['innerHTML'] = '<b>Custom2</b>';
 $custom_control2 = new \PHPGoogleMaps\Core\CustomControl( $custom_control_outer_options, $custom_control_inner_options, 'BOTTOM_LEFT' );
-$map->addObject( $custom_control2 );
-$event = new \PHPGoogleMaps\Event\DomEventListener( $custom_control2, 'click', 'function(){ alert("You clicked Custom2"); }' );
+$custom_control2_map = $map->addObject( $custom_control2 );
+$event = new \PHPGoogleMaps\Event\DomEventListener( $custom_control2_map, 'click', 'function(){ alert("You clicked Custom2"); }' );
 $map->addObject( $event );
 
 $map->setCenter( 'San Diego, CA' );

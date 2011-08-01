@@ -40,7 +40,7 @@ class GroundOverlay extends \PHPGoogleMaps\Core\MapObject {
 	 * @param array $options Array of ground overlay options {@link http://code.google.com/apis/maps/documentation/javascript/reference.html#GroundOverlayOptions}
 	 * @return Rectangle
 	 */
-	public function __construct( $url, \PHPGoogleMaps\Core\AbstractLocation $southwest, \PHPGoogleMaps\Core\AbstractLocation $northeast, array $options=null ) {
+	public function __construct( $url, \PHPGoogleMaps\Core\PositionAbstract $southwest, \PHPGoogleMaps\Core\PositionAbstract $northeast, array $options=null ) {
 		$this->url = $url;
 		$this->southwest = $southwest;
 		$this->northeast = $northeast;

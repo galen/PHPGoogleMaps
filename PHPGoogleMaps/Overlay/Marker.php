@@ -232,12 +232,12 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 	/**
 	 * Factory method to create a marker from a lat/lng
 	 *
-	 * @param LatLng $latlng Position of the marker
+	 * @param Abstract $position Position of the marker
 	 * @param string $title The title of the marker. This will be the markers tooltip.
 	 * @param string $content The infowindow content of the marker.
 	 * @return Marker
 	 */
-	public static function createFromLatLng( \PHPGoogleMaps\Core\AbstractLocation $position, array $options=null ) {
+	public static function createFromLatLng( \PHPGoogleMaps\Core\PositionAbstract $position, array $options=null ) {
 		return new Marker( $position->getLatLng(), $options );
 	}
 
@@ -245,8 +245,8 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 	 * Factory method to create a marker from a location
 	 *
 	 * @param string $location Location of the marker. This will be geocoded for you.
-	 * @param array options Array of marker options
-	 * @return Marker
+	 * @param array options Array of marker options.
+	 * @return Marker|False Will return false if geocoding fails.
 	 */
 	public static function createFromLocation( $location, array $options=null ) {
 		$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $location );

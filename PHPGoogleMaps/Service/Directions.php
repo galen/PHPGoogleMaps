@@ -59,42 +59,48 @@ abstract class Directions extends \PHPGoogleMaps\Core\MapObject {
 
 		$this->request_options['travelMode'] = $this->travel_mode;
 
-		if ( $origin instanceof \PHPGoogleMaps\Core\LatLng ) {
-			$this->request_options['origin'] = $origin;
+		if ( $origin instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
+			$this->request_options['origin'] = $origin->getLatLng();
 		}
 		else {
-			if ( ( $geo = \PHPGoogleMaps\Service\Geocoder::geocode( $origin ) ) instanceof \PHPGoogleMaps\Core\LatLng ) {
-				$this->request_options['origin'] = $geo;
+			if ( ( $geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $origin ) ) instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
+				$this->request_options['origin'] = $geocode_result->getLatLng();
 			}
 			else {
-				throw new \PHPGoogleMaps\Service\GeocodeException( $geo );
+				throw new \PHPGoogleMaps\Service\GeocodeException( $geocode_result );
 			}
 		}
 
-		if ( $destination instanceof \PHPGoogleMaps\Core\LatLng ) {
-			$this->request_options['destination'] = $destination;
+		if ( $destination instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
+			$this->request_options['destination'] = $destination->getLatLng();
 		}
 		else {
-			if ( ( $geo = \PHPGoogleMaps\Service\Geocoder::geocode( $destination ) ) instanceof \PHPGoogleMaps\Core\LatLng ) {
-				$this->request_options['destination'] = $geo;
+			if ( ( $geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $destination ) ) instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
+				$this->request_options['destination'] = $geocode_result;
 			}
 			else {
-				throw new \PHPGoogleMaps\Service\GeocodeException( $geo );
+				throw new \PHPGoogleMaps\Service\GeocodeException( $geocode_result );
 			}
 		}
 
 	}
 	
+	/**
+	 * Add a waypoint
+	 *
+	 *
+	 *
+	 */
 	public function addWaypoint( $waypoint, $stopover=true ) {
-		if ( $waypoint instanceof \PHPGoogleMaps\Core\LatLng ) {
-			$this->request_options['waypoints'][] = array( 'location' => $waypoint,  );
+		if ( $waypoint instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
+			$this->request_options['waypoints'][] = array( 'location' => $waypoint->getLatLng()  );
 		}
 		else {
-			if ( ( $geo = \PHPGoogleMaps\Service\Geocoder::geocode( $waypoint, true ) ) instanceof \PHPGoogleMaps\Core\LatLng ) {
-				$this->request_options['waypoints'][] =  array( 'location' => $geo );
+			if ( ( $geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $waypoint, true ) ) instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
+				$this->request_options['waypoints'][] =  array( 'location' => $geocode_result->getLatLng() );
 			}
 			else {
-				throw new \PHPGoogleMaps\Service\GeocodeException( $geo );
+				throw new \PHPGoogleMaps\Service\GeocodeException( $geocode_result );
 			}
 		}
 	}

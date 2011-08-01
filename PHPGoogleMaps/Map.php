@@ -678,7 +678,7 @@ class Map {
 		if ( is_array( $visible ) ) {
 			$request .= sprintf( "visible=%s&", implode( '|', $visible ) );
 		}
-		if ( $this->center instanceof \PHPGoogleMaps\Core\AbstractLocation ) {
+		if ( $this->center instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
 			$request .= sprintf( "center=%s,%s&", $this->center->getLat(), $this->center->getLng() );
 			$request .= sprintf( "zoom=%s&", $this->zoom );
 		}
@@ -786,16 +786,16 @@ class Map {
 					$this->enableGeolocation();
 					$options['position'] = "geolocation";
 			}
-			elseif ( $options['position'] instanceof \PHPGoogleMaps\Core\LatLng ) {
+			elseif ( $options['position'] instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
 				$options['position'] = $options['position']->getLatLng();
 			}
 			else {
 				$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $options['position'], true );
-				if ( $geocode_result instanceof \PHPGoogleMaps\Core\LatLng ) {
+				if ( $geocode_result instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
 					$options['position'] = $geocode_result;
 				}
 				else {
-					throw new \PHPGoogleMaps\Core\GeocodeException( $geocode_result );
+					throw new \PHPGoogleMaps\Service\GeocodeException( $geocode_result );
 				}
 			}		
 		}		
@@ -1001,15 +1001,22 @@ class Map {
 	/**
 	 * Set map center
 	 *
-	 * @param string|LatLng $location Location of the center. Can be a
-	 *                                location or a LatLng object.
-	 * @return void
-	 * @throws GeocodeException
+	 * @param string|PositionAbstract $center Location of the center. Can be a
+	 *                                location or an object that extends PositionAbstract.
+	 * @return boolean
 	 */
-	public function setCenter( \PHPGoogleMaps\Core\AbstractLocation $location ) {
-		$this->center = $location->getLatLng();
+	public function setCenter( $center ) {
+		if ( $center instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
+			$this->center = $center->getLatLng();
+			return true;
+		}
+		$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( (string)$center );
+		if ( $geocode_result instanceof \PHPGoogleMaps\Service\GeocodeResult ) {
+			$this->center = $geocode_result->getLatLng();
+			return true;
+		}
+		return false;
 	}
-
 	/**
 	 * Set map center by coordinates
 	 * 
@@ -1020,7 +1027,7 @@ class Map {
 	 * @return void
 	 */
 	public function setCenterCoords( $lat, $lng ) {
-		$this->setCenter( new \PHPGoogleMaps\Core\LatLng( floatval( $lat ), floatval( $lng ) ) );
+		$this->setCenter( new \PHPGoogleMaps\Core\PositionAbstract( floatval( $lat ), floatval( $lng ) ) );
 	}
 
 	/**
@@ -1029,7 +1036,7 @@ class Map {
 	 * @param string $backup_location Backup location incase geolocation fails
 	 * @return void
 	 */
-	public function centerOnUser( \PHPGoogleMaps\Core\AbstractLocation $backup_location=null ) {
+	public function centerOnUser( \PHPGoogleMaps\Core\PositionAbstract $backup_location=null ) {
 		$this->enableGeolocation();
 		$this->center_on_user = true;
 		if ( $backup_location !== null ) {
@@ -1462,7 +1469,7 @@ class Map {
 		$this->stagger_markers = $timeout;
 		$this->addObject(
 			new \PHPGoogleMaps\Event\EventListener(
-			$this->getJsVar(),
+			$this,
 				'idle',
 				sprintf( 'function(){j=0;for(var i=0;i<%1$s.length-1;i++){setTimeout(function(){%1$s[j] = new google.maps.Marker(%1$s[j++])},i*%2$s)};setTimeout(function(){%1$s[%1$s.length-1] = new google.maps.Marker(%1$s[%1$s.length-1])},((%1$s.length-1)*%2$s))}',
 					$this->getMarkersJsVar(),
@@ -2195,7 +2202,7 @@ class Map {
 	 * @access private
 	 */
 	private function parseLatLngs( $str ) {
-		return preg_replace( '~\{"lat":(.*?),"lng":(.*?)\}~i', 'new google.maps.LatLng($1,$2)', $str );
+		return preg_replace( '~{"lat":(.*?),"lng":(.*?),.*?}~i', 'new google.maps.LatLng($1,$2)', $str );
 	}
 
 	/**

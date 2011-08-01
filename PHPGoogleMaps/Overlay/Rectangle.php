@@ -34,28 +34,28 @@ class Rectangle extends \PHPGoogleMaps\Overlay\Shape {
 	 */
 	public function __construct( $southwest, $northeast, array $options=null ) {
 
-		if ( $southwest instanceof \PHPGoogleMaps\Core\LatLng ) {
+		if ( $southwest instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
 			$this->southwest = $southwest->getLatLng();
 		}
 		else {
 			$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $southwest, true );
-			if ( $geocode_result instanceof \PHPGoogleMaps\Core\LatLng ) {
+			if ( $geocode_result instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
 				$this->southwest = $geocode_result;
 			}
 			else {
 				throw new \PHPGoogleMaps\Core\GeocodeException( $geocode_result );
 			}
 		}
-		if ( $northeast instanceof \PHPGoogleMaps\Core\LatLng ) {
+		if ( $northeast instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
 			$this->northeast = $northeast->getLatLng();
 		}
 		else {
 			$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $northeast, true );
-			if ( $geocode_result instanceof \PHPGoogleMaps\Core\LatLng ) {
+			if ( $geocode_result instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
 				$this->northeast = $geocode_result;
 			}
 			else {
-				throw new \PHPGoogleMaps\Core\GeocodeException( $geocode_result );
+				throw new \PHPGoogleMaps\Service\GeocodeException( $geocode_result );
 			}
 		}
 

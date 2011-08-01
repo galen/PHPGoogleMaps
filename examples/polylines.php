@@ -34,7 +34,7 @@ $map->disableAutoEncompass();
 $map->setCenter( 'Austin, TX' );
 $map->setZoom( 3 );
 
-$map->addObjects( array( &$polyline ) );
+$polyline_map = $map->addObject( $polyline );
 
 ?>
 
@@ -54,7 +54,7 @@ $map->addObjects( array( &$polyline ) );
 
 <?php $map->printMap() ?>
 
-<a href="#" onclick="<?php echo $polyline->getJsVar() ?>.setMap(null)">Hide polylines</a>
+<a href="#" onclick="<?php echo $polyline_map->getJsVar() ?>.setMap(null);return false;">Hide polylines</a>
 </body>
 
 </html>

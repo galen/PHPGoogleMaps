@@ -3,11 +3,11 @@
 namespace PHPGoogleMaps\Core;
 
 /**
- * Lat Lng class
+ * LatLng class
  * Base class used for storing lat/lngs
  */
 
-class LatLng extends AbstractLocation {
+class LatLng extends PositionAbstract {
 
 	/**
 	 * Latitude

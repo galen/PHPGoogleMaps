@@ -31,7 +31,7 @@ class GeocodeError {
 	 * @param string $location Location that failed to geocode
 	 * @return GeocodeError
 	 */
-	function __construct( $error, $location  ) {
+	function __construct( $error, $location ) {
 		$this->error = $error;
 		$this->location = $location;
 	}

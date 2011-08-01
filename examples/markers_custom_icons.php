@@ -1,15 +1,15 @@
 <?php
 
-require( '../PHPGoogleMaps/Core/Autoloader.php' );
-$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
-$map_loader->register();
-
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\Marker',
 	'\PHPGoogleMaps\Overlay\MarkerDecorator',
 	'\PHPGoogleMaps\Overlay\MarkerIcon'
 );
+
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
 
 $map = new \PHPGoogleMaps\Map;
 

@@ -2,7 +2,7 @@
 
 namespace PHPGoogleMaps\Service;
 
-class GeocodeResult extends \PHPGoogleMaps\Core\AbstractLocation {
+class GeocodeResult extends \PHPGoogleMaps\Core\PositionAbstract {
 
 	public $response;
 	public $location;
