@@ -67,14 +67,6 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 	protected $groups = array();
 
 	/**
-	 * Animations
-	 * Array of valid animations
-	 *
-	 * @var array
-	 */
-	protected $animations = array( 'bounce', 'drop' );
-
-	/**
 	 * Marker constructor
 	 * Initializes the marker options
 	 *
@@ -85,13 +77,9 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 	private function __construct( $position=null, array $options=null ) {
 
 		$this->position = $position;
-		if ( !$options ) {
-			return;
-		}
 		foreach( $options as $option_name => $option ) {
 		
 			switch( $option_name ) {
-			
 				case 'group':
 					$this->addToGroup( $option );
 					break;
@@ -117,12 +105,7 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 					}
 					break;
 				case 'animation':
-					if ( in_array( $option, $this->animations ) ){
-						$this->options['animation'] = sprintf( 'google.maps.Animation.%s', strtoupper( $option ) );
-					}
-					else {
-						$this->options['animation'] = $option;
-					}
+					$this->options['animation'] = sprintf( 'google.maps.Animation.%s', strtoupper( $option ) );
 					break;
 				default:
 					$this->options[$option_name] = $option;
