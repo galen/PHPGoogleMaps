@@ -62,8 +62,8 @@ class MarkerGroupDecorator extends \PHPGoogleMaps\Core\MapObjectDecorator {
 	 *
 	 * @return string
 	 */
-	public function getToggleFunction() {
-		return sprintf( "%s.marker_group_toggle('%s')", $this->_map, $this->var_name );
+	public function callFunction( $function_all_markers, $function_group_markers ) {
+		return sprintf( "%s.marker_group_function('%s', %s, %s)", $this->_map, $this->var_name, $function_all_markers, $function_group_markers );
 	}
 
 	/**

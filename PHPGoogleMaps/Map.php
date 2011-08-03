@@ -1940,7 +1940,7 @@ class Map {
 
 		if ( count( $this->marker_groups ) ) {
 			$output .= "\n\tthis.marker_groups = [];\n";
-			$output .= "\tthis.marker_group_toggle = function( group_name ) {\n\t\tfor (i in this.marker_groups[group_name].markers) {\n\t\t\tvar marker = this.markers[this.marker_groups[group_name].markers[i]];\n\t\t\tif (marker.getVisible()) {\n\t\t\t\tmarker.setVisible( false );\n\t\t\t} else {\n\t\t\t\tmarker.setVisible( true );\n\t\t\t}\n\t\t}\n\t};\n";
+			$output .= "\tthis.marker_group_function = function( group_name, f_all, f_group ) {\n\t\tfor (i in map.markers) {\n\t\t\tvar marker = map.markers[i];\n\t\t\tf_all(marker);\n\t\t}\n\t\tfor (i in map.marker_groups[group_name].markers) {\n\t\t\tvar marker = map.markers[map.marker_groups[group_name].markers[i]];\n\t\t\tf_group(marker);\n\t\t}\n\t};\n";
 			foreach( $this->marker_groups as $marker_group_var => $marker_group ) {
 				$output .= sprintf( "\tthis.marker_groups[\"%s\"] = {name: \"%s\", markers:[%s]};\n", $marker_group_var, $marker_group->name, implode( ',', $marker_group->_markers ) );
 			}

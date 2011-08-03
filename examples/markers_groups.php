@@ -31,7 +31,8 @@ $markers[] = Marker::createFromLocation( 'Tampa, FL' )->addToGroups( array( 'Sou
 $markers[] = Marker::createFromLocation( 'Detroit, MI' )->addToGroups( array( 'North', 'East', 'Michigan' ) );
 $markers[] = Marker::createFromLocation( 'Ann Arbor, MI' )->addToGroups( array( 'North', 'East', 'Michigan' ) );
 
-
+$markers[] = Marker::createFromLocation( 'Seattle, WA' )->addToGroups( array( 'North', 'West' ) );
+$markers[] = Marker::createFromLocation( 'Denver, CO' )->addToGroups( array( 'Mid West' ) );
 
 /*
 // It is also possible to add groups this way, but its not as intuitive
@@ -55,6 +56,18 @@ $map->addObjects( $markers );
 	<link rel="stylesheet" type="text/css" href="_css/style.css">
 	<?php $map->printHeaderJS() ?>
 	<?php $map->printMapJS() ?>
+	<script type="text/javascript">
+	marker_group_function = function( group_name, f_all, f_group ) {
+		for (i in map.markers) {
+			var marker = map.markers[i];
+			f_all(marker);
+		}
+		for (i in map.marker_groups[group_name].markers) {
+			var marker = map.markers[map.marker_groups[group_name].markers[i]];
+			f_group(marker);
+		}
+	};
+	</script>
 </head>
 <body>
 
@@ -66,7 +79,8 @@ $map->addObjects( $markers );
 <h2>Marker Groups</h2>
 <p>Click a marker group to toggle it.</p>
 <?php foreach( $map->getMarkerGroups() as $group ): ?>
-<input type="checkbox" value="" checked="checked" onclick="<?php echo $group->getToggleFunction() ?>"><?php echo $group->name ?><br>
+<a href="#" onclick="<?php echo $group->callFunction( 'function(m){m.setAnimation(null);}', 'function(m){m.setAnimation(google.maps.Animation.BOUNCE);}' ) ?>"><?php echo $group->name ?></a><br>
+
 <?php endforeach; ?>
 
 </body>
