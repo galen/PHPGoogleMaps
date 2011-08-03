@@ -5,7 +5,8 @@ require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Service\Geocoder',
 	'\PHPGoogleMaps\Service\GeocodeError',
-	'\PHPGoogleMaps\Service\GeocodeResult'
+	'\PHPGoogleMaps\Service\GeocodeResult',
+	'\PHPGoogleMaps\Service\GeocodeException'
 );
 
 // Autoloader stuff

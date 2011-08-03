@@ -1,17 +1,19 @@
 <?php
 
-// Autoloader stuff
-require( '../PHPGoogleMaps/Core/Autoloader.php' );
-$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
-$map_loader->register();
-
 // This is just for my examples
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Service\Geocoder',
 	'\PHPGoogleMaps\Service\GeocodeError',
-	'\PHPGoogleMaps\Service\GeocodeResult'
+	'\PHPGoogleMaps\Service\GeocodeResult',
+	'\PHPGoogleMaps\Service\GeocodeException'
 );
+
+
+// Autoloader stuff
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
 
 // If a location is set, geocode it
 if ( isset( $_GET['location'] ) && strlen( $_GET['location'] ) ) {

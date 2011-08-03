@@ -1529,7 +1529,10 @@ class Map {
 	 */
 	public function getMarkerGroups() {
 		$this->extractMarkerData();
-		return $this->marker_groups;
+		foreach( $this->marker_groups as $mg ) {
+			$groups[] = new \PHPGoogleMaps\Overlay\MarkerGroupDecorator( new \PHPGoogleMaps\Overlay\MarkerGroup( $mg['name'] ), $mg['id'], $this->map_id  );
+		}
+		return $groups;
 	}
 
 
@@ -1942,7 +1945,7 @@ class Map {
 			$output .= "\n\tthis.marker_groups = [];\n";
 			$output .= "\tthis.marker_group_function = function( group_name, f_all, f_group ) {\n\t\tfor (i in map.markers) {\n\t\t\tvar marker = map.markers[i];\n\t\t\tf_all(marker);\n\t\t}\n\t\tfor (i in map.marker_groups[group_name].markers) {\n\t\t\tvar marker = map.markers[map.marker_groups[group_name].markers[i]];\n\t\t\tf_group(marker);\n\t\t}\n\t};\n";
 			foreach( $this->marker_groups as $marker_group_var => $marker_group ) {
-				$output .= sprintf( "\tthis.marker_groups[\"%s\"] = {name: \"%s\", markers:[%s]};\n", $marker_group_var, $marker_group->name, implode( ',', $marker_group->_markers ) );
+				$output .= sprintf( "\tthis.marker_groups[\"%s\"] = {name: \"%s\", markers:[%s]};\n", $marker_group_var, $marker_group['name'], implode( ',', $marker_group['markers'] ) );
 			}
 	  	}
 
@@ -1982,7 +1985,7 @@ class Map {
 			}
 			if ( count( $marker->groups ) ) {
 				$gs = $this->marker_groups;
-				$output .= sprintf( "\t\tgroups:[%s],\n", implode( ',', array_map( function( $g ) use ( $gs ) { return $gs[$g->var_name]->_id; }, $marker->groups ) ) );
+				$output .= sprintf( "\t\tgroups:[%s],\n", implode( ',', array_map( function( $g ) use ( $gs ) { return $gs[$g->var_name]['id']; }, $marker->groups ) ) );
 			}
 			if ( $marker->animation ) {
 				$output .= sprintf( "\t\tanimation: google.maps.Animation.%s,\n", strtoupper( $marker->animation ) );
@@ -2299,14 +2302,16 @@ class Map {
   			}
   			foreach ( $marker->groups as $marker_group ) {
   				if ( isset( $this->marker_groups[ $marker_group->var_name ] ) ) {
-  					$this->marker_groups[ $marker_group->var_name ]->addMarker( $marker_id );
+  					$this->marker_groups[ $marker_group->var_name ]['markers'][] = $marker_id;
   				}
   				else {
-  					$this->marker_groups[ $marker_group->var_name ] = new \PHPGoogleMaps\Overlay\MarkerGroupDecorator( $marker_group, count( $this->marker_groups ), $this->map_id );
-  					$this->marker_groups[ $marker_group->var_name ]->addMarker( $marker_id );
+  					$this->marker_groups[ $marker_group->var_name ] = array(
+  						'id'		=> count( $this->marker_groups ),
+  						'name'		=> $marker_group->name,
+  						'markers'	=> array( $marker_id )
+  					);
   				}
 			}
-
 	  	}
 	  	$this->marker_data_hash = md5( serialize( $this->getMarkers() ) );
 

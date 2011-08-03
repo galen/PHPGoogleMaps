@@ -42,6 +42,8 @@ $markers[] = Marker::createFromLocation( 'Denver, CO' )->addToGroups( array( 'Mi
 //$group_fl = MarkerGroup::create( 'Florida' )->addMarkers( array();
 //$group_mi = MarkerGroup::create( 'Michigan' )->addMarkers( array() );
 
+// Groups aren't added to map
+// The markers associated with them are
 $map->addObjects( $markers );
 
 ?>
@@ -77,7 +79,7 @@ $map->addObjects( $markers );
 <h2>Marker Groups</h2>
 <p>Click a marker group to toggle it.</p>
 <?php foreach( $map->getMarkerGroups() as $group ): ?>
-<a href="#" onclick="<?php echo $group->callFunction( 'function(m){m.setAnimation(null);}', 'function(m){m.setAnimation(google.maps.Animation.BOUNCE);}' ) ?>"><?php echo $group->name ?></a><br>
+<a href="#" onclick="<?php echo $group->callFunction( 'function(m){m.setAnimation(null);}', 'function(m){m.setAnimation(google.maps.Animation.BOUNCE);}' ) ?>; return false;"><?php echo $group->name ?></a><br>
 
 <?php endforeach; ?>
 

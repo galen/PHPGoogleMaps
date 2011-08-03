@@ -70,17 +70,4 @@ class MarkerGroupDecorator extends \PHPGoogleMaps\Core\MapObjectDecorator {
 		return sprintf( "%s.marker_group_function('%s', %s, %s)", $this->_map, $this->var_name, $function_all_markers, $function_group_markers );
 	}
 
-	/**
-	 * Add marker to group
-	 * This allows the map object to insert marker IDs into the group
-	 * You will not need to use this. Hopefully i'll find a better method of doing this
-	 * so i can get rid of this.
-	 *
-	 * @var int $marker
-	 * @return void
-	 */
-	public function addMarker( $marker ) {
-		$this->_markers[] = (int) $marker;
-	}
-
 }
