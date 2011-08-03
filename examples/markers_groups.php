@@ -34,15 +34,13 @@ $markers[] = Marker::createFromLocation( 'Ann Arbor, MI' )->addToGroups( array( 
 $markers[] = Marker::createFromLocation( 'Seattle, WA' )->addToGroups( array( 'North', 'West' ) );
 $markers[] = Marker::createFromLocation( 'Denver, CO' )->addToGroups( array( 'Mid West' ) );
 
-/*
-// It is also possible to add groups this way, but its not as intuitive
-// Marker groups are attached to markers
-$group_ny = MarkerGroup::create( 'New York' )->addMarkers( array( $ny1, $ny2 ) );
-$group_ca = MarkerGroup::create( 'California' )->addMarkers( array( $ca1, $ca2 ) );
-$group_tx = MarkerGroup::create( 'Texas' )->addMarkers( array( $tx1, $tx2 ) );
-$group_fl = MarkerGroup::create( 'Florida' )->addMarkers( array( $fl1, $fl2 ) );
-$group_mi = MarkerGroup::create( 'Michigan' )->addMarkers( array( $mi1, $mi2 ) );
-*/
+// It is also possible to add groups this way
+// Pass an array of markers to `addMarkers()`
+// This just calls `addToGroup()` on the marker
+//$group_ca = MarkerGroup::create( 'California' )->addMarkers( array() );
+//$group_tx = MarkerGroup::create( 'Texas' )->addMarkers( array() );
+//$group_fl = MarkerGroup::create( 'Florida' )->addMarkers( array();
+//$group_mi = MarkerGroup::create( 'Michigan' )->addMarkers( array() );
 
 $map->addObjects( $markers );
 

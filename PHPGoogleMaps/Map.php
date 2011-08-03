@@ -1984,8 +1984,8 @@ class Map {
 				$gs = $this->marker_groups;
 				$output .= sprintf( "\t\tgroups:[%s],\n", implode( ',', array_map( function( $g ) use ( $gs ) { return $gs[$g->var_name]->_id; }, $marker->groups ) ) );
 			}
-			if ( $marker->getOption( 'animation' ) ) {
-				$output .= sprintf( "\t\tanimation: %s,\n", $marker->getOption( 'animation' ) );
+			if ( $marker->animation ) {
+				$output .= sprintf( "\t\tanimation: google.maps.Animation.%s,\n", strtoupper( $marker->animation ) );
 				$marker->removeOption( 'animation' );
 			}
 			foreach( $marker->getOptions() as $marker_option => $marker_value ) {

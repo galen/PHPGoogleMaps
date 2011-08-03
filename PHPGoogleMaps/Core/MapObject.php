@@ -15,7 +15,7 @@ abstract class MapObject {
 	 *
 	 * @var array
 	 */
-	public $options = array();
+	protected $options = array();
 
 	/**
 	 * Sets options and restricts the setting of variables that are marked as protected
@@ -25,24 +25,16 @@ abstract class MapObject {
 	 * @return void
 	 */
 	public function __set( $var, $val ) {
-		$this->options[$var] = $val;
-	}
-
-	/**
-	 * Also used for setting options, some people prefer object::setVar() to object->var =
-	 *
-	 * @param string $method
-	 * @param mixed $val
-	 * @return void
-	 */
-	public function __call( $method, $val ) {
-		if ( substr( $method, 0, 3 ) == 'set' ) {
-			$this->options[strtolower( substr( $method, 3 ) )] = $val[0];
+		if ( !property_exists( $this, $var ) ) {
+			$this->options[$var] = $val;
 		}
 	}
 
 	/**
-	 * Returns an object variable
+	 * Return an object variable
+	 * Will check for a property first
+	 * Then an option
+	 * If neither is found, null is returned
 	 *
 	 * @param string $var
 	 * @return mixed

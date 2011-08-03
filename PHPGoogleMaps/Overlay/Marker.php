@@ -81,7 +81,6 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 			return;
 		}
 		foreach( $options as $option_name => $option ) {
-		
 			switch( $option_name ) {
 				case 'group':
 					$this->addToGroup( $option );
@@ -106,9 +105,6 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 						$high_accuracy = isset( $options['geolocation_high_accuracy'] ) ? $options['geolocation_high_accuracy'] : null;
 						$this->enableGeolocation( $timeout, $high_accuracy );
 					}
-					break;
-				case 'animation':
-					$this->options['animation'] = sprintf( 'google.maps.Animation.%s', strtoupper( $option ) );
 					break;
 				default:
 					$this->options[$option_name] = $option;

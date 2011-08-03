@@ -56,9 +56,13 @@ class MarkerGroupDecorator extends \PHPGoogleMaps\Core\MapObjectDecorator {
 	}
 
 	/**
-	 * Get marker group toggle function
-	 * Returns the javascript function call to toggle a marker group
-	 * This will not work correctly if markers belong to more than one group
+	 * Call a function on all of a group's markers
+	 * 
+	 * @param string $function_all_markers Javascript function to call on all map markers
+	 * This can be used to reset all markers to a default setting
+	 *
+	 * @param string $function_group_markers Javascript function to call on all group markers
+	 * This is called on the group markers after all markers have been "reset"
 	 *
 	 * @return string
 	 */
