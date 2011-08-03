@@ -3,7 +3,7 @@
 namespace PHPGoogleMaps\Core;
 
 /**
- * Base class for some map objects
+ * Base class for map objects
  * This helps separate critical functionality of an object from its options
  */
 
@@ -51,8 +51,11 @@ abstract class MapObject {
 		if ( property_exists( $this, $var ) ) {
 			return $this->$var;
 		}
-		else {
+		elseif ( isset( $this->options[$var] ) ) {
 			return $this->options[$var];
+		}
+		else {
+			return null;
 		}
 	}
 

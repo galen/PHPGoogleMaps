@@ -1027,7 +1027,7 @@ class Map {
 	 * @return void
 	 */
 	public function setCenterCoords( $lat, $lng ) {
-		$this->setCenter( new \PHPGoogleMaps\Core\PositionAbstract( floatval( $lat ), floatval( $lng ) ) );
+		$this->setCenter( new \PHPGoogleMaps\Core\LatLng( floatval( $lat ), floatval( $lng ) ) );
 	}
 
 	/**
@@ -1488,7 +1488,7 @@ class Map {
 	 * @access protected
 	 */
 	protected function addMarker( \PHPGoogleMaps\Overlay\Marker $marker ) {
-		if ( !$marker->icon && $this->default_marker_icon ) {
+		if ( !$marker->getIcon() && $this->default_marker_icon ) {
 			$marker->setIcon( $this->default_marker_icon, $this->default_marker_shadow ?: null );
 		}
 		return $this->markers[] = new \PHPGoogleMaps\Overlay\MarkerDecorator( $marker, count( $this->markers ), $this->map_id );

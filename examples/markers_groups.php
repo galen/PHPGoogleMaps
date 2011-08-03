@@ -12,38 +12,38 @@ $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\MarkerGroupDecorator'
 );
 
+use \PHPGoogleMaps\Overlay\Marker, \PHPGoogleMaps\Overlay\MarkerGroup;
+
 $map = new \PHPGoogleMaps\Map;
 
-$ny1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY' );
-$ny2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Syracuse, NY' );
+$markers[] = Marker::createFromLocation( 'New York, NY' )->addToGroups( array( 'North', 'East', 'New York' ) );
+$markers[] = Marker::createFromLocation( 'Syracuse, NY' )->addToGroups( array( 'North', 'East', 'New York' ) );
 
-$ca1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'San Diego, CA' );
-$ca2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'San Francisco, CA' );
+$markers[] = Marker::createFromLocation( 'San Diego, CA' )->addToGroups( array( 'South', 'West', 'California' ) );
+$markers[] = Marker::createFromLocation( 'San Francisco, CA' )->addToGroups( array( 'West', 'California' ) );
 
-$tx1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Houston, TX' );
-$tx2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Dallas, TX' );
+$markers[] = Marker::createFromLocation( 'Houston, TX' )->addToGroups( array( 'South', 'Mid West', 'Texas' ) );
+$markers[] = Marker::createFromLocation( 'Dallas, TX' )->addToGroups( array( 'South', 'Mid West', 'Texas' ) );
 
-$fl1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Orlando, FL' );
-$fl2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Tampa, FL' );
+$markers[] = Marker::createFromLocation( 'Orlando, FL' )->addToGroups( array( 'South', 'East', 'Florida' ) );
+$markers[] = Marker::createFromLocation( 'Tampa, FL' )->addToGroups( array( 'South', 'East', 'Florida' ) );
 
-$mi1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Detroit, MI' );
-$mi2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Ann Arbor, MI' );
+$markers[] = Marker::createFromLocation( 'Detroit, MI' )->addToGroups( array( 'North', 'East', 'Michigan' ) );
+$markers[] = Marker::createFromLocation( 'Ann Arbor, MI' )->addToGroups( array( 'North', 'East', 'Michigan' ) );
 
-$group_ny = \PHPGoogleMaps\Overlay\MarkerGroup::create( 'New York' )->addMarkers( array( $ny1, $ny2 ) );
-$group_ca = \PHPGoogleMaps\Overlay\MarkerGroup::create( 'California' )->addMarkers( array( $ca1, $ca2 ) );
-$group_tx = \PHPGoogleMaps\Overlay\MarkerGroup::create( 'Texas' )->addMarkers( array( $tx1, $tx2 ) );
-$group_fl = \PHPGoogleMaps\Overlay\MarkerGroup::create( 'Florida' )->addMarkers( array( $fl1, $fl2 ) );
-$group_mi = \PHPGoogleMaps\Overlay\MarkerGroup::create( 'Michigan' )->addMarkers( array( $mi1, $mi2 ) );
 
-$map->addObjects(
-	array(
-		$ny1, $ny2,
-		$ca1, $ca2,
-		$tx1, $tx2,
-		$fl1, $fl2,
-		$mi1, $mi2
-	)
-);
+
+/*
+// It is also possible to add groups this way, but its not as intuitive
+// Marker groups are attached to markers
+$group_ny = MarkerGroup::create( 'New York' )->addMarkers( array( $ny1, $ny2 ) );
+$group_ca = MarkerGroup::create( 'California' )->addMarkers( array( $ca1, $ca2 ) );
+$group_tx = MarkerGroup::create( 'Texas' )->addMarkers( array( $tx1, $tx2 ) );
+$group_fl = MarkerGroup::create( 'Florida' )->addMarkers( array( $fl1, $fl2 ) );
+$group_mi = MarkerGroup::create( 'Michigan' )->addMarkers( array( $mi1, $mi2 ) );
+*/
+
+$map->addObjects( $markers );
 
 ?>
 
@@ -64,7 +64,7 @@ $map->addObjects(
 <?php $map->printMap() ?>
 
 <h2>Marker Groups</h2>
-<p>Uncheck a marker group to hide it.</p>
+<p>Click a marker group to toggle it.</p>
 <?php foreach( $map->getMarkerGroups() as $group ): ?>
 <input type="checkbox" value="" checked="checked" onclick="<?php echo $group->getToggleFunction() ?>"><?php echo $group->name ?><br>
 <?php endforeach; ?>

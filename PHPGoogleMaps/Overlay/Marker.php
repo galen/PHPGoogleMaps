@@ -5,20 +5,19 @@ namespace PHPGoogleMaps\Overlay;
 use PHPGoogleMaps\Utility;
 
 /**
- * Marker class for addign markers to a map
+ * Marker class for adding markers to a map
  * 
  * Markers can be created in 3 different ways
  *
- * Use the static `createFromCoords()` method
- * $m = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( $latlng, $title, $content );
+ * Use the static `createFromPosition()` method
+ * $marker = \PHPGoogleMaps\Overlay\Marker::createFromPosition( $position, $options );
  *
  * Use the static `createFromLocation()` method which will geocode the location for you
- * using Google's geocode API
- * $m = \PHPGoogleMaps\Overlay\Marker::createFromLocation( $location, $title, $content );
+ * $marker = \PHPGoogleMaps\Overlay\Marker::createFromLocation( $location, $options );
  *
  * Use the static `createFromUserLocation()` method which will attempt to geolocate the
  * user's position using HTML5's geolocation API {@link http://dev.w3.org/geo/api/spec-source.html}
- * $m = \PHPGoogleMaps\Overlay\Marker::createFromUserLocation( $title, $content );
+ * $marker = \PHPGoogleMaps\Overlay\Marker::createFromUserLocation( $title, $content );
  */
 
 class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
@@ -70,13 +69,17 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 	 * Marker constructor
 	 * Initializes the marker options
 	 *
+	 * This is private, you must use a static creation method
+	 *
 	 * @param mixed $position Position of the marker. This will be null for geolocated markers.
 	 * @param array options Array of marker options
 	 * @return Marker
 	*/
 	private function __construct( $position=null, array $options=null ) {
-
 		$this->position = $position;
+		if ( !$options ) {
+			return;
+		}
 		foreach( $options as $option_name => $option ) {
 		
 			switch( $option_name ) {
@@ -109,25 +112,22 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 					break;
 				default:
 					$this->options[$option_name] = $option;
-			
 			}
-				
 		}
-
 	}
 
 	/**
 	 * Add marker to a group
 	 *
-	 * @param MarkerGroup $group
+	 * @param string|MarkerGroup $group Can be a Markergroup or a string
 	 * @return Marker
 	 */
 	function addToGroup( $group ) {
-		if ( $group instanceof \PHPGoogleMaps\Overlay\MarkerGroup ) {
+		if ( $group instanceof MarkerGroup ) {
 			$this->groups[] = $group;
 		}
 		else {
-			$this->groups[] = new \PHPGoogleMaps\Overlay\MarkerGroup( $group );
+			$this->groups[] = new MarkerGroup( $group );
 		}
 		return $this;
 	}
@@ -151,41 +151,57 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 	 * @param MarkerIcon $icon The marker's icon.
 	 * @return Marker
 	 */
-	public function setIcon( $icon, MarkerIcon $shadow = null ) {
+	public function setIcon( $icon ) {
 		if ( !$icon instanceof MarkerIcon ) {
 			$icon = new MarkerIcon( $icon );
 		}
 		$this->icon = $icon;
-		if ( $shadow ) {
-			if ( !$shadow instanceof MarkerIcon ) {
-				$shadow = new MarkerIcon( $shadow );
-			}
-			$this->shadow = $shadow;
-		}
 		return $this;
 	}
 
+	/**
+	 * Get the url of the marker's icon
+	 *
+	 * @return string
+	 */
 	public function getIcon() {
 		if ( isset( $this->icon->icon ) ) {
 			return $this->icon->icon;
 		}
+		return null;
+	}
+
+	/**
+	 * Get the url of the marker's shadow
+	 *
+	 * @return string
+	 */
+	public function getShadow() {
+		if ( isset( $this->shadow->icon ) ) {
+			return $this->shadow->icon;
+		}
+		return null;
 	}
 
 	/**
 	 * Sets the marker's shadow
 	 *
-	 * @param MarkerIcon $icon The marker's shadow.
+	 * @param MarkerIcon $shadow The marker's shadow.
 	 * @return Marker
 	 */
-	public function setShadow( MarkerIcon $shadow ) {
+	public function setShadow( $shadow ) {
+		if ( !$shadow instanceof MarkerIcon ) {
+			$shadow = new MarkerIcon( $shadow );
+		}
 		$this->shadow = $shadow;
+		return $this;
 	}
 
 	/**
 	 * Sets the marker's shape
 	 *
-	 * @param MarkerIcon $icon The marker's icon.
-	 * @return MarkerIcon
+	 * @param MarkerShape $shape The marker's shape.
+	 * @return MarkerShape
 	 */
 	public function setShape( MarkerShape $shape ) {
 		$this->shape = $shape;
@@ -194,6 +210,8 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 
 	/**
 	 * Enable marker geolocation
+	 *
+	 * Use `createMarkerFromUserLocation()`
 	 *
 	 * @access private
 	 * @return MarkerIcon
@@ -213,30 +231,32 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 	}
 
 	/**
-	 * Factory method to create a marker from a lat/lng
+	 * Factory method to create a marker from a position (LatLng or GeocodeResult)
 	 *
-	 * @param Abstract $position Position of the marker
-	 * @param string $title The title of the marker. This will be the markers tooltip.
-	 * @param string $content The infowindow content of the marker.
+	 * @param AbstractPosition $position Position of the marker
+	 * @param array $options Array of marker options
 	 * @return Marker
 	 */
-	public static function createFromLatLng( \PHPGoogleMaps\Core\PositionAbstract $position, array $options=null ) {
+	public static function createFromPosition( \PHPGoogleMaps\Core\PositionAbstract $position, array $options=null ) {
 		return new Marker( $position->getLatLng(), $options );
 	}
 
 	/**
-	 * Factory method to create a marker from a location
+	 * Factory method to create a marker from a location ( e.g. New York, NY )
 	 *
 	 * @param string $location Location of the marker. This will be geocoded for you.
-	 * @param array options Array of marker options.
+	 * @param array $options Array of marker options.
 	 * @return Marker|False Will return false if geocoding fails.
+	 * @throws GeocodeException
 	 */
 	public static function createFromLocation( $location, array $options=null ) {
 		$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $location );
 		if ( $geocode_result instanceof \PHPGoogleMaps\Service\GeocodeResult ) {
-			return self::createFromLatLng( $geocode_result, $options );
+			return self::createFromPosition( $geocode_result, $options );
 		}
-		return false;
+		else {
+			throw new \PHPGoogleMaps\Core\GeocodeException( $geocode_result );
+		}
 	}
 
 	/**
@@ -246,7 +266,7 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 	 * @param array options Array of marker options
 	 * @return Marker
 	 */
-	public static function createFromUserLocation( $options ){
+	public static function createFromUserLocation( array $options=null ){
 		$marker = new Marker( null, $options );
 		$marker->enableGeolocation();
 		return $marker;
