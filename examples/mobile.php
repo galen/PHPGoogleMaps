@@ -1,10 +1,12 @@
 <?php
 
+// This is for my examples
+require( '_system/config.php' );
+
+// Autoload stuff
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
-
-require( '_system/config.php' );
 
 $map = new \PHPGoogleMaps\Map;
 $marker = \PHPGoogleMaps\Overlay\Marker::createFromUserLocation( array( 'geolocation_high_accuracy' => true, 'geolocation_timeout' => 10000 ) );
@@ -15,6 +17,7 @@ $map->setHeight('100%');
 $map->enableMobile();
 $map->disableAutoEncompass();
 $map->setZoom(14);
+
 ?>
 
 <!DOCTYPE html>

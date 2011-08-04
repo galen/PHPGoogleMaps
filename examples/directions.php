@@ -56,7 +56,7 @@ if ( isset( $_GET['origin'], $_GET['destination'] ) && strlen( $_GET['origin'] )
 	<label>Destination:</label><br><input type="text" name="destination" value="<?php echo isset( $_GET['destination'] ) ? $_GET['destination'] : '' ?>">
 	<input type="submit" value=" Get Directions ">
 </form>
-<?php if( isset( $directions ) ): ?><p><strong><?php echo $_GET['origin'] ?></strong> to <strong><?php if( $_GET['waypoint'] != '' ): ?><?php echo $_GET['waypoint'] ?></strong> to <?php endif; ?><strong><?php echo $_GET['destination'] ?></strong></p><?php endif; ?>
+<p><?php if( isset( $directions ) ): ?><strong><?php echo $_GET['origin'] ?></strong> to <strong><?php if( $_GET['waypoint'] != '' ): ?><?php echo $_GET['waypoint'] ?></strong> to <?php endif; ?><strong><?php echo $_GET['destination'] ?></strong><?php endif; ?></p>
 <?php if( isset( $error ) ): ?><p class="error">Unable to geocode "<?php echo $error->location ?>": <?php echo $error->error ?></p><?php endif; ?>
 
 <?php $map->printMap() ?>

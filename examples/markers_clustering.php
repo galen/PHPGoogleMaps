@@ -1,14 +1,16 @@
 <?php
 
-require( '../PHPGoogleMaps/Core/Autoloader.php' );
-$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
-$map_loader->register();
-
+// This is just for my examples
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\Marker',
 	'\PHPGoogleMaps\Overlay\MarkerDecorator'
 );
+
+// Autoloader stuff
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
 
 $map = new \PHPGoogleMaps\Map;
 $map->setWidth( 800 );
@@ -17,13 +19,17 @@ $map->setZoom( 2 );
 $map->disableAutoEncompass();
 $map->setCenterCoords( 39.91, 116.38 );
 
+// Get the photo data from the marker cluster page
 $json = json_decode( str_replace( 'var data = ', '', file_get_contents( 'http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/data.json' ) ) );
 
+// Add 1000 markers using the lat/lng from the photo data
 for ( $i=0;$i<1000;$i++ ) {
-	$marker = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( new \PHPGoogleMaps\Core\LatLng( $json->photos[$i]->latitude, $json->photos[$i]->longitude ) );
+	$marker = \PHPGoogleMaps\Overlay\Marker::createFromPosition( new \PHPGoogleMaps\Core\LatLng( $json->photos[$i]->latitude, $json->photos[$i]->longitude ) );
 	$marker->setContent( sprintf( '<img src="%s" style="width: 200px">', $json->photos[$i]->photo_file_url ) );
 	$map->addObject( $marker );
 }
+
+// Set cluster options
 $cluster_options = array(
 	'maxZoom' => 10,
 	'gridSize' => null

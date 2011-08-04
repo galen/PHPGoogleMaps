@@ -4,7 +4,7 @@ namespace PHPGoogleMaps\Layer;
 
 /**
  * Fusion table class
- * Allows you to add fusion tables to a map
+ * Allows you to add fusion tables to your map
  * @link http://tables.googlelabs.com/
  */
 
@@ -21,10 +21,8 @@ class FusionTable extends \PHPGoogleMaps\Core\MapObject  {
 	 * Constructor
 	 *
 	 * @param int $table_id ID of the fusion table
-	 *
 	 * @param array $options Array of options
-	 * @link http://code.google.com/apis/maps/documentation/javascript/reference.html#FusionTablesLayerOptions
-	 *
+	 *                       @link http://code.google.com/apis/maps/documentation/javascript/reference.html#FusionTablesLayerOptions
 	 * @return FusionTable
 	 */
 	public function __construct( $table_id, array $options=null ) {

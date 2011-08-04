@@ -1,9 +1,6 @@
 <?php
 
-require( '../PHPGoogleMaps/Core/Autoloader.php' );
-$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
-$map_loader->register();
-
+// This is for my examples
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\Polyline',
@@ -11,7 +8,13 @@ $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\PolyDecorator'
 );
 
+// Autoload stuff
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
+
 $map = new \PHPGoogleMaps\Map;
+
 use \PHPGoogleMaps\Service\Geocoder;
 
 $polyline_paths = array(
@@ -34,7 +37,7 @@ $map->disableAutoEncompass();
 $map->setCenter( 'Austin, TX' );
 $map->setZoom( 3 );
 
-$map->addObjects( array( &$polyline ) );
+$polyline_map = $map->addObject( $polyline );
 
 ?>
 
@@ -54,7 +57,7 @@ $map->addObjects( array( &$polyline ) );
 
 <?php $map->printMap() ?>
 
-<a href="#" onclick="<?php echo $polyline->getJsVar() ?>.setMap(null)">Hide polylines</a>
+<a href="#" onclick="<?php echo $polyline_map->getJsVar() ?>.setMap(null);return false;">Hide polylines</a>
 </body>
 
 </html>

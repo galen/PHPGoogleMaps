@@ -1,14 +1,16 @@
 <?php
 
-require( '../PHPGoogleMaps/Core/Autoloader.php' );
-$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
-$map_loader->register();
-
+// This is for the examples
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\GroundOverlay',
 	'\PHPGoogleMaps\Overlay\GroundOverlayDecorator'
 );
+
+// Autoload stuff
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
 
 $map = new \PHPGoogleMaps\Map;
 
@@ -19,8 +21,7 @@ $go = new \PHPGoogleMaps\Overlay\GroundOverlay(
 );
 
 $map->addObject( $go );
-
-$map->setCenter( 'San Diego, CA' );
+$map->setCenter( \PHPGoogleMaps\Service\Geocoder::geocode( 'San Diego, CA' ) );
 $map->setZoom( 14 );
 
 ?>

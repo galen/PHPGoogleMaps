@@ -12,7 +12,7 @@ interface GeocodeCache {
 	/**
 	 * Get cache
 	 *
-	 * @return false|CachedGeocodeResult
+	 * @return false|LatLng
 	 */
 	public function getCache( $location );
 

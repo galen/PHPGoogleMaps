@@ -1,36 +1,43 @@
 <?php
 
-require( '../PHPGoogleMaps/Core/Autoloader.php' );
-$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
-$map_loader->register();
-
+// This is just for my examples
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Service\Geocoder',
 	'\PHPGoogleMaps\Service\GeocodeError',
 	'\PHPGoogleMaps\Service\GeocodeResult',
-	'\PHPGoogleMaps\Service\GeocodeCacheInterface',
-	'\PHPGoogleMaps\Service\GeocodeCachePDO'
+	'\PHPGoogleMaps\Service\GeocodeCachePDO',
+	'\PHPGoogleMaps\Service\GeocodeException',
+	'\PHPGoogleMaps\Service\CachingGeocoder',
+	'\PHPGoogleMaps\Service\CachedGeocodeResult'
 );
 
+// Autoloader stuff
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
+
+// If location is set
 if ( isset( $_GET['location'] ) && strlen( $_GET['location'] ) ) {
-
 	// Create a PDO Geocode Cache connection and pass it to the caching geocoder
-	try {
-		$geoPDO = new \PHPGoogleMaps\Service\GeocodeCachePDO( 'localhost', 'username', 'password', 'database' );
+	$geoPDO = new \PHPGoogleMaps\Service\GeocodeCachePDO( 'localhost', 'usernamev', 'password', 'database' );
+	$caching_geo = new \PHPGoogleMaps\Service\CachingGeocoder( $geoPDO );
+	// Geocode the location with the caching geocoded
+	$geocode_result = $caching_geo->geocode( $_GET['location'] );
+	if ( $geocode_result instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
+		// Create a map
+		$map = new \PHPGoogleMaps\Map;
+		$marker = \PHPGoogleMaps\Overlay\Marker::createFromPosition( $geocode_result );
+		$map->addObject( $marker );
+		$map->disableAutoEncompass();
+		$map->setZoom( 13 );
+		$map->setCenter( $geocode_result );
 	}
-	catch ( \PDOException $e ) {
-		die( 'Unable to connect to database' );
+	else {
+		$location = $geocode_result->location;
+		$error = $geocode_result->error;
 	}
 
-	$caching_geo = new \PHPGoogleMaps\Service\CachingGeocoder( $geoPDO );
-	
-	$latlng = $caching_geo->geocode( $_GET['location'] );
-	$marker = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( $latlng );
-	$map->addObject( $marker );
-	$map->disableAutoEncompass();
-	$map->setZoom( 13 );
-	$map->setCenter( $latlng );
 }
 ?>
 
@@ -50,11 +57,15 @@ if ( isset( $_GET['location'] ) && strlen( $_GET['location'] ) ) {
 <h1>Geocoding</h1>
 <?php require( '_system/nav.php' ) ?>
 
-<?php if( isset( $map ) ): ?>
-<p>Was in cache: <?php echo $latlng->wasInCache() ? 'yes' : 'no' ?></p>
-<p>Was put in cache: <?php echo $latlng->wasPutInCache() ? 'yes' : 'no' ?></p>
+<?php if( isset( $error ) ): ?>
+	<p>Unable to geocode "<?php echo $location ?>" (<?php echo $error ?>)</p>
+<?php else: ?>	
+	<?php if( isset( $map ) ): ?>
+	<h2><?php echo $geocode_result->location ?></h2>
+	<p>Was in cache: <?php echo $geocode_result->wasInCache() ? 'yes' : 'no' ?></p>
+	<p>Was put in cache: <?php echo $geocode_result->wasPutInCache() ? 'yes' : 'no' ?></p>
+	<?php endif; ?>
 <?php endif; ?>
-
 <form action="" method="get">
 <label for="location">Enter a location</label>
 <input type="text" name="location">

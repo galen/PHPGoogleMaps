@@ -35,8 +35,8 @@ class GroundOverlay extends \PHPGoogleMaps\Core\MapObject {
 	/**
 	 * Constructor
 	 *
-	 * @param PositionAbstract $southwest Southwest point of the ground overlay
-	 * @param PositionAbstract $northeast Northeast point of the ground overlay
+	 * @param LatLng $southwest Southwest point of the ground overlay
+	 * @param LatLng $northeast Northeast point of the ground overlay
 	 * @param array $options Array of ground overlay options {@link http://code.google.com/apis/maps/documentation/javascript/reference.html#GroundOverlayOptions}
 	 * @return Rectangle
 	 */

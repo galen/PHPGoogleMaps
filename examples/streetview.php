@@ -1,14 +1,16 @@
 <?php
 
+// This is for the examples
+require( '_system/config.php' );
+
+// Autoload stuff
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
 
-require( '_system/config.php' );
-
 $map = new \PHPGoogleMaps\Map;
 $map->enableStreetView();
-$map->setCenter('New Haven, CT');
+$map->setCenter('Anchorage, AK');
 
 $map2 = new \PHPGoogleMaps\Map( array( 'map_id' => 'map2' ) );
 $map2->enableStreetView( array( 'addressControl' => false, 'enableCloseButton' => false ), 'container' );

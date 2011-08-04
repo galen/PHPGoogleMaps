@@ -1,9 +1,6 @@
 <?php
 
-require( '../PHPGoogleMaps/Core/Autoloader.php' );
-$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
-$map_loader->register();
-
+// This is for my examples
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\Polygon',
@@ -11,10 +8,16 @@ $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\PolyDecorator'
 );
 
+// Autoload stuff
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
+
 use \PHPGoogleMaps\Service\Geocoder;
 
 $map = new \PHPGoogleMaps\Map;
 
+// Array of polygons
 $polygon_paths = array(
 	Geocoder::geocode( 'San Diego, CA' ),
 	'Austin, TX',
@@ -32,17 +35,18 @@ $polygon = new \PHPGoogleMaps\Overlay\Polygon( $polygon_paths, $polygon_options 
 
 $polygon->addPath( 'San Francisco, CA' );
 
-$m_options = array(
+$marker_options = array(
 	'title'	=> 'Center of Polygon',
 	'content'	=> 'This marker was added to the center of the polygon via Polygon::getCenter()'
 );
-$m = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( $polygon->getCenter(), $m_options );
+$marker = \PHPGoogleMaps\Overlay\Marker::createFromPosition( $polygon->getCenter(), $marker_options );
 
 $map->disableAutoEncompass();
 $map->setCenter( 'Austin, TX' );
 $map->setZoom( 3 );
 
-$map->addObjects( array( &$polygon, $m ) );
+$polygon_map = $map->addObject( $polygon );
+$map->addObject( $marker );
 
 ?>
 
@@ -61,7 +65,7 @@ $map->addObjects( array( &$polygon, $m ) );
 <?php require( '_system/nav.php' ) ?>
 
 <?php $map->printMap() ?>
-<a href="#" onclick="<?php echo $polygon->getJsVar() ?>.setMap(null)">Hide polygon</a>
+<a href="#" onclick="<?php echo $polygon_map->getJsVar() ?>.setMap(null)">Hide polygon</a>
 </body>
 
 </html>
