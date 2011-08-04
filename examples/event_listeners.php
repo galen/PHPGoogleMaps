@@ -1,11 +1,9 @@
 <?php
 
-// Autoloader stuff
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
 
-// This is just for my examples
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Event\EventListener',
@@ -13,21 +11,14 @@ $relevant_code = array(
 	'\PHPGoogleMaps\Event\EventListenerDecorator'
 );
 
-// Create new map
 $map = new \PHPGoogleMaps\Map;
 
-// Create 2 events
 $event1 = new \PHPGoogleMaps\Event\EventListener( $map, 'idle', 'function(){alert("the map is loaded");}', true );
 $event2 = new \PHPGoogleMaps\Event\EventListener( $map, 'click', 'add_marker');
 
-// Create a DOM event
 $dom_event1 = new \PHPGoogleMaps\Event\DomEventListener( 'add_random_marker', 'click', 'add_random_marker' );
 
-$map->addObjects( array( $event1, $dom_event1 ) );
-// Add this event with addObject() so we can use the return value to remove the event
-$event2_map = $map->addObject( $event2 );
-
-// Set map options
+$map->addObjects( array( $event1, &$event2, $dom_event1 ) );
 $map->setCenter( 'San Diego, CA' );
 $map->setZoom( 14 );
 
@@ -102,7 +93,7 @@ $map->setZoom( 14 );
 
 <?php $map->printMap() ?>
 
-<a href="#" id="add_random_marker">Add a random marker</a>, <a href="#" onclick="google.maps.event.removeListener(<?php echo $event2_map->getJsVar() ?>);alert('Map click listener has been removed')">Remove map click listener</a>
+<a href="#" id="add_random_marker">Add a random marker</a>, <a href="#" onclick="google.maps.event.removeListener(<?php echo $event2->getJsVar() ?>);alert('Event listener has been removed')">Remove map click listener</a>
 
 </body>
 

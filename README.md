@@ -2,9 +2,7 @@
 
 For PHP 5.3+ and Google Maps API v3
 
-[examples](http://galengrover.com/projects/php-google-maps_/examples/)
-
-This is a development version. I am refactoring a lot of code and will eventually switch over to this version
+[examples](http://galengrover.com/projects/php-google-maps/examples/)
 
 ##Features
  - Adsense ads

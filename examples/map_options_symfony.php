@@ -1,9 +1,6 @@
 <?php
-
-// This is for my examples
 require( '_system/config.php' );
 
-// This is how you autoload with Symfony
 require( '_system/UniversalClassLoader.php' );
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 $loader = new UniversalClassLoader();
@@ -19,7 +16,6 @@ $map_options = array(
 	'zoom'			=> 10,
 	'bicycle_layer'	=> true
 );
-
 $map = new \PHPGoogleMaps\Map( $map_options );
 
 ?>

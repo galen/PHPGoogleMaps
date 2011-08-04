@@ -1,12 +1,10 @@
 <?php
 
-// This is for my examples
-require( '_system/config.php' );
-
-// Autoload stuff
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();
+
+require( '_system/config.php' );
 
 $map = new \PHPGoogleMaps\Map;
 $map2 = new \PHPGoogleMaps\Map( array( 'map_id' => 'map2' ) );

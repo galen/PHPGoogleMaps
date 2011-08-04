@@ -1,16 +1,14 @@
 <?php
 
-// This is for my examples
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
+
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Layer\PanoramioLayer',
 	'\PHPGoogleMaps\Layer\PanoramioLayerDecorator'
 );
-
-// Autoload stuff
-require( '../PHPGoogleMaps/Core/Autoloader.php' );
-$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
-$map_loader->register();
 
 $map = new \PHPGoogleMaps\Map;
 $panoramio = new \PHPGoogleMaps\Layer\PanoramioLayer;
@@ -21,7 +19,6 @@ $map->addObject( $panoramio );
 $map->setCenter( 'San Diego, CA' );
 $map->setZoom( 10 );
 $map->disableAutoEncompass();
-
 ?>
 
 <!DOCTYPE html>

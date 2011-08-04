@@ -1,17 +1,15 @@
 <?php
 
-// This is for my examples
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
+
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\Marker',
 	'\PHPGoogleMaps\Overlay\MarkerDecorator',
 	'\PHPGoogleMaps\Event\EventListener'
 );
-
-// Autoload stuff
-require( '../PHPGoogleMaps/Core/Autoloader.php' );
-$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
-$map_loader->register();
 
 $map = new \PHPGoogleMaps\Map;
 
@@ -99,8 +97,6 @@ $map->addObject( $e );
 
 <h1>Get Closest Marker to Map Click</h1>
 <?php require( '_system/nav.php' ) ?>
-
-<p>This example is in response to a <a href="http://stackoverflow.com/questions/4057665/google-maps-api-v3-find-nearest-markers">question asked on Stackoverflow</a>.</p>
 
 <?php $map->printMap() ?>
 

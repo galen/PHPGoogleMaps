@@ -37,8 +37,7 @@ foreach( $locations as $i => $location ) {
 	$marker = \PHPGoogleMaps\Overlay\Marker::createFromLocation( $location,
 		array(
 			'title' => $location,
-			'content' => "$location marker",
-			'animation' => 'drop'
+			'content' => "$location marker"
 		)
 	);
 	$marker->setIcon( sprintf( "http://www.galengrover.com/projects/php-google-maps/examples/_images/blue%s.png", chr( $i++ + 65 ) ) );

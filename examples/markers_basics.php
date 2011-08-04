@@ -1,16 +1,14 @@
 <?php
 
-// This is for my examples
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
+
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\Marker',
 	'\PHPGoogleMaps\Overlay\MarkerDecorator'
 );
-
-// Autoload stuff
-require( '../PHPGoogleMaps/Core/Autoloader.php' );
-$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
-$map_loader->register();
 
 $map = new \PHPGoogleMaps\Map;
 
@@ -26,10 +24,7 @@ $marker2_options = array(
 );
 $marker2 = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( new \PHPGoogleMaps\Core\LatLng( 32.7153292,-117.1572551 ), $marker2_options );
 
-// Add both markers to the map
-// We need to be able to remove marker1 so we get a decorator for it
-$marker1_map = $map->addObject( $marker1 );
-$map->addObject( $marker2 );
+$map->addObjects( array( &$marker1, $marker2 ) );
 
 ?>
 
@@ -48,7 +43,7 @@ $map->addObject( $marker2 );
 <?php require( '_system/nav.php' ) ?>
 
 <?php $map->printMap() ?>
-<a href="#" onclick="<?php echo $marker1_map->getJsVar() ?>.setMap(null); return false;">Hide New York marker</a>
+<a href="#" onclick="<?php echo $marker1->getJsVar() ?>.setMap(null)">Hide New York marker</a>
 </body>
 
 </html>

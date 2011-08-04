@@ -43,14 +43,6 @@ class Geocoder {
 		return new GeocodeResult( $location, $response );
 	}
 
-	function getLatLng() {
-		$response = self::scrapeAPI( $location );
-		if ( $response instanceof GeocodeError ) {
-			return $response;
-		}
-		return new \PHPGoogleMaps\Core\LatLng( $response->results[0]->geometry->location->lat, $response->results[0]->geometry->location->lng );
-	}
-
 	/**
 	 * Scrape the API
 	 *

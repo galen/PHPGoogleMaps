@@ -1,6 +1,9 @@
 <?php
 
-// This is for my examples
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
+
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\Marker',
@@ -9,44 +12,38 @@ $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\MarkerGroupDecorator'
 );
 
-// Autoload stuff
-require( '../PHPGoogleMaps/Core/Autoloader.php' );
-$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
-$map_loader->register();
-
-use \PHPGoogleMaps\Overlay\Marker, \PHPGoogleMaps\Overlay\MarkerGroup;
-
 $map = new \PHPGoogleMaps\Map;
 
-$markers[] = Marker::createFromLocation( 'New York, NY' )->addToGroups( array( 'North', 'East', 'New York' ) );
-$markers[] = Marker::createFromLocation( 'Syracuse, NY' )->addToGroups( array( 'North', 'East', 'New York' ) );
+$ny1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY' );
+$ny2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Syracuse, NY' );
 
-$markers[] = Marker::createFromLocation( 'San Diego, CA' )->addToGroups( array( 'South', 'West', 'California' ) );
-$markers[] = Marker::createFromLocation( 'San Francisco, CA' )->addToGroups( array( 'West', 'California' ) );
+$ca1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'San Diego, CA' );
+$ca2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'San Francisco, CA' );
 
-$markers[] = Marker::createFromLocation( 'Houston, TX' )->addToGroups( array( 'South', 'Mid West', 'Texas' ) );
-$markers[] = Marker::createFromLocation( 'Dallas, TX' )->addToGroups( array( 'South', 'Mid West', 'Texas' ) );
+$tx1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Houston, TX' );
+$tx2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Dallas, TX' );
 
-$markers[] = Marker::createFromLocation( 'Orlando, FL' )->addToGroups( array( 'South', 'East', 'Florida' ) );
-$markers[] = Marker::createFromLocation( 'Tampa, FL' )->addToGroups( array( 'South', 'East', 'Florida' ) );
+$fl1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Orlando, FL' );
+$fl2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Tampa, FL' );
 
-$markers[] = Marker::createFromLocation( 'Detroit, MI' )->addToGroups( array( 'North', 'East', 'Michigan' ) );
-$markers[] = Marker::createFromLocation( 'Ann Arbor, MI' )->addToGroups( array( 'North', 'East', 'Michigan' ) );
+$mi1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Detroit, MI' );
+$mi2 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Ann Arbor, MI' );
 
-$markers[] = Marker::createFromLocation( 'Seattle, WA' )->addToGroups( array( 'North', 'West' ) );
-$markers[] = Marker::createFromLocation( 'Denver, CO' )->addToGroups( array( 'Mid West' ) );
+$group_ny = \PHPGoogleMaps\Overlay\MarkerGroup::create( 'New York' )->addMarkers( array( $ny1, $ny2 ) );
+$group_ca = \PHPGoogleMaps\Overlay\MarkerGroup::create( 'California' )->addMarkers( array( $ca1, $ca2 ) );
+$group_tx = \PHPGoogleMaps\Overlay\MarkerGroup::create( 'Texas' )->addMarkers( array( $tx1, $tx2 ) );
+$group_fl = \PHPGoogleMaps\Overlay\MarkerGroup::create( 'Florida' )->addMarkers( array( $fl1, $fl2 ) );
+$group_mi = \PHPGoogleMaps\Overlay\MarkerGroup::create( 'Michigan' )->addMarkers( array( $mi1, $mi2 ) );
 
-// It is also possible to add groups this way
-// Pass an array of markers to `addMarkers()`
-// This just calls `addToGroup()` on the marker
-//$group_ca = MarkerGroup::create( 'California' )->addMarkers( array() );
-//$group_tx = MarkerGroup::create( 'Texas' )->addMarkers( array() );
-//$group_fl = MarkerGroup::create( 'Florida' )->addMarkers( array();
-//$group_mi = MarkerGroup::create( 'Michigan' )->addMarkers( array() );
-
-// Groups aren't added to map
-// The markers associated with them are
-$map->addObjects( $markers );
+$map->addObjects(
+	array(
+		$ny1, $ny2,
+		$ca1, $ca2,
+		$tx1, $tx2,
+		$fl1, $fl2,
+		$mi1, $mi2
+	)
+);
 
 ?>
 
@@ -58,18 +55,6 @@ $map->addObjects( $markers );
 	<link rel="stylesheet" type="text/css" href="_css/style.css">
 	<?php $map->printHeaderJS() ?>
 	<?php $map->printMapJS() ?>
-	<script type="text/javascript">
-	marker_group_function = function( group_name, f_all, f_group ) {
-		for (i in map.markers) {
-			var marker = map.markers[i];
-			f_all(marker);
-		}
-		for (i in map.marker_groups[group_name].markers) {
-			var marker = map.markers[map.marker_groups[group_name].markers[i]];
-			f_group(marker);
-		}
-	};
-	</script>
 </head>
 <body>
 
@@ -79,10 +64,9 @@ $map->addObjects( $markers );
 <?php $map->printMap() ?>
 
 <h2>Marker Groups</h2>
-<p>Click a marker group to toggle it.</p>
+<p>Uncheck a marker group to hide it.</p>
 <?php foreach( $map->getMarkerGroups() as $group ): ?>
-<a href="#" onclick="<?php echo $group->callFunction( 'function(m){m.setAnimation(null);}', 'function(m){m.setAnimation(google.maps.Animation.BOUNCE);}' ) ?>; return false;"><?php echo $group->name ?></a><br>
-
+<input type="checkbox" value="" checked="checked" onclick="<?php echo $group->getToggleFunction() ?>"><?php echo $group->name ?><br>
 <?php endforeach; ?>
 
 </body>

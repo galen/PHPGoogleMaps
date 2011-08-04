@@ -1,5 +1,5 @@
 <ul>
-	<li><a href="<?php echo dirname( $_SERVER['REQUEST_URI'] ) ?>">Back to Examples</a></li>
+	<li><a href="/projects/php-google-maps/examples/">Back to Examples</a></li>
 	<li><a href="<?php echo GITHUB_EXAMPLES_URL ?><?php echo basename( $_SERVER['PHP_SELF'] ) ?>">View Example Code</a></li>
 	<?php if( isset( $relevant_code ) ): ?>
 	<li>

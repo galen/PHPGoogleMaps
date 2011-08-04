@@ -1,16 +1,14 @@
 <?php
 
-// This is for my examples
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
+
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Layer\KmlLayer',
 	'\PHPGoogleMaps\Layer\KmlLayerDecorator'
 );
-
-// Autoload stuff
-require( '../PHPGoogleMaps/Core/Autoloader.php' );
-$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
-$map_loader->register();
 
 $map = new \PHPGoogleMaps\Map;
 $kml = new \PHPGoogleMaps\Layer\KmlLayer( 'http://local.yahooapis.com/MapsService/rss/trafficData.xml?appid=YahooDemo&city=new+york' );

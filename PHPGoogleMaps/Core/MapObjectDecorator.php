@@ -3,12 +3,12 @@
 namespace PHPGoogleMaps\Core;
 
 /**
- * Map Object Decorator
- * This handles variable assignment and method calls
- * If the decorator responds to a method call or has a property the decorator method/variable will be used
- * Otherwise it will send the request to the decorated object
+ * Marker Decorator class that holds the marker's id and map
+ * This passes function calls and variable requests to the marker
  *
+ * Maps wrap markers in this decorator to give markers access to the map_id and marker id
  */
+ 
 
 abstract class MapObjectDecorator {
 
@@ -54,10 +54,7 @@ abstract class MapObjectDecorator {
 		if ( property_exists( $this, $var ) ) {
 			return $this->$var;
 		}
-		elseif ( isset( $this->decoratee->$var ) ) {
-			return $this->decoratee->$var;
-		}
-		return null;
+		return $this->decoratee->$var;
 	}
 
 	/**
@@ -91,20 +88,7 @@ abstract class MapObjectDecorator {
 		}
 	}
 
-	/**
-	 * Get The object's javascript variable
-	 *
-	 * @return string
-	 */
-	abstract public function getJsVar();
 
-	/**
-	 * Magic __toString method
-	 *
-	 * Returns the javascript variable of the object
-	 *
-	 * @return string
-	 */
 	public function __toString() {
 		return $this->getJsVar();
 	}
