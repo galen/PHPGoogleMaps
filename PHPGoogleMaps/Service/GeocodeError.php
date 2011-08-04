@@ -25,7 +25,7 @@ class GeocodeError {
 	public $location;
 
 	/**
-	 * Constructor
+	 *
 	 *
 	 * @param string $error Error return by google
 	 * @param string $location Location that failed to geocode

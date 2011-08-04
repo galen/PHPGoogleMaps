@@ -88,8 +88,8 @@ abstract class Directions extends \PHPGoogleMaps\Core\MapObject {
 	/**
 	 * Add a waypoint
 	 *
-	 * @param string|PositionAbstract $waypoint The waypoint
-	 * @param boolean $stopover
+	 *
+	 *
 	 */
 	public function addWaypoint( $waypoint, $stopover=true ) {
 		if ( $waypoint instanceof \PHPGoogleMaps\Core\PositionAbstract ) {

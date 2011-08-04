@@ -28,7 +28,7 @@ class CustomControlDecorator extends \PHPGoogleMaps\Core\MapObjectDecorator {
 	 * 
 	 * @param CustonControl $control Custom control to decorate
 	 * @param int $id ID of the custom control in the map
-	 * @param string $map Map ID of the map the custom control is attached to
+	 * @param string $map Map Id of the map the custom control is attached to
 	 * @return CustomControl
 	 */
 	public function __construct( CustomControl $control, $id, $map ) {

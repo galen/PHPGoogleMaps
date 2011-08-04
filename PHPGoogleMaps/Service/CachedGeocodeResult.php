@@ -2,40 +2,11 @@
 
 namespace PHPGoogleMaps\Service;
 
-/**
- * Cached geocode result
- *
- * This is returned by CachingGeocoder
- */
-
 class CachedGeocodeResult extends \PHPGoogleMaps\Core\PositionAbstract {
 
-	/**
-	 * LatLng of the location
-	 *
-	 * @var LatLng
-	 */
 	protected $latLng;
-	
-	/**
-	 * Was retrieved from cache flag
-	 *
-	 * @var boolean
-	 */
 	protected $was_in_cache;
-
-	/**
-	 * Was inserted into cache flag
-	 *
-	 * @var boolean
-	 */
 	protected $was_put_in_cache;
-
-	/**
-	 * Location that was geocoded
-	 *
-	 * @var string
-	 */
 	public $location;
 
 	/**
