@@ -18,7 +18,8 @@ Abstract class PositionAbstract {
 	 * @return LatLng
 	 */
 	abstract public function getLatLng();
-
+	abstract public function getLat();
+	abstract public function getLng();
 	/**
 	 * Get distance from another latlng
 	 *

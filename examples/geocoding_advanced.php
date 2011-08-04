@@ -41,7 +41,7 @@ if ( isset( $_GET['geocoded_location'] ) ) {
 
 if ( isset( $position ) ) {
 	$map = new \PHPGoogleMaps\Map;
-	$marker = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( $position, array( 'content' => $position->location ) );
+	$marker = \PHPGoogleMaps\Overlay\Marker::createFromPosition( $position, array( 'content' => $position->location ) );
 	$map->addObject( $marker );
 	$map->disableAutoEncompass();
 	$map->setZoom( 13 );

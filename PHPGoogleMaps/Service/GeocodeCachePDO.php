@@ -45,7 +45,7 @@ class GeocodeCachePDO implements GeocodeCache {
 	 * Get cached location
 	 *
 	 * @param string $location Location to get from cache
-	 * @return false|LatLng
+	 * @return false|GeocodeCachedResult
 	 */
 	public function getCache( $location ) {
 		$get = $this->db->prepare( sprintf( 'select lat, lng from %s where location=:location limit 1', $this->db_table ) );
@@ -55,7 +55,7 @@ class GeocodeCachePDO implements GeocodeCache {
 		}
 		$result = $get->fetchAll( \PDO::FETCH_ASSOC );
 		if ( count( $result ) ) {
-			return new \PHPGoogleMaps\Service\GeocodeResult( $result[0]['lat'], $result[0]['lng'] );
+			return new \PHPGoogleMaps\Service\CachedGeocodeResult( new \PHPGoogleMaps\Core\LatLng( $result[0]['lat'], $result[0]['lng'], $location ), true );
 		}
 		return false;
 	}

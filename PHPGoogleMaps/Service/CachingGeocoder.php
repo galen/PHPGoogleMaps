@@ -67,14 +67,13 @@ class CachingGeocoder {
 	 */
 	public function geocode( $location ) {
 		if ( $get_cache = $this->getCache( $location ) ) {
-			$get_cache->wasInCache( true );
 			return $get_cache;
 		}
 		else {
 			$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $location );
 			if ( $geocode_result instanceof \PHPGoogleMaps\Service\GeocodeResult ) {
-				if ( $write_cache = $this->writeCache( $location, $geocode_result->lat, $geocode_result->lng ) ) {
-					$geocode_result->wasPutInCache( true );
+				if ( $write_cache = $this->writeCache( $location, $geocode_result->getLat(), $geocode_result->getLng() ) ) {
+					$geocode_result = new \PHPGoogleMaps\Service\CachedGeocodeResult( $geocode_result->getLatLng(), false, true );
 				}
 			}
 			return $geocode_result;

@@ -37,7 +37,7 @@ $marker_options = array(
 	'title'	=> 'Center of Polygon',
 	'content'	=> 'This marker was added to the center of the polygon via Polygon::getCenter()'
 );
-$marker = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( $polygon->getCenter(), $marker_options );
+$marker = \PHPGoogleMaps\Overlay\Marker::createFromPosition( $polygon->getCenter(), $marker_options );
 
 $map->disableAutoEncompass();
 $map->setCenter( 'Austin, TX' );
