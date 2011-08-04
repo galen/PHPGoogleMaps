@@ -35,13 +35,13 @@ class Circle extends \PHPGoogleMaps\Overlay\Shape {
 	 * @return Circle
 	 */
 	public function __construct( $center, $radius, array $options=null ) {
-		if ( $center instanceof \PHPGoogleMaps\Core\LatLng ) {
+		if ( $center instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
 			$this->center = $center->getLatLng();
 		}
 		else {
 			$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $center, true );
-			if ( $geocode_result instanceof \PHPGoogleMaps\Core\LatLng ) {
-				$this->center = $geocode_result;
+			if ( $geocode_result instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
+				$this->center = $geocode_result->getLatLng();
 			}
 			else {
 				throw new \PHPGoogleMaps\Core\GeocodeException( $geocode_result );
@@ -58,8 +58,8 @@ class Circle extends \PHPGoogleMaps\Overlay\Shape {
 
 	public static function createFromLocation( $location, $radius, array $options=null ) {
 		$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $location );
-		if ( $geocode_result instanceof \PHPGoogleMaps\Core\LatLng ) {
-			return new Circle( $geocode_result, $radius, $options );
+		if ( $geocode_result instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
+			return new Circle( $geocode_result->getLatLng(), $radius, $options );
 		}
 		return false;
 	}

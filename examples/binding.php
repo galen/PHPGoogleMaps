@@ -34,6 +34,7 @@ $marker = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'San Diego, CA', $m
 
 // Add the circle and marker to the map
 $circle_map = $map->addObject( $circle );
+
 $marker_map = $map->addObject( $marker );
 
 // Set map options
