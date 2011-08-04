@@ -16,7 +16,7 @@ $map = new \PHPGoogleMaps\Map;
 $marker1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY',
 	array( 'title' => 'New York, NY', 'content' => 'New York marker' )
 );
-$marker2 = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( new \PHPGoogleMaps\Core\LatLng( 32.7153292,-117.1572551 ),
+$marker2 = \PHPGoogleMaps\Overlay\Marker::createFromPosition( new \PHPGoogleMaps\Core\LatLng( 32.7153292,-117.1572551 ),
 	array( 'title' => 'San Diego, CA', 'content' => 'San Diego marker' )
 );
 $marker3 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'Dallas, TX',
