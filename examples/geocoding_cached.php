@@ -20,7 +20,12 @@ $map_loader->register();
 // If location is set
 if ( isset( $_GET['location'] ) && strlen( $_GET['location'] ) ) {
 	// Create a PDO Geocode Cache connection and pass it to the caching geocoder
-	$geoPDO = new \PHPGoogleMaps\Service\GeocodeCachePDO( 'localhost', 'usernamev', 'password', 'database' );
+	try {
+		$geoPDO = new \PHPGoogleMaps\Service\GeocodeCachePDO( 'localhost', 'username', 'password', 'database' );
+	}
+	catch ( PDOException $e ) {
+		die( 'Unable to connect to database' );
+	}
 	$caching_geo = new \PHPGoogleMaps\Service\CachingGeocoder( $geoPDO );
 	// Geocode the location with the caching geocoded
 	$geocode_result = $caching_geo->geocode( $_GET['location'] );
