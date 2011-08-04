@@ -1,14 +1,16 @@
 <?php
 
-require( '../PHPGoogleMaps/Core/Autoloader.php' );
-$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
-$map_loader->register();
-
+// This is for my examples
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\Marker',
 	'\PHPGoogleMaps\Overlay\MarkerDecorator'
 );
+
+// Autoload stuff
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
 
 $map = new \PHPGoogleMaps\Map;
 
@@ -38,7 +40,6 @@ foreach( $locations as $i => $location ) {
 			'content' => "$location marker"
 		)
 	);
-	// You must pass the marker by reference so it can be decorated and used later to add the event listener
 	$marker_decorator = $map->addObject( $marker );
 	
 	// You have to add the event handler after the marker has been added to a map

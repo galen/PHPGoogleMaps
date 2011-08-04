@@ -790,9 +790,9 @@ class Map {
 				$options['position'] = $options['position']->getLatLng();
 			}
 			else {
-				$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $options['position'], true );
+				$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $options['position'] );
 				if ( $geocode_result instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
-					$options['position'] = $geocode_result;
+					$options['position'] = $geocode_result->getLatLng();
 				}
 				else {
 					throw new \PHPGoogleMaps\Service\GeocodeException( $geocode_result );
@@ -2120,10 +2120,8 @@ class Map {
 	  	}
 
 	  	if ( $this->streetview ) {
-	  	
 	  		$streetview_options = '';
-
-			if ( $this->streetview->options ) {
+			if ( isset ( $this->streetview->options ) ) {
 	  			foreach( $this->streetview->options as $streetview_option => $streetview_value ) {
 	  				switch( $streetview_option ) {
 	  					case 'container':

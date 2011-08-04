@@ -16,13 +16,17 @@ $map_loader->register();
 
 $map = new \PHPGoogleMaps\Map;
 
-// Geocode a location
+// Geocode a location and set the center of the map
+// If geocode fails fallback to a different map center
+// If no center is set the map will not display
 $geocode = \PHPGoogleMaps\Service\Geocoder::geocode( 'San Diego, CA' );
 if ( $geocode instanceof \PHPGoogleMaps\Service\GeocodeResult ) {
 	// Set center of map to geocoded location
 	$map->setCenter( $geocode );
 }
-
+else {
+	$map->setCenter( 'New York, NY' );
+}
 ?>
 
 <!DOCTYPE html>

@@ -9,7 +9,6 @@ $relevant_code = array(
 	'\PHPGoogleMaps\Service\GeocodeException'
 );
 
-
 // Autoloader stuff
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
@@ -24,7 +23,6 @@ if ( isset( $_GET['location'] ) && strlen( $_GET['location'] ) ) {
 			$location = $_GET['location'];
 			$location_options = $geocode_result->response->results;
 		}
-		// 
 		else {
 			$position = $geocode_result;
 		}

@@ -1,9 +1,6 @@
 <?php
 
-require( '../PHPGoogleMaps/Core/Autoloader.php' );
-$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
-$map_loader->register();
-
+// This is for my examples
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\Marker',
@@ -11,6 +8,11 @@ $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\MarkerGroup',
 	'\PHPGoogleMaps\Overlay\MarkerGroupDecorator'
 );
+
+// Autoload stuff
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
 
 use \PHPGoogleMaps\Overlay\Marker, \PHPGoogleMaps\Overlay\MarkerGroup;
 

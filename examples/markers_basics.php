@@ -1,11 +1,13 @@
 <?php
 
+// This is for my examples
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\Marker',
 	'\PHPGoogleMaps\Overlay\MarkerDecorator'
 );
 
+// Autoload stuff
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();

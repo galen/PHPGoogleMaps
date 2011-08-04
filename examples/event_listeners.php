@@ -102,7 +102,7 @@ $map->setZoom( 14 );
 
 <?php $map->printMap() ?>
 
-<a href="#" id="add_random_marker">Add a random marker</a>, <a href="#" onclick="google.maps.event.removeListener(<?php echo $event2_map->getJsVar() ?>);alert('Event listener has been removed')">Remove map click listener</a>
+<a href="#" id="add_random_marker">Add a random marker</a>, <a href="#" onclick="google.maps.event.removeListener(<?php echo $event2_map->getJsVar() ?>);alert('Map click listener has been removed')">Remove map click listener</a>
 
 </body>
 

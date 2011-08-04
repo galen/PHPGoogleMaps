@@ -24,6 +24,9 @@ $map->setZoom( 3 );
 if ( isset( $_GET['origin'], $_GET['destination'] ) && strlen( $_GET['origin'] ) && strlen( $_GET['destination'] ) ) {
 	try {
 		$directions = new \PHPGoogleMaps\Service\DrivingDirections( $_GET['origin'], $_GET['destination'] );
+		if ( isset( $_GET['waypoint'] ) && $_GET['waypoint'] != '' ) {
+			$directions->addWaypoint( $_GET['waypoint'] );
+		}
 		$map->addObject( $directions );
 	}
 	catch ( \PHPGoogleMaps\Service\GeocodeException $e ) {
@@ -48,11 +51,12 @@ if ( isset( $_GET['origin'], $_GET['destination'] ) && strlen( $_GET['origin'] )
 <?php require( '_system/nav.php' ) ?>
 
 <form action="">
-	<label>Origin:</label><input type="text" name="origin" value="<?php echo isset( $_GET['origin'] ) ? $_GET['origin'] : '' ?>">
-	<label>Destination:</label><input type="text" name="destination" value="<?php echo isset( $_GET['destination'] ) ? $_GET['destination'] : '' ?>">
+	<label>Origin:</label><br><input type="text" name="origin" value="<?php echo isset( $_GET['origin'] ) ? $_GET['origin'] : '' ?>"><br>
+	<label>Waypoint:</label><br><input type="text" name="waypoint" value="<?php echo isset( $_GET['waypoint'] ) ? $_GET['waypoint'] : '' ?>"><br>
+	<label>Destination:</label><br><input type="text" name="destination" value="<?php echo isset( $_GET['destination'] ) ? $_GET['destination'] : '' ?>">
 	<input type="submit" value=" Get Directions ">
 </form>
-
+<p><?php if( isset( $directions ) ): ?><strong><?php echo $_GET['origin'] ?></strong> to <strong><?php if( $_GET['waypoint'] != '' ): ?><?php echo $_GET['waypoint'] ?></strong> to <?php endif; ?><strong><?php echo $_GET['destination'] ?></strong><?php endif; ?></p>
 <?php if( isset( $error ) ): ?><p class="error">Unable to geocode "<?php echo $error->location ?>": <?php echo $error->error ?></p><?php endif; ?>
 
 <?php $map->printMap() ?>

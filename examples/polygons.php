@@ -1,5 +1,6 @@
 <?php
 
+// This is for my examples
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\Polygon',
@@ -7,6 +8,7 @@ $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\PolyDecorator'
 );
 
+// Autoload stuff
 require( '../PHPGoogleMaps/Core/Autoloader.php' );
 $map_loader = new SplClassLoader('PHPGoogleMaps', '../');
 $map_loader->register();

@@ -1,13 +1,16 @@
 <?php
 
-require( '../PHPGoogleMaps/Core/Autoloader.php' );
-$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
-$map_loader->register();
-
+// This is for my examples
 require( '_system/config.php' );
 $relevant_code = array(
 	'\PHPGoogleMaps\Overlay\Marker'
 );
+
+// Autoload stuff
+require( '../PHPGoogleMaps/Core/Autoloader.php' );
+$map_loader = new SplClassLoader('PHPGoogleMaps', '../');
+$map_loader->register();
+
 
 $map = new \PHPGoogleMaps\Map;
 
@@ -41,8 +44,6 @@ foreach( $locations as $i => $location ) {
 	$marker->setIcon( sprintf( "http://www.galengrover.com/projects/php-google-maps/examples/_images/blue%s.png", chr( $i++ + 65 ) ) );
 	$map->addObject( $marker );
 }
-
-$map->enableMarkerStaggering();
 
 ?>
 
