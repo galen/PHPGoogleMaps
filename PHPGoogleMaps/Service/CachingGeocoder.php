@@ -38,7 +38,7 @@ class CachingGeocoder {
 	 * @return boolean
 	 */
 	private function writeCache( $location, $lat, $lng ) {
-		return $this->geocode_cache->writeCache( $location, $lat, $lng );
+		return $this->geocode_cache->writeCache( strtolower( $location ), $lat, $lng );
 	}
 
 	/**
@@ -48,7 +48,7 @@ class CachingGeocoder {
 	 * @return false|LatLng
 	 */
 	private function getCache( $location ) {
-		return $this->geocode_cache->getCache( $location );
+		return $this->geocode_cache->getCache( strtolower( $location ) );
 	}
 
 	/**
@@ -79,8 +79,5 @@ class CachingGeocoder {
 			return $geocode_result;
 		}
 	}
-
-
-	
 
 }

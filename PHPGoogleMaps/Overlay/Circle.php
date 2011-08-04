@@ -29,23 +29,22 @@ class Circle extends \PHPGoogleMaps\Overlay\Shape {
 	/**
 	 * Constructor
 	 *
-	 * @param string|PositionAbstract $center Position of the center of the circle
+	 * @param string|LatLng $center Position of the center of the circle
 	 * @param float $radius Radius of the circle in meters
-	 * @param array $options Array of circle options {@link http://code.google.com/apis/maps/documentation/javascript/reference.html#CircleOptions}
+	 * @param array $options Array of optoins {@link http://code.google.com/apis/maps/documentation/javascript/reference.html#CircleOptions}
 	 * @return Circle
-	 * @throws GeocodeException
 	 */
 	public function __construct( $center, $radius, array $options=null ) {
-		if ( $center instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
+		if ( $center instanceof \PHPGoogleMaps\Core\LatLng ) {
 			$this->center = $center->getLatLng();
 		}
 		else {
 			$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $center, true );
-			if ( $geocode_result instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
-				$this->center = $geocode_result->getLatLng();
+			if ( $geocode_result instanceof \PHPGoogleMaps\Core\LatLng ) {
+				$this->center = $geocode_result;
 			}
 			else {
-				throw new \PHPGoogleMaps\Service\GeocodeException( $geocode_result );
+				throw new \PHPGoogleMaps\Core\GeocodeException( $geocode_result );
 			}
 		}
 		$this->radius = (float) $radius;
@@ -53,31 +52,13 @@ class Circle extends \PHPGoogleMaps\Overlay\Shape {
 		$this->options = $options;
 	}
 
-	/**
-	 * Create a circle from a lat/lng
-	 * 
-	 * @param PositionAbstract $center Position of the center of the circle
-	 * @param float $radius Radius of the circle in meters
-	 * @param array $options Array of circle options {@link http://code.google.com/apis/maps/documentation/javascript/reference.html#CircleOptions}
-	 * @return Circle
-	 */
-	public static function createFromLatLng( \PHPGoogleMaps\Core\PositionAbstract $center, $radius, array $options=null ) {
+	public static function createFromLatLng( $center, $radius, array $options=null ) {
 		return new Circle( $center, $radius, $options );
 	}
 
-	/**
-	 * Create a circle from a location
-	 *
-	 * This will return a Circle object or false if geocoding fails
-	 * 
-	 * @param string $location Location of the center of the circle
-	 * @param float $radius Radius of the circle in meters
-	 * @param array $options Array of circle options {@link http://code.google.com/apis/maps/documentation/javascript/reference.html#CircleOptions}
-	 * @return Circle|false
-	 */
 	public static function createFromLocation( $location, $radius, array $options=null ) {
 		$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $location );
-		if ( $geocode_result instanceof \PHPGoogleMaps\Core\PositionAbstract ) {
+		if ( $geocode_result instanceof \PHPGoogleMaps\Core\LatLng ) {
 			return new Circle( $geocode_result, $radius, $options );
 		}
 		return false;

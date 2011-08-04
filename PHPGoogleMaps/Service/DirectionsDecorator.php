@@ -9,14 +9,14 @@ namespace PHPGoogleMaps\Service;
  * This example will set the directions panel to the div with ID 'panel'
  *
  * $dir = new \PHPGoogleMaps\Service\DrivingDirections( 'New York, NY', 'San Jose, CA' );
- * $map->addObject( $dir );
+ * $map->addObjects( array( $dir ) );
  * <a href="#" onclick="<?php echo $map->getDirections()->getRendererJsVar() ?>.setPanel(document.getElementById('panel'))">Set Panel</a>
  */
 
 class DirectionsDecorator extends \PHPGoogleMaps\Core\MapObjectDecorator {
 
 	/**
-	 * Map id the directions attached to
+	 * Map id the fusion table is attached to
 	 *
 	 * @var string
 	 */
@@ -29,7 +29,7 @@ class DirectionsDecorator extends \PHPGoogleMaps\Core\MapObjectDecorator {
 	 * @param string $map Map ID of the map the directions are attached to
 	 * @return DirectionsDecorator
 	 */
-	public function __construct( \PHPGoogleMaps\Service\Directions $dir, $map ) {
+	public function __construct( Directions $dir, $map ) {
 		parent::__construct( $dir, array( '_map' => $map ) );
 	}
 
@@ -53,13 +53,7 @@ class DirectionsDecorator extends \PHPGoogleMaps\Core\MapObjectDecorator {
 		return sprintf( '%s.directions.service', $this->_map );
 	}
 
-	/**
-	 * Get javascript variable
-	 *
-	 * @return string
-	 */
-	public function getJsVar() {
-		return sprintf( '%s.directions', $this->_map );
-	}
+
+
 
 }

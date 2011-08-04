@@ -18,7 +18,7 @@ abstract class MapObject {
 	protected $options = array();
 
 	/**
-	 * Sets options and restricts the setting of variables that are marked as protected
+	 * Sets options and restricts the setting of important variables
 	 *
 	 * @param string $var
 	 * @param mixed $val

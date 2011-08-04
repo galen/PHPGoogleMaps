@@ -2,6 +2,12 @@
 
 namespace PHPGoogleMaps\Service;
 
+/**
+ * Geocode result
+ *
+ * Returned by a Geocoder
+ */
+
 class GeocodeResult extends \PHPGoogleMaps\Core\PositionAbstract {
 
 	/**

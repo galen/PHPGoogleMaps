@@ -16,7 +16,6 @@ namespace PHPGoogleMaps\Event;
 
 class EventListener extends \PHPGoogleMaps\Core\MapObject {
 
-
 	/**
 	 * The object to listen to
 	 * This should be the ID of the DOM element to listen to
