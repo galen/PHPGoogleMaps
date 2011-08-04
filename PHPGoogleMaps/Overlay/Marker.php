@@ -25,7 +25,7 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 	/**
 	 * Position of the marker
 	 *
-	 * @var LatLng
+	 * @var PositionAbstract
 	 */
 	protected $position;
 
@@ -269,6 +269,4 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 	}
 
 }
-
-
 

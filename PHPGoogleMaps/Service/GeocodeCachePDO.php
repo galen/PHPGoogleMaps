@@ -32,13 +32,8 @@ class GeocodeCachePDO implements GeocodeCache {
 	 * @return GeocodeCachePDO
 	 */
 	public function __construct( $host, $user, $pw, $db_name, $db_table='geocode_cache', $db_type='mysql' ) {
-		try {
-			$this->db = new \PDO( "$db_type:host=$host;dbname=$db_name", $user, $pw );
-			$this->db_table = $db_table;
-		}
-		catch ( \PDOException $e ) {
-			trigger_error( $e->getMessage(), E_USER_ERROR );
-		}
+		$this->db = new \PDO( "$db_type:host=$host;dbname=$db_name", $user, $pw );
+		$this->db_table = $db_table;
 	}
 
 	/**

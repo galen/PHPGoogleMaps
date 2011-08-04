@@ -27,8 +27,8 @@ class Rectangle extends \PHPGoogleMaps\Overlay\Shape {
 	/**
 	 * Constructor
 	 *
-	 * @param string|LatLng $southwest Southwest point of the rectangle
-	 * @param string|LatLng $northeast Northeast point of the rectangle
+	 * @param string|PositionAbstract $southwest Southwest point of the rectangle
+	 * @param string|PositionAbstract $northeast Northeast point of the rectangle
 	 * @param array $options Array of rectangle options {@link http://code.google.com/apis/maps/documentation/javascript/reference.html#RectangleOptions}
 	 * @return Rectangle
 	 */
