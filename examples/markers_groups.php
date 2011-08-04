@@ -82,7 +82,6 @@ $map->addObjects( $markers );
 <p>Click a marker group to toggle it.</p>
 <?php foreach( $map->getMarkerGroups() as $group ): ?>
 <a href="#" onclick="<?php echo $group->callFunction( 'function(m){m.setAnimation(null);}', 'function(m){m.setAnimation(google.maps.Animation.BOUNCE);}' ) ?>; return false;"><?php echo $group->name ?></a><br>
-
 <?php endforeach; ?>
 
 </body>

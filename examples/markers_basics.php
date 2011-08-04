@@ -24,7 +24,7 @@ $marker2_options = array(
 	'title'	=> 'San Diego, CA',
 	'content'	=> '<p><strong>San Diego, CA info window</strong></p>'
 );
-$marker2 = \PHPGoogleMaps\Overlay\Marker::createFromLatLng( new \PHPGoogleMaps\Core\LatLng( 32.7153292,-117.1572551 ), $marker2_options );
+$marker2 = \PHPGoogleMaps\Overlay\Marker::createFromPosition( new \PHPGoogleMaps\Core\LatLng( 32.7153292,-117.1572551 ), $marker2_options );
 
 // Add both markers to the map
 // We need to be able to remove marker1 so we get a decorator for it

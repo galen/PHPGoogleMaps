@@ -251,7 +251,7 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 			return self::createFromPosition( $geocode_result, $options );
 		}
 		else {
-			throw new \PHPGoogleMaps\Core\GeocodeException( $geocode_result );
+			throw new \PHPGoogleMaps\Service\GeocodeException( $geocode_result );
 		}
 	}
 

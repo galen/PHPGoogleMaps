@@ -3,7 +3,8 @@
 // This is for my examples
 require( '_system/config.php' );
 $relevant_code = array(
-	'\PHPGoogleMaps\Overlay\Marker'
+	'\PHPGoogleMaps\Overlay\Marker',
+	'\PHPGoogleMaps\Overlay\MarkerIcon'
 );
 
 // Autoload stuff

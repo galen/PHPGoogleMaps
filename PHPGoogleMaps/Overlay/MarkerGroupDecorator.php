@@ -56,27 +56,18 @@ class MarkerGroupDecorator extends \PHPGoogleMaps\Core\MapObjectDecorator {
 	}
 
 	/**
-	 * Get marker group toggle function
-	 * Returns the javascript function call to toggle a marker group
-	 * This will not work correctly if markers belong to more than one group
-	 *
-	 * @return string
-	 */
-	public function getToggleFunction() {
-		return sprintf( "%s.marker_group_toggle('%s')", $this->_map, $this->var_name );
-	}
-
-	/**
-	 * Add marker to group
-	 * This allows the map object to insert marker IDs into the group
-	 * You will not need to use this. Hopefully i'll find a better method of doing this
-	 * so i can get rid of this.
-	 *
-	 * @var int $marker
-	 * @return void
-	 */
-	public function addMarker( $marker ) {
-		$this->_markers[] = (int) $marker;
+	* Call a function on all of a group's markers
+	*
+	* @param string $function_all_markers Javascript function to call on all map markers
+	* This can be used to reset all markers to a default setting
+	*
+	* @param string $function_group_markers Javascript function to call on all group markers
+	* This is called on the group markers after all markers have been "reset"
+	*
+	* @return string
+	*/
+	public function callFunction( $function_all_markers, $function_group_markers ) {
+		return sprintf( "%s.marker_group_function('%s', %s, %s)", $this->_map, $this->var_name, $function_all_markers, $function_group_markers );
 	}
 
 }

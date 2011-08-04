@@ -31,6 +31,19 @@ abstract class MapObject {
 	}
 
 	/**
+	 * Also used for setting options, some people prefer object::setVar() to object->var =
+	 *
+	 * @param string $method
+	 * @param mixed $val
+	 * @return void
+	 */
+	public function __call( $method, $val ) {
+		if ( substr( $method, 0, 3 ) == 'set' ) {
+			$this->options[strtolower( substr( $method, 3 ) )] = $val[0];
+		}
+	}
+
+	/**
 	 * Return an object variable
 	 * Will check for a property first
 	 * Then an option
