@@ -5,7 +5,7 @@ namespace PHPGoogleMaps\overlay;
 /**
  * Marker Icon class
  * Attach these to markers to display custom marker icons
- * 
+ *
  * Example:
  * $icon = new \PHPGoogleMaps\Marker\MarkerIcon( $icon_url );
  * $icon->setSize( 30, 30 );
@@ -13,7 +13,7 @@ namespace PHPGoogleMaps\overlay;
  * $marker->setIcon( $icon );
  * $marker->setShadow( $shadow );
  */
- 
+
 
 class MarkerIcon  extends \PHPGoogleMaps\Core\MapObject {
 
@@ -82,21 +82,20 @@ class MarkerIcon  extends \PHPGoogleMaps\Core\MapObject {
 	 */
 	public function __construct( $icon, array $options = null ) {
 
-		$size = @getimagesize( $icon );
-
 		$this->icon = $icon;
 
 		if ( !isset( $options['width'] ) || !isset( $options['height'] ) ) {
+			$size = @getimagesize( $icon );
 			list( $this->width, $this->height ) = $size;
 		}
-		
+
 		if ( isset( $options['width'] ) ) {
 			$this->width = (int) $options['width'];
 		}
 		if ( isset( $options['height'] ) ) {
-			$this->height = (int) $options['height']; 
+			$this->height = (int) $options['height'];
 		}
-		
+
 		$this->anchor_x = isset( $options['anchor_x'] ) ? $options['anchor_x'] : floor( $this->width / 2 );
 		$this->anchor_y = isset( $options['anchor_y'] ) ? $options['anchor_y'] : $this->height;
 		$this->origin_x = isset( $options['origin_x'] ) ? $options['origin_x'] : 0;
