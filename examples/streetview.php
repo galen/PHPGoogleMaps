@@ -16,7 +16,7 @@ $map2 = new \PHPGoogleMaps\Map( array( 'map_id' => 'map2' ) );
 $map2->enableStreetView( array( 'addressControl' => false, 'enableCloseButton' => false ), 'container' );
 $map2->setCenter('San Diego, CA');
 
-$map3 = new \PHPGoogleMaps\Map( array( 'map_id' => 'map3' ) );
+$map3 = new \PHPGoogleMaps\Map( array( 'map_id' => 'map3', 'center' => 'New Haven, CT' ) );
 try {
 	$map3->enableStreetView( array( 'position' => 'New Haven, CT' ) );
 }
