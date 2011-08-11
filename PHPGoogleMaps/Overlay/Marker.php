@@ -271,5 +271,14 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 		return $marker;
 	}
 
+	/**
+	 * Return the markers position
+	 *
+	 * @return LatLng|null
+	 */
+	function getLatLng() {
+		return $this->position;
+	}
+
 }
 
