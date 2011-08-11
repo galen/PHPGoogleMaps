@@ -48,8 +48,10 @@ class Circle extends \PHPGoogleMaps\Overlay\Shape {
 			}
 		}
 		$this->radius = (float) $radius;
-		unset( $options['map'], $options['center'], $options['radius'] );
-		$this->options = $options;
+		if ( $options ) {
+			unset( $options['map'], $options['center'], $options['radius'] );
+			$this->options = $options;
+		}
 	}
 
 	public static function createFromLatLng( $center, $radius, array $options=null ) {

@@ -17,8 +17,10 @@ class PanoramioLayer extends \PHPGoogleMaps\Core\MapObject  {
 	 * @return PanoramioLayer
 	 */
 	public function __construct( array $options=null ) {
-		unset( $options['map'] );
-		$this->options = $options;
+		if ( $options ) {
+			unset( $options['map'] );
+			$this->options = $options;
+		}
 	}
 
 	/**

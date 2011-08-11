@@ -44,8 +44,10 @@ class GroundOverlay extends \PHPGoogleMaps\Core\MapObject {
 		$this->url = $url;
 		$this->southwest = $southwest;
 		$this->northeast = $northeast;
-		unset( $options['map'] );
-		$this->options = $options;
+		if ( $options ) {
+			unset( $options['map'] );
+			$this->options = $options;
+		}
 	}
 
 }

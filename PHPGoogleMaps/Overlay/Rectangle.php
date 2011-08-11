@@ -59,8 +59,10 @@ class Rectangle extends \PHPGoogleMaps\Overlay\Shape {
 			}
 		}
 
-		unset( $options['map'], $options['bounds'] );
-		$this->options = $options;
+		if ( $options ) {
+			unset( $options['map'], $options['bounds'] );
+			$this->options = $options;
+		}
 	}
 
 }

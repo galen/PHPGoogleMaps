@@ -76,6 +76,9 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 	 * @return Marker
 	*/
 	private function __construct( $position=null, array $options=null ) {
+		if ( $options ) {
+			unset( $options['map'] );
+		}
 		$this->position = $position;
 		if ( !$options ) {
 			return;

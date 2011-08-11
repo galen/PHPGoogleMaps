@@ -16,7 +16,8 @@ $circle_options = array(
 	'fillColor'		=> '#00ff00',
 	'strokeWeight'	=> 1,
 	'fillOpacity'	=> 0.05,
-	'clickable'		=> false
+	'clickable'		=> false,
+	'map'	=>	'adf'
 );
 
 // Create a circle with radius of 100m
@@ -26,7 +27,8 @@ $circle = \PHPGoogleMaps\Overlay\Circle::createFromLocation( 'San Diego, CA', 10
 $marker_options = array(
 	'title'		=> 'San Diego, CA',
 	'content'	=> '<p><strong>San Diego, CA</strong></p>',
-	'draggable'	=> true
+	'draggable'	=> true,
+	'map'		=> 'ads'
 );
 
 // Create a marker

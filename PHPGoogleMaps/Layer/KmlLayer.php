@@ -26,9 +26,11 @@ class KmlLayer extends \PHPGoogleMaps\Core\MapObject  {
 	 * @return KMLLayer
 	 */
 	public function __construct( $url, array $options=null ) {
+		if ( $options ) {
+			unset( $options['map'] );
+			$this->options = $options;
+		}
 		$this->url = $url;
-		unset( $options['map'] );
-		$this->options = $options;
 	}
 
 }

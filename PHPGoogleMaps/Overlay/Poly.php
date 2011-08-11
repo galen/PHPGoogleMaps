@@ -25,8 +25,10 @@ abstract class Poly extends \PHPGoogleMaps\Core\MapObject {
 	 * @return Polygon
 	 */
 	public function __construct( $paths, array $options=null ) {
-		unset( $options['map'] );
-		$this->options = $options;
+		if ( $options ) {
+			unset( $options['map'] );
+			$this->options = $options;
+		}
 		foreach( $paths as $path ) {
 			$this->addPath( $path );
 		}
