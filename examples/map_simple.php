@@ -15,7 +15,7 @@ $marker1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY', $m
 $map->addObject( $marker1 );
 $map->disableAutoEncompass();
 $map->setZoom( 10 );
-$map->setCenter( $marker1->getLatLng() );
+$map->setCenter( $marker1->getPosition() );
 $map->enableStreetView();
 $map->printHeaderJS();
 $map->printMapJS();

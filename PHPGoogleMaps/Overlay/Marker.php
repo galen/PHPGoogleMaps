@@ -276,7 +276,7 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 	 *
 	 * @return LatLng|null
 	 */
-	function getLatLng() {
+	function getPosition() {
 		return $this->position;
 	}
 
