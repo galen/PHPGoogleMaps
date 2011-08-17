@@ -12,6 +12,8 @@ $marker1_options = array(
 );
 $marker1 = \PHPGoogleMaps\Overlay\Marker::createFromLocation( 'New York, NY', $marker1_options );
 
+$marker1->setIcon( 'http://galengrover.com/projects/PHP-Google-Maps/examples/_images/bullseye_marker.png' );
+
 $map->addObject( $marker1 );
 $map->disableAutoEncompass();
 $map->setZoom( 10 );
