@@ -2,7 +2,7 @@
 
 For PHP 5.3+ and Google Maps API v3
 
-Examples: [live](http://galengrover.com/projects/php-google-maps_/examples/) [github](https://github.com/galen/PHP-Google-Maps-Examples)
+Examples: [live](http://www.galengrover.com/projects/PHP-Google-Maps/examples/) [github](https://github.com/galen/PHP-Google-Maps-Examples)
 
 This is a development version. I am refactoring a lot of code and will eventually switch over to this version
 
