@@ -42,6 +42,22 @@ class Map {
 	private $map_id = 'map';
 
 	/**
+	 * API Key
+	 * 
+	 * {@link https://code.google.com/apis/console}
+	 * 
+	 * @var string
+	 */
+	private $api_key = null;
+
+	/**
+	 * Use HTTPS protocol
+	 * 
+	 * @var boolean
+	 */
+	private $use_https = false;
+
+	/**
 	 * Map language
 	 *
 	 * Language of the map.
@@ -557,6 +573,12 @@ class Map {
 		if ( $options ) {
 			foreach( $options as $option_var => $option_val ) {
 				switch ( $option_var ) {
+					case 'use_https':
+						$this->useHttps();
+						break;
+					case 'api_key':
+						$this->setApiKey( $option_val );
+						break;
 					case 'zoom':
 						$this->setZoom( $option_val );
 						break;
@@ -645,6 +667,33 @@ class Map {
 		}
 	}
 
+	/**
+	 * Set API Key
+	 * 
+	 * {@link https://code.google.com/apis/console}
+	 * 
+	 * @param string $api_key Your API Key
+	 */
+	function setApiKey( $api_key ) {
+		$this->api_key = $api_key;
+	}
+
+	/**
+	 * Uee HTTPS protocol 
+	 */
+	function useHttps() {
+		$this->use_https = true;
+	}
+
+	/**
+	 *  Set loading content
+	 *  
+	 *  This will set the content of the map container before it's loaded.
+	 *  When the map loads this content will be removed.
+	 *  
+	 *  
+	 * @param string $content Content to display while the map is loading
+	 */
 	function setLoadingContent( $content ) {
 		$this->loading_content = $content;
 	}
@@ -1685,13 +1734,15 @@ class Map {
 	 */
 	function getHeaderJS() {
 		$header_js = sprintf(
-			"%s<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=%s&v=%s&language=%s&region=%s&libraries=%s\"></script>\n\n",
+			"%s<script type=\"text/javascript\" src=\"http%s://maps.google.com/maps/api/js?sensor=%s&v=%s&language=%s&region=%s&libraries=%s&key=%s\"></script>\n\n",
 			( $this->mobile ? "<meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n" : '' ),
+			$this->use_https ? 's' : '',
 			json_encode( $this->sensor ),
 			$this->api_version,
 			$this->language,
 			$this->region,
-			( count( $this->libraries ) ? sprintf( implode( ',', $this->libraries ) ) : '' )
+			( count( $this->libraries ) ? sprintf( implode( ',', $this->libraries ) ) : '' ),
+			$this->api_key ? $this->api_key : ''
 		);
 		if ( $this->clustering_js ) {
 			$header_js .= sprintf( "\n<script type=\"text/javascript\" src=\"%s\"></script>", $this->clustering_js );
