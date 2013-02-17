@@ -557,6 +557,30 @@ class Map {
 	private $clustering_options = array();
 
 	/**
+	* Places flag, places required for Autocomplete
+	* @var bool
+	*/
+	private $places = false;
+
+  /**
+ 	 * Places input id
+ 	 *
+ 	 * This will hold the id of the input to bind the Autocomplete to
+ 	 *
+ 	 * @var string
+ 	 */
+	private $autocomplete_id;
+
+  /**
+ 	 * AUtocomplete options
+ 	 *
+ 	 * array of options to be passed to the Autocomplete constructor
+ 	 *
+ 	 * @var array
+ 	 */
+	private $autocomplete_options = array();
+
+	/**
 	 * Loading content
 	 *
 	 * @var string
@@ -662,6 +686,10 @@ class Map {
 					case 'compress_output':
 						$option_val ? $this->enableCompressedOutput() : $this->disableCompressedOutput();
 						break;
+					case 'autocomplete':
+						$this->enablePlaces($option_val);
+						break;
+
 				}
 			}
 		}
@@ -2133,6 +2161,15 @@ class Map {
 				$this->adsense_publisher_id
 			);
 	  	}
+
+	  	if ( $this->autocomplete_id )
+	  	{
+	  		$output .= <<<EEE
+	this.ac_input = document.getElementById('{$this->autocomplete_id}');
+	this.ac_options = {$this->phpToJs($this->autocomplete_options)};
+	this.autocomplete = new google.maps.places.Autocomplete(this.ac_input, this.ac_options);
+EEE;
+	  	}
 	  	
 	  	if ( $this->traffic_layer ) {
 	  		$output .= "\tthis.traffic_layer = new google.maps.TrafficLayer();\n\tthis.traffic_layer.setMap(this.map);\n\n";
@@ -2392,4 +2429,16 @@ class Map {
 		$this->clustering_options = $options;
 	}
 
+	function enablePlaces($options = array())
+	{
+		if (!$this->places) $this->libraries[] = 'places';
+		$this->places = true;
+
+		if (isset($options["id"]))
+		{
+			$this->autocomplete_id = $options["id"];
+			unset($options["id"]);
+			$this->autocomplete_options = $options;
+		}
+	}
 }
