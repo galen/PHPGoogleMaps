@@ -543,7 +543,7 @@ class Map {
 	/**
 	 * Clustering javascript
 	 *
-	 * This will hold the location of the file
+	 * This will hold the location of the clustering file
 	 *
 	 * @var string
 	 */
@@ -557,24 +557,25 @@ class Map {
 	private $clustering_options = array();
 
 	/**
-	* Places flag, places required for Autocomplete
+	* Places library flag
+	* 
 	* @var bool
 	*/
 	private $places = false;
 
   /**
- 	 * Places input id
+ 	 * Autocomplete input id
  	 *
- 	 * This will hold the id of the input to bind the Autocomplete to
+ 	 * This is the id of the text input that will be used to search places
  	 *
  	 * @var string
  	 */
-	private $autocomplete_id;
+	private $autocomplete_input_id = null;
 
   /**
- 	 * AUtocomplete options
+ 	 * Autocomplete options
  	 *
- 	 * array of options to be passed to the Autocomplete constructor
+ 	 * Array of options to be passed to the autocomplete constructor
  	 *
  	 * @var array
  	 */
@@ -686,8 +687,8 @@ class Map {
 					case 'compress_output':
 						$option_val ? $this->enableCompressedOutput() : $this->disableCompressedOutput();
 						break;
-					case 'autocomplete':
-						$this->enablePlaces($option_val);
+					case 'places_autocomplete':
+						$this->enablePlacesAutocomplete( $option_val );
 						break;
 
 				}
@@ -2162,13 +2163,14 @@ class Map {
 			);
 	  	}
 
-	  	if ( $this->autocomplete_id )
+	  	if ( $this->autocomplete_input_id )
 	  	{
-	  		$output .= <<<EEE
-	this.ac_input = document.getElementById('{$this->autocomplete_id}');
-	this.ac_options = {$this->phpToJs($this->autocomplete_options)};
-	this.autocomplete = new google.maps.places.Autocomplete(this.ac_input, this.ac_options);
-EEE;
+	  		$output .= sprintf(
+	  			"\tthis.autocomplete_input = document.getElementById('%s');\n\tthis.autocomplete_options = %s;\n\tthis.autocomplete = new google.maps.places.Autocomplete(this.autocomplete_input, this.autocomplete_options);\n",
+	  			$this->autocomplete_input_id,
+	  			$this->phpToJs( $this->autocomplete_options )
+	  		);
+	  		
 	  	}
 	  	
 	  	if ( $this->traffic_layer ) {
@@ -2424,20 +2426,39 @@ EEE;
 		$this->adsense_visible = $visible;
 	}
 
-	function enableClustering( $clustering_js_file, $options = null ) {
+	/**
+	 * Enable clusering
+	 *
+	 * Enables marker clustering
+     *
+	 * @link https://developers.google.com/maps/articles/toomanymarkers
+	 *
+	 * Verified to work with marker clusterer
+	 * @link http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/
+	 * 
+	 * @param string $clustering_js_file Location to the clustering file
+	 * @param array $options Clustering options
+	 */
+	function enableClustering( $clustering_js_file, array $options = null ) {
 		$this->clustering_js = $clustering_js_file;
 		$this->clustering_options = $options;
 	}
 
-	function enablePlaces($options = array())
-	{
-		if (!$this->places) $this->libraries[] = 'places';
+	/**
+	 * Enable Places
+	 *
+	 * Add an input on the page
+	 *
+	 * autocomplete_input_id is a required key if you want to use an autocomplete
+	 * 
+	 * @param array $options array of places options
+	 */
+	function enablePlacesAutocomplete( array $options = array() ) {
+		$this->libraries[] = 'places';
 		$this->places = true;
-
-		if (isset($options["id"]))
-		{
-			$this->autocomplete_id = $options["id"];
-			unset($options["id"]);
+		if ( isset( $options["autocomplete_input_id"] ) ) {
+			$this->autocomplete_input_id = $options["autocomplete_input_id"];
+			unset( $options["autocomplete_input_id"] );
 			$this->autocomplete_options = $options;
 		}
 	}
