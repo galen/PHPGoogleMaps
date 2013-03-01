@@ -364,6 +364,14 @@ class Map {
 	 * @var array
 	 */
 	private $panoramio_layers = array();
+	
+	/**
+	 * Traffic layers
+	 * Array of Traffic layers added to the map
+	 * 
+	 * @var array
+	 */
+	private $traffic_layers = array();	
 
 	/**
 	 * Ground overlays
@@ -1007,6 +1015,18 @@ class Map {
 	protected function addPanoramioLayer( \PHPGoogleMaps\Layer\PanoramioLayer $panoramio ) {
 		return $this->panoramio_layers[] = new \PHPGoogleMaps\Layer\PanoramioLayerDecorator( $panoramio, count( $this->panoramio_layers ), $this->map_id );
 	}
+	
+	/**
+	 * Add a Traffic layer to the map
+	 * @link https://developers.google.com/maps/documentation/javascript/reference#TrafficLayer
+	 *
+	 * @param TrafficLayer $traffic Traffic layer to add to the map
+	 * @return TrafficLayerDecorator
+	 * @access protected
+	 */
+	protected function addTrafficLayer( \PHPGoogleMaps\Layer\TrafficLayer $traffic ) {
+		return $this->traffic_layers[] = new \PHPGoogleMaps\Layer\trafficLayerDecorator( $traffic, count( $this->traffic_layers ), $this->map_id );
+	}	
 
 	/**
 	 * Add a ground overlay to the map
@@ -1659,6 +1679,10 @@ class Map {
 				$this->libraries[] = 'panoramio';
 				$object = $this->addPanoramioLayer( $object );
 				break;
+			case 'PHPGoogleMaps\Layer\TrafficLayer':
+				$this->libraries[] = 'traffic';
+				$object = $this->addTrafficLayer( $object );
+				break;				
 			case 'PHPGoogleMaps\Overlay\GroundOverlay':
 				$object = $this->addGroundOverlay( $object );
 				break;
@@ -2131,7 +2155,15 @@ class Map {
 				}
 				$output .= "\n";
 			}
-		}
+		}		
+		
+		if ( count( $this->traffic_layers ) ) {
+			$output .= "\tthis.traffic_layers = [];\n";
+			foreach( $this->traffic_layers as $n => $traffic_layers ) {
+				$output .= sprintf( "\tthis.traffic_layers[%s] = new google.maps.TrafficLayer();\n\tthis.traffic_layers[%s].setMap(this.map);\n", $n, $n );
+				$output .= "\n";
+			}
+		}			
 
 		if ( count( $this->fusion_tables ) ) {
 			$output .= "\tthis.fusion_tables = [];\n";
