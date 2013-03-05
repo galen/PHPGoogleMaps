@@ -1257,7 +1257,7 @@ class Map {
 	 * @return void
 	 */
 	public function setUnitsMetric() {
-		$this->setUnits( 'metric' );
+		$this->setUnits( 'METRIC' );
 	}
 
 	/**
@@ -1266,7 +1266,7 @@ class Map {
 	 * @return void
 	 */
 	public function setUnitsImperial() {
-		$this->setUnits( 'imperial' );
+		$this->setUnits( 'IMPERIAL' );
 	}
 
 	/**
@@ -1969,7 +1969,7 @@ class Map {
 					  	$request_options .= sprintf( "\t\ttravelMode: google.maps.DirectionsTravelMode.%s,\n", strtoupper( $this->directions->request_options['travelMode'] ) );
 					  	break;
 					case 'units':
-					  	$request_options .= sprintf( "\t\tunitSystem: google.maps.DirectionsUnitSystem.%s,\n", isset( $this->directions->request_options['units'] ) ?: $this->units );
+					  	$request_options .= sprintf( "\t\tunitSystem: google.maps.DirectionsUnitSystem.%s,\n", isset( $this->directions->request_options['units'] ) ? $this->directions->request_options['units'] : $this->units );
 						break;
 		  			default:
 		  				$request_options .= sprintf( "\t\t%s:%s,\n", $request_option, $this->phpToJs( $request_value ) );
@@ -2462,4 +2462,5 @@ class Map {
 			$this->autocomplete_options = $options;
 		}
 	}
+
 }
