@@ -1,5 +1,7 @@
 #PHP Google Maps API
 
+[Gittip!](https://www.gittip.com/galen/)
+
 For PHP 5.3+ and Google Maps API v3
 
 Examples: [live](http://www.galengrover.com/projects/PHPGoogleMaps-Examples/) [github](https://github.com/galen/PHPGoogleMaps-Examples)
