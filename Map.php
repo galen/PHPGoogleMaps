@@ -114,6 +114,13 @@ class Map {
 	private $zoom = 7;
 
 	/**
+	 * Raw map styles
+	 *
+	 * @var JSON
+	 */
+	private $styles = null;	
+
+	/**
 	 * Auto encompass flag
 	 * If enabled the map will automatically encompass all markers on the map
 	 * If disabled a zoom level and center must be set
@@ -615,6 +622,9 @@ class Map {
 					case 'zoom':
 						$this->setZoom( $option_val );
 						break;
+					case 'styles':
+						$this->setRawStyles( $option_val );
+						break;						
 					case 'map_id':
 						$this->map_id = $this->normalizeVariable( $option_val );
 						break;
@@ -1248,6 +1258,16 @@ class Map {
 	}
 
 	/**
+	 * Set the map raw styles
+	 *
+	 * @param JSON $styles map styles
+	 * @return void
+	 */
+	public function setRawStyles( $styles ) {
+		$this->styles = $styles; 
+	}	
+
+	/**
 	 * Set the map width
 	 * e.g. 50x, 100%
 	 * 500px is default
@@ -1824,6 +1844,9 @@ class Map {
 	  	$output .= "\tthis.map_options = {\n";
   		$output .= sprintf("\t\tzoom: %s,\n", $this->zoom );
 
+  		if( !is_null($this->styles) ) {
+  			$output .= sprintf("\t\tstyles: %s,\n", $this->styles );
+  		}
 	  	if ( !$this->scrollable ) {
 	  		$output .= "\t\tscrollwheel: false,\n";
 	  	}
