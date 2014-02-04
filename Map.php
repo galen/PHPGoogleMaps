@@ -114,6 +114,13 @@ class Map {
 	private $zoom = 7;
 
 	/**
+	 * Raw map styles
+	 *
+	 * @var JSON
+	 */
+	private $styles = null;	
+
+	/**
 	 * Auto encompass flag
 	 * If enabled the map will automatically encompass all markers on the map
 	 * If disabled a zoom level and center must be set
@@ -364,6 +371,14 @@ class Map {
 	 * @var array
 	 */
 	private $panoramio_layers = array();
+	
+	/**
+	 * Traffic layers
+	 * Array of Traffic layers added to the map
+	 * 
+	 * @var array
+	 */
+	private $traffic_layers = array();	
 
 	/**
 	 * Ground overlays
@@ -607,6 +622,9 @@ class Map {
 					case 'zoom':
 						$this->setZoom( $option_val );
 						break;
+					case 'styles':
+						$this->setRawStyles( $option_val );
+						break;						
 					case 'map_id':
 						$this->map_id = $this->normalizeVariable( $option_val );
 						break;
@@ -1007,6 +1025,18 @@ class Map {
 	protected function addPanoramioLayer( \PHPGoogleMaps\Layer\PanoramioLayer $panoramio ) {
 		return $this->panoramio_layers[] = new \PHPGoogleMaps\Layer\PanoramioLayerDecorator( $panoramio, count( $this->panoramio_layers ), $this->map_id );
 	}
+	
+	/**
+	 * Add a Traffic layer to the map
+	 * @link https://developers.google.com/maps/documentation/javascript/reference#TrafficLayer
+	 *
+	 * @param TrafficLayer $traffic Traffic layer to add to the map
+	 * @return TrafficLayerDecorator
+	 * @access protected
+	 */
+	protected function addTrafficLayer( \PHPGoogleMaps\Layer\TrafficLayer $traffic ) {
+		return $this->traffic_layers[] = new \PHPGoogleMaps\Layer\trafficLayerDecorator( $traffic, count( $this->traffic_layers ), $this->map_id );
+	}	
 
 	/**
 	 * Add a ground overlay to the map
@@ -1226,6 +1256,16 @@ class Map {
 	public function setZoom( $zoom ) {
 		$this->zoom = abs( (int) $zoom ); 
 	}
+
+	/**
+	 * Set the map raw styles
+	 *
+	 * @param JSON $styles map styles
+	 * @return void
+	 */
+	public function setRawStyles( $styles ) {
+		$this->styles = $styles; 
+	}	
 
 	/**
 	 * Set the map width
@@ -1659,6 +1699,10 @@ class Map {
 				$this->libraries[] = 'panoramio';
 				$object = $this->addPanoramioLayer( $object );
 				break;
+			case 'PHPGoogleMaps\Layer\TrafficLayer':
+				$this->libraries[] = 'traffic';
+				$object = $this->addTrafficLayer( $object );
+				break;				
 			case 'PHPGoogleMaps\Overlay\GroundOverlay':
 				$object = $this->addGroundOverlay( $object );
 				break;
@@ -1800,6 +1844,9 @@ class Map {
 	  	$output .= "\tthis.map_options = {\n";
   		$output .= sprintf("\t\tzoom: %s,\n", $this->zoom );
 
+  		if( !is_null($this->styles) ) {
+  			$output .= sprintf("\t\tstyles: %s,\n", $this->styles );
+  		}
 	  	if ( !$this->scrollable ) {
 	  		$output .= "\t\tscrollwheel: false,\n";
 	  	}
@@ -2131,7 +2178,15 @@ class Map {
 				}
 				$output .= "\n";
 			}
-		}
+		}		
+		
+		if ( count( $this->traffic_layers ) ) {
+			$output .= "\tthis.traffic_layers = [];\n";
+			foreach( $this->traffic_layers as $n => $traffic_layers ) {
+				$output .= sprintf( "\tthis.traffic_layers[%s] = new google.maps.TrafficLayer();\n\tthis.traffic_layers[%s].setMap(this.map);\n", $n, $n );
+				$output .= "\n";
+			}
+		}			
 
 		if ( count( $this->fusion_tables ) ) {
 			$output .= "\tthis.fusion_tables = [];\n";
