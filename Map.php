@@ -564,6 +564,19 @@ class Map {
 	private $places = false;
 
   /**
+   * Styles flag
+   *
+   * @var bool
+   */
+  private $styles = false;
+  /**
+   * Json array containing inline styling
+   *
+   * @var string json
+   */
+  private $inline_style = '';
+
+  /**
  	 * Autocomplete input id
  	 *
  	 * This is the id of the text input that will be used to search places
@@ -690,6 +703,9 @@ class Map {
 					case 'places_autocomplete':
 						$this->enablePlacesAutocomplete( $option_val );
 						break;
+          case 'styles':
+            $this->inlineStyle($option_val);
+            break;
 
 				}
 			}
@@ -1797,6 +1813,9 @@ class Map {
 
 		$output = sprintf( "var %s;\nfunction phpgooglemap_%s() {\n\nthis.initialize = function() {\n\n", $this->map_id, $this->map_id );
 		$output .= "\tvar self = this;\n";
+
+    if($this->styles) $output.="\n\tvar inline_style = $this->inline_style\n\n";
+
 	  	$output .= "\tthis.map_options = {\n";
   		$output .= sprintf("\t\tzoom: %s,\n", $this->zoom );
 
@@ -1809,6 +1828,9 @@ class Map {
 	  	if ( !$this->draggable ) {
 	  		$output .= "\t\tdraggable: false,\n";
 	  	}
+      if ( $this->styles ) {
+        $output .= "\t\tstyles: inline_style,\n";
+      }
 
 		$output .= sprintf( "\t\tnavigationControl: %s,\n", $this->phpToJs( $this->navigation_control ) );
 		$output .= sprintf( "\t\tmapTypeControl: %s,\n", $this->phpToJs( $this->map_type_control ) );
@@ -2462,5 +2484,17 @@ class Map {
 			$this->autocomplete_options = $options;
 		}
 	}
+
+  /**
+   * Inline Style
+   *
+   * Add JSON array of styling to map options
+   *
+   * @param string $json variable with style var
+   */
+  function inlineStyle($json) {
+   $this->styles = true;
+   $this->inline_style = $json;
+  }
 
 }
