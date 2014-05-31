@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPGoogleMaps\overlay;
+namespace PHPGoogleMaps\Overlay;
 
 /**
  * Marker group class
