@@ -2,6 +2,7 @@
 
 namespace PHPGoogleMaps\overlay;
 
+use PHPGoogleMaps\Core\MapObject;
 /**
  * Marker Icon class
  * Attach these to markers to display custom marker icons
@@ -15,7 +16,8 @@ namespace PHPGoogleMaps\overlay;
  */
 
 
-class MarkerIcon  extends \PHPGoogleMaps\Core\MapObject {
+class MarkerIcon extends MapObject
+{
 
 	/**
 	 * Url of the icon image
@@ -76,7 +78,7 @@ class MarkerIcon  extends \PHPGoogleMaps\Core\MapObject {
 	 *
 	 * If allow_url_fopen is not enabled on your server you will need to explicity specify the dimensions of the icon
 	 *
-	 * @param strin $icon Absolute URL of the icon image
+	 * @param string $icon Absolute URL of the icon image
 	 * @throws Exception
 	 * @return MarkerIcon
 	 */
