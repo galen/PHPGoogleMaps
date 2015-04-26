@@ -1693,6 +1693,7 @@ class Map {
 		if ( $object instanceof \PHPGoogleMaps\Core\MapObjectDecorator ) {
 			$object = $object->decoratee;
 		}
+
 		switch( get_class( $object ) ) {
 			case 'PHPGoogleMaps\Core\CustomControl':
 				$object = $this->addCustomControl( $object );
@@ -1821,8 +1822,23 @@ class Map {
 	 */
 	function getHeaderJS() {
 		$header_js = sprintf(
-			"%s<script type=\"text/javascript\" src=\"http%s://maps.google.com/maps/api/js?sensor=%s&v=%s&language=%s&region=%s&libraries=%s&key=%s\"></script>\n\n",
+			"%s<script type=\"text/javascript\" src=\"%s\"></script>\n\n",
 			( $this->mobile ? "<meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n" : '' ),
+			$this->getHeaderJSUrl()
+		);
+		if ( $this->clustering_js ) {
+			$header_js .= sprintf( "\n<script type=\"text/javascript\" src=\"%s\"></script>", $this->clustering_js );
+		}
+		return $header_js;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getHeaderJSUrl()
+	{
+		return sprintf(
+			'http%s://maps.google.com/maps/api/js?sensor=%s&v=%s&language=%s&region=%s&libraries=%s&key=%s',
 			$this->use_https ? 's' : '',
 			json_encode( $this->sensor ),
 			$this->api_version,
@@ -1831,10 +1847,6 @@ class Map {
 			( count( $this->libraries ) ? sprintf( implode( ',', $this->libraries ) ) : '' ),
 			$this->api_key ? $this->api_key : ''
 		);
-		if ( $this->clustering_js ) {
-			$header_js .= sprintf( "\n<script type=\"text/javascript\" src=\"%s\"></script>", $this->clustering_js );
-		}
-		return $header_js;
 	}
 
 	/**
