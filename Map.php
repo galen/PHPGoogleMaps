@@ -13,6 +13,7 @@ namespace PHPGoogleMaps;
 use PHPGoogleMaps\Core\CustomControl;
 use PHPGoogleMaps\Core\CustomControlDecorator;
 use PHPGoogleMaps\Core\LatLng;
+use PHPGoogleMaps\Core\MapObjectDecorator;
 use PHPGoogleMaps\Event\EventListener;
 use PHPGoogleMaps\Event\EventListenerDecorator;
 use PHPGoogleMaps\Layer\FusionTable;
@@ -1690,7 +1691,7 @@ class Map {
 		if ( !is_object( $object ) ) {
 			return false;
 		}
-		if ( $object instanceof \PHPGoogleMaps\Core\MapObjectDecorator ) {
+		if ( $object instanceof MapObjectDecorator ) {
 			$object = $object->decoratee;
 		}
 
@@ -1750,7 +1751,6 @@ class Map {
 	 * @param array $objects Array of objects to add to the map
 	 * @return void
 	 */
-
 	public function addObjects( array $objects ) {
 		foreach( $objects as $object ) {
 			$this->addObject( $object );
@@ -1811,7 +1811,7 @@ class Map {
 	 *
 	 * @return void
 	 */
-	function printHeaderJS() {
+	public function printHeaderJS() {
 		echo $this->getHeaderJS();
 	}
 
@@ -1854,7 +1854,7 @@ class Map {
 	 *
 	 * @return void
 	 */
-	function printMapJS() {
+	public function printMapJS() {
 		echo $this->getMapJS();
 	}
 
@@ -1863,7 +1863,7 @@ class Map {
 	 *
 	 * @return string
 	 */
-	function getMapJS() {
+	public function getMapJS() {
 
 		$output = sprintf( "var %s;\nfunction phpgooglemap_%s() {\n\nthis.initialize = function() {\n\n", $this->map_id, $this->map_id );
 		$output .= "\tvar self = this;\n";
@@ -2502,7 +2502,7 @@ class Map {
 	 * @param boolean $visible
 	 * @return object Returns a decorated object
 	 */
-	function enableAdsense( $publisher_id, $format = null, $position = null, $visible = null ) {
+	public function enableAdsense( $publisher_id, $format = null, $position = null, $visible = null ) {
 		$this->libraries[] = 'adsense';
 		$this->adsense = true;
 		$this->adsense_publisher_id = $publisher_id;
@@ -2524,7 +2524,7 @@ class Map {
 	 * @param string $clustering_js_file Location to the clustering file
 	 * @param array $options Clustering options
 	 */
-	function enableClustering( $clustering_js_file, array $options = null ) {
+	public function enableClustering( $clustering_js_file, array $options = null ) {
 		$this->clustering_js = $clustering_js_file;
 		$this->clustering_options = $options;
 	}
@@ -2538,7 +2538,7 @@ class Map {
 	 *
 	 * @param array $options array of places options
 	 */
-	function enablePlacesAutocomplete( array $options = array() ) {
+	public function enablePlacesAutocomplete( array $options = array() ) {
 		$this->libraries[] = 'places';
 		$this->places = true;
 		if ( isset( $options["autocomplete_input_id"] ) ) {
