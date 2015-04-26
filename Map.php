@@ -10,10 +10,33 @@
 
 namespace PHPGoogleMaps;
 
+use PHPGoogleMaps\Core\CustomControl;
+use PHPGoogleMaps\Core\CustomControlDecorator;
 use PHPGoogleMaps\Core\LatLng;
+use PHPGoogleMaps\Event\EventListener;
+use PHPGoogleMaps\Event\EventListenerDecorator;
+use PHPGoogleMaps\Layer\FusionTable;
+use PHPGoogleMaps\Layer\FusionTableDecorator;
 use PHPGoogleMaps\Layer\HeatmapLayer;
 use PHPGoogleMaps\Layer\HeatmapLayerDecorator;
+use PHPGoogleMaps\Layer\KmlLayer;
+use PHPGoogleMaps\Layer\KmlLayerDecorator;
+use PHPGoogleMaps\Layer\PanoramioLayer;
+use PHPGoogleMaps\Layer\PanoramioLayerDecorator;
+use PHPGoogleMaps\Overlay\GroundOverlay;
+use PHPGoogleMaps\Overlay\GroundOverlayDecorator;
+use PHPGoogleMaps\Overlay\MapStyle;
+use PHPGoogleMaps\Overlay\Marker;
+use PHPGoogleMaps\Overlay\MarkerDecorator;
+use PHPGoogleMaps\overlay\MarkerGroup;
+use PHPGoogleMaps\Overlay\MarkerGroupDecorator;
 use PHPGoogleMaps\Overlay\MarkerIcon;
+use PHPGoogleMaps\Overlay\Poly;
+use PHPGoogleMaps\Overlay\PolyDecorator;
+use PHPGoogleMaps\Overlay\Shape;
+use PHPGoogleMaps\Overlay\ShapeDecorator;
+use PHPGoogleMaps\Service\Directions;
+use PHPGoogleMaps\Service\DirectionsDecorator;
 
 /**
  * Google Map
@@ -358,7 +381,7 @@ class Map {
 	 * KML layers
 	 * Array of KML layers added to the map
 	 *
-	 * @var array
+	 * @var KmlLayer[]
 	 */
 	private $kml_layers = array();
 
@@ -366,7 +389,7 @@ class Map {
 	 * Panoramio layers
 	 * Array of Panoramio layers added to the map
 	 *
-	 * @var array
+	 * @var PanoramioLayer[]
 	 */
 	private $panoramio_layers = array();
 
@@ -604,8 +627,8 @@ class Map {
 	/**
 	 * Constructor
 	 *
-	 * @var string $map_id ID to give the map
-	 * @return GoogleMap
+	 * @param  array $options
+	 * @return Map
 	 */
 	public function __construct( array $options=null ) {
 		if ( $options ) {
@@ -761,7 +784,6 @@ class Map {
 	 * @param array $visible Array of visible locations
 	 * @return string
 	 */
-
 	function getStaticMap( $format='png', array $visible = null ) {
 
 		$url = "http://maps.google.com/maps/api/staticmap?";
@@ -834,8 +856,8 @@ class Map {
 	 * @param Directions $dir Directions object
 	 * @return DirectionsDecorator
 	 */
-	protected function addDirections( \PHPGoogleMaps\Service\Directions $dir ) {
-		return $this->directions = new \PHPGoogleMaps\Service\DirectionsDecorator( $dir, $this->map_id );
+	protected function addDirections( Directions $dir ) {
+		return $this->directions = new DirectionsDecorator( $dir, $this->map_id );
 	}
 
 	/**
@@ -857,6 +879,8 @@ class Map {
 	/**
 	 * Enable streetview
 	 *
+	 * @param array $options
+	 * @param string $container
 	 * @return void
 	 */
 	public function enableStreetView( array $options=null, $container=null ) {
@@ -988,14 +1012,14 @@ class Map {
 	 * @return FusionTableDecorator
 	 * @access protected
 	 */
-	protected function addFusionTable( \PHPGoogleMaps\Layer\FusionTable $ft ) {
-		return $this->fusion_tables[] = new \PHPGoogleMaps\Layer\FusionTableDecorator( $ft, count( $this->fusion_tables ), $this->map_id );
+	protected function addFusionTable( FusionTable $ft ) {
+		return $this->fusion_tables[] = new FusionTableDecorator( $ft, count( $this->fusion_tables ), $this->map_id );
 	}
 
 	/**
 	 * Get the array of the map's fusion tables
 	 *
-	 * @return array
+	 * @return FusionTableDecorator[]
 	 */
 	public function getFusionTables() {
 		return $this->fusion_tables;
@@ -1010,8 +1034,8 @@ class Map {
 	 * @return KmlLayerDecorator
 	 * @access protected
 	 */
-	protected function addKmlLayer( \PHPGoogleMaps\Layer\KmlLayer $kml ) {
-		return $this->kml_layers[] = new \PHPGoogleMaps\Layer\KmlLayerDecorator( $kml, count( $this->kml_layers ), $this->map_id );
+	protected function addKmlLayer( KmlLayer $kml ) {
+		return $this->kml_layers[] = new KmlLayerDecorator( $kml, count( $this->kml_layers ), $this->map_id );
 	}
 
 	/**
@@ -1022,8 +1046,8 @@ class Map {
 	 * @return PanoramioLayerDecorator
 	 * @access protected
 	 */
-	protected function addPanoramioLayer( \PHPGoogleMaps\Layer\PanoramioLayer $panoramio ) {
-		return $this->panoramio_layers[] = new \PHPGoogleMaps\Layer\PanoramioLayerDecorator( $panoramio, count( $this->panoramio_layers ), $this->map_id );
+	protected function addPanoramioLayer( PanoramioLayer $panoramio ) {
+		return $this->panoramio_layers[] = new PanoramioLayerDecorator( $panoramio, count( $this->panoramio_layers ), $this->map_id );
 	}
 
 	/**
@@ -1045,14 +1069,14 @@ class Map {
 	 * @return GroundOverlayDecorator
 	 * @access protected
 	 */
-	protected function addGroundOverlay( \PHPGoogleMaps\Overlay\GroundOverlay $ground_overlay ) {
-		return $this->ground_overlays[] = new \PHPGoogleMaps\Overlay\GroundOverlayDecorator( $ground_overlay, count( $this->ground_overlays ), $this->map_id );
+	protected function addGroundOverlay( GroundOverlay $ground_overlay ) {
+		return $this->ground_overlays[] = new GroundOverlayDecorator( $ground_overlay, count( $this->ground_overlays ), $this->map_id );
 	}
 
 	/**
 	 * Get the array of the map's KML layers
 	 *
-	 * @return array
+	 * @return KmlLayerDecorator[]
 	 */
 	public function getKmlLayers() {
 		return $this->kml_layers;
@@ -1065,14 +1089,14 @@ class Map {
 	 * @return ShapeDecorator
 	 * @access protected
 	 */
-	protected function addShape( \PHPGoogleMaps\Overlay\Shape $shape ) {
-		return $this->shapes[] = new \PHPGoogleMaps\Overlay\ShapeDecorator( $shape, count( $this->shapes ), $this->map_id );
+	protected function addShape( Shape $shape ) {
+		return $this->shapes[] = new ShapeDecorator( $shape, count( $this->shapes ), $this->map_id );
 	}
 
 	/**
 	 * Get the array of the map's shapes
 	 *
-	 * @return array
+	 * @return ShapeDecorator[]
 	 */
 	public function getShapes() {
 		return $this->shapes;
@@ -1081,11 +1105,11 @@ class Map {
 	/**
 	 * Add a polygon to the map
 	 *
-	 * @param Shape $shape Shape to add to the map
-	 * @return ShapeDecorator
+	 * @param Poly $poly
+	 * @return PolyDecorator
 	 * @access protected
 	 */
-	protected function addPoly( \PHPGoogleMaps\Overlay\Poly $poly ) {
+	protected function addPoly( Poly $poly ) {
 		return $this->polys[] = new \PHPGoogleMaps\Overlay\PolyDecorator( $poly, count( $this->polys ), $this->map_id );
 	}
 
@@ -1098,12 +1122,12 @@ class Map {
 	/**
 	 * Add a custom control to the map
 	 *
-	 * @param Marker $marker Marker to add
-	 * @return MarkerDecorator
+	 * @param CustomControl $control
+	 * @return CustomControlDecorator
 	 * @access protected
 	 */
-	protected function addCustomControl( \PHPGoogleMaps\Core\CustomControl $control ) {
-		return $this->custom_controls[] = new \PHPGoogleMaps\Core\CustomControlDecorator( $control, count( $this->custom_controls ), $this->map_id );
+	protected function addCustomControl( CustomControl $control ) {
+		return $this->custom_controls[] = new CustomControlDecorator( $control, count( $this->custom_controls ), $this->map_id );
 	}
 
 	/**
@@ -1156,9 +1180,9 @@ class Map {
 	 * Add a map style
 	 *
 	 * @param MapStyle $style The map style
-	 * @return void
+	 * @return MapStyle
 	 */
-	protected function addMapStyle( \PHPGoogleMaps\Overlay\MapStyle $style ) {
+	protected function addMapStyle( MapStyle $style ) {
 		return $this->map_styles[$style->var_name] = $style;
 	}
 
@@ -1346,7 +1370,7 @@ class Map {
 
 	/**
 	 * Enable auto encompass
-	 * Enabled by defualt
+	 * Enabled by default
 	 * When markers are present this causes the map to pick an appropriate center
 	 * and zoom. Therefore if markers are present on the map a center and zoom do
 	 * not need to be set
@@ -1409,7 +1433,7 @@ class Map {
 	/**
 	 * Set the map type control's style
 	 *
-	 * @param string $position Map type control style
+	 * @param string $style
 	 * @return void
 	 */
 	public function setMapTypeControlStyle( $style ) {
@@ -1503,12 +1527,12 @@ class Map {
 	/**
 	 * Add an event listener to the map
 	 *
-	 * @param DomEventListener $event_listener
+	 * @param EventListener $event_listener
 	 * @return EventListenerDecorator
 	 * @access protected
 	 */
-	protected function addEventListener( \PHPGoogleMaps\Event\EventListener $event_listener ) {
-		return $this->event_listeners[] = new \PHPGoogleMaps\Event\EventListenerDecorator( $event_listener, count( $this->event_listeners ), $this->map_id );
+	protected function addEventListener( EventListener $event_listener ) {
+		return $this->event_listeners[] = new EventListenerDecorator( $event_listener, count( $this->event_listeners ), $this->map_id );
 	}
 
 	/**
@@ -1595,11 +1619,11 @@ class Map {
 	 * @return MarkerDecorator
 	 * @access protected
 	 */
-	protected function addMarker( \PHPGoogleMaps\Overlay\Marker $marker ) {
+	protected function addMarker( Marker $marker ) {
 		if ( !$marker->getIcon() && $this->default_marker_icon ) {
 			$marker->setIcon( $this->default_marker_icon, $this->default_marker_shadow ?: null );
 		}
-		return $this->markers[] = new \PHPGoogleMaps\Overlay\MarkerDecorator( $marker, count( $this->markers ), $this->map_id );
+		return $this->markers[] = new MarkerDecorator( $marker, count( $this->markers ), $this->map_id );
 	}
 
 
@@ -1608,7 +1632,7 @@ class Map {
 	 * Get map markers
 	 * Returns an array of the map's markers
 	 *
-	 * @return array
+	 * @return MarkerDecorator[]
 	 */
 	public function getMarkers() {
 		return $this->markers;
@@ -1622,7 +1646,7 @@ class Map {
 	 * @param MarkerIcon $shadow Shadow of the default marker icon
 	 * @return void
 	 */
-	public function setDefaultMarkerIcon( \PHPGoogleMaps\Overlay\MarkerIcon $icon, \PHPGoogleMaps\Overlay\MarkerIcon $shadow = null ) {
+	public function setDefaultMarkerIcon( MarkerIcon $icon, MarkerIcon $shadow = null ) {
 		$this->default_marker_icon = $icon;
 		if ( $shadow ) {
 			$this->default_marker_shadow = $shadow;
@@ -1633,12 +1657,12 @@ class Map {
 	 * Get marker groups
 	 * Returns the map's marker groups
 	 *
-	 * @return array
+	 * @return MarkerGroupDecorator[]
 	 */
 	public function getMarkerGroups() {
 		$this->extractMarkerData();
 		foreach( $this->marker_groups as $mg ) {
-			$groups[] = new \PHPGoogleMaps\Overlay\MarkerGroupDecorator( new \PHPGoogleMaps\Overlay\MarkerGroup( $mg['name'] ), $mg['id'], $this->map_id  );
+			$groups[] = new MarkerGroupDecorator( new MarkerGroup( $mg['name'] ), $mg['id'], $this->map_id  );
 		}
 		return $groups;
 	}
