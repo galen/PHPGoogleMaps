@@ -12,7 +12,7 @@ namespace PHPGoogleMaps\Layer;
 class HeatmapLayerDecorator extends \PHPGoogleMaps\Core\MapObjectDecorator {
 
 	/**
-	 * Id of the Panoramio layer in the map
+	 * Id of the HeatmapLayer layer in the map
 	 *
 	 * @var integer
 	 */
@@ -28,10 +28,9 @@ class HeatmapLayerDecorator extends \PHPGoogleMaps\Core\MapObjectDecorator {
 	/**
 	 * Constructor
 	 * 
-	 * @param HeatmapLayer
-	 * @param int $id ID of the Panoramio layer in the map
+	 * @param HeatmapLayer $heatmapLayer
+	 * @param int $id ID of the HeatmapLayer layer in the map
 	 * @param string $map Map Id of the map the HeatmapLayer is attached to
-	 * @return $this
 	 */
 	public function __construct( HeatmapLayer $heatmapLayer, $id, $map ) {
 		parent::__construct( $heatmapLayer, array( '_id' => $id, '_map' => $map ) );
