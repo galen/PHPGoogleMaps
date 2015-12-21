@@ -2,6 +2,11 @@
 
 namespace PHPGoogleMaps\Overlay;
 
+use PHPGoogleMaps\Core\LatLng;
+use PHPGoogleMaps\Core\PositionAbstract;
+use PHPGoogleMaps\Core\StaticMapObject;
+use PHPGoogleMaps\Service\Geocoder;
+use PHPGoogleMaps\Service\GeocodeResult;
 use PHPGoogleMaps\Utility;
 
 /**
@@ -20,7 +25,7 @@ use PHPGoogleMaps\Utility;
  * $marker = \PHPGoogleMaps\Overlay\Marker::createFromUserLocation( $title, $content );
  */
 
-class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
+class Marker extends StaticMapObject {
 
 	/**
 	 * Position of the marker
@@ -236,7 +241,7 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 	 * @param array $options Array of marker options
 	 * @return Marker
 	 */
-	public static function createFromPosition( \PHPGoogleMaps\Core\PositionAbstract $position, array $options=null ) {
+	public static function createFromPosition( PositionAbstract $position, array $options=null ) {
 		return new Marker( $position->getLatLng(), $options );
 	}
 
@@ -249,8 +254,8 @@ class Marker extends \PHPGoogleMaps\Core\StaticMapObject {
 	 * @throws GeocodeException
 	 */
 	public static function createFromLocation( $location, array $options=null ) {
-		$geocode_result = \PHPGoogleMaps\Service\Geocoder::geocode( $location );
-		if ( $geocode_result instanceof \PHPGoogleMaps\Service\GeocodeResult ) {
+		$geocode_result = Geocoder::geocode( $location );
+		if ( $geocode_result instanceof GeocodeResult ) {
 			return self::createFromPosition( $geocode_result, $options );
 		}
 		else {
