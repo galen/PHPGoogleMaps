@@ -26,7 +26,7 @@ class ShapeDecorator extends \PHPGoogleMaps\Core\MapObjectDecorator {
 	 * Constructor
 	 *
 	 * @param Shape $shape The shape to decorate
-	 * @param int integer $id ID of the shape in the map
+	 * @param integer $id ID of the shape in the map
 	 * @param string $map Map ID of the map the shape is attached to
 	 */	
 	public function __construct( Shape $shape, $id, $map ) {
