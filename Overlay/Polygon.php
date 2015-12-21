@@ -2,6 +2,8 @@
 
 namespace PHPGoogleMaps\Overlay;
 
+use PHPGoogleMaps\Core\LatLng;
+
 /**
  * Polygon class
  * Adds a polygon to the map
@@ -24,7 +26,7 @@ class Polygon extends Poly {
 		}
 		$lat_avg = $lat_sum / count( $this->paths );
 		$lng_avg = $lng_sum / count( $this->paths );
-		return new \PHPGoogleMaps\Core\LatLng( $lat_avg, $lng_avg );
+		return new LatLng( $lat_avg, $lng_avg );
 	}
 
 }
