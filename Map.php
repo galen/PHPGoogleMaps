@@ -1458,7 +1458,7 @@ class Map
      *
      * @return void
      */
-    public function disbleCompressedOutput()
+    public function disableCompressedOutput()
     {
         $this->compress_output = false;
     }
