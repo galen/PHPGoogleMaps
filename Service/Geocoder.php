@@ -53,7 +53,7 @@ class Geocoder {
 	 * @return GeocodeError|LatLng Returns a GeocodeError on error, LatLng on success.
 	 */
 	private static function scrapeAPI( $location, $key ) {
-		$url = sprintf( "http://maps.google.com/maps/api/geocode/json?address=%s&sensor=false", urlencode( $location ) );
+		$url = sprintf( "https://maps.google.com/maps/api/geocode/json?address=%s&sensor=false", urlencode( $location ) );
 		if (isset($url)) {
             $url .= "&key=" . $key;
         }
