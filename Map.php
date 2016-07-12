@@ -1630,7 +1630,7 @@ class Map {
  	 * decoration and redecorate it with the new map's info
  	 *
  	 * @param object $object Object to add to the map
- 	 * @return object Returns a decorated object
+ 	 * @return MapObjectDecorator | false Returns a decorated object
  	 */
 	public function addObject( $object ) {
 		if ( !is_object( $object ) ) {
