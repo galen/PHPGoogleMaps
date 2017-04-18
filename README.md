@@ -1,8 +1,8 @@
-#PHP Google Maps API
+# PHP Google Maps API
 
 For PHP 5.3+ and Google Maps API v3
 
-##Features
+## Features
  - Adsense ads
  - Binding map objects
  - Custom map controls
@@ -28,7 +28,7 @@ For PHP 5.3+ and Google Maps API v3
  - Streetview
  - Simple configuration of map objects
 
-##Autoloading
+## Autoloading
 
 Use the included autoloader
 
